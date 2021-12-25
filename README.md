@@ -9,7 +9,7 @@ Built with React, TypeScript, and some CSS.
 - **Node** : if you have not installed node yet, consider to use [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm)
 - **npm** installed
 
-## Environment files 🔒
+## Environment files
 
 Please consider using an `.env` file at project root with :
 

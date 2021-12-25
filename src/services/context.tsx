@@ -8,3 +8,11 @@ export const MoviesContext = React.createContext<{
   movies: [],
   updateMovies: Function,
 });
+
+// export const MovieInfosContext = React.createContext<{
+//   movies: Movie[];
+//   updateMovies: Function;
+// }>({
+//   movies: [],
+//   updateMovies: Function,
+// });

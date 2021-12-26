@@ -12,11 +12,11 @@ export const Catalog = () => {
         <div className="catalog__item" key={movie.id}>
           <div className="catalog__item__img">
             <img src={movie.picture || imgPlaceholder} alt={movie.title} />
-            <div className="catalog__item__resume">{movie.resume}</div>
+            <div className="catalog__item__resume">{movie.runtime}</div>
           </div>
           <div className="catalog__item__footer">
             <div className="catalog__item__footer__name">
-              {movie.title} ({new Date(movie.date).getFullYear()})
+              {movie.title} ({new Date(movie.release_date).getFullYear()})
             </div>
             <div className="catalog__item__footer__rating">{movie.rating}</div>
           </div>

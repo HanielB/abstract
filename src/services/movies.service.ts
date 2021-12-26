@@ -28,19 +28,20 @@ function mapResults(res: any[]): Movie[] {
     const {
       id,
       title,
-      vote_average,
-      overview,
       poster_path,
       release_date,
     } = movie;
 
     return {
       id,
+      year : undefined,
       title,
-      date: release_date,
-      rating: vote_average,
-      resume: overview,
+      release_date: release_date,
+      rating: undefined,
+      runtime: undefined,
       picture: poster_path ? `${posterBaseUrl}${poster_path}` : undefined,
+      lbDiaryEntry: undefined,
+      lbFilmLink: undefined,
     };
   });
 }
@@ -61,37 +62,32 @@ function mapResult(res: any): Movie[] {
       id,
       title,
       vote_average,
-      overview,
       poster_path,
       release_date,
+      runtime,
     } = res;
 
     return [{
       id,
+      year : undefined,
       title,
-      date: release_date,
-      rating: vote_average,
-      resume: overview,
+      release_date: release_date,
+      rating: undefined,
+      runtime,
       picture: poster_path ? `${posterBaseUrl}${poster_path}` : undefined,
+      lbDiaryEntry: undefined,
+      lbFilmLink: undefined,
     }];
 }
 
 export interface Movie {
   id: number;
-  date: string;
+  year?: string;
   title: string;
-  rating: number;
-  resume: string;
+  release_date: string;
+  rating?: number;
+  runtime?: number;
   picture?: string;
-}
-
-export interface MovieInfo {
-    id: number;
-    year: string;
-    title: string;
-    runtime: number;
-    rating?: number;
-    picture?: string;
-    lbDiaryEntry?: string;
-    lbFilmLink?: string;
+  lbDiaryEntry?: string;
+  lbFilmLink?: string;
 }

@@ -1,0 +1,25 @@
+* TODO Read muiltiple info
+  :STATES:
+  - State "TODO"       from              [2021-12-25 Sat 23:32] \\
+    Should have a way of simultaneously getting all the info I need for the python script, via forms, checkboxes, pre-defined lists
+  :END:
+* TODO Get info from master file
+  :STATES:
+  - State "TODO"       from              [2021-12-25 Sat 23:33] \\
+    Be able to get the list of ids when searching for watched/watchlist movies and the list of diary entries with their extra info when searching for diary entries
+  :END:
+* TODO Show results in different ways
+  :STATES:
+  - State "TODO"       from              [2021-12-25 Sat 23:34] \\
+    Default can be as is, with movie cards, or could be like LB list of diary entries. In this case I'd have the movie card and the info like when watched, rating, tags, LB link
+  :END:
+* TODO Get movie rating
+  :STATES:
+  - State "TODO"       from              [2021-12-25 Sat 23:35] \\
+    To show in movie card. This would be interesting because I'd need to read the csv.
+  :END:
+* TODO Get json out of process
+  :STATES:
+  - State "TODO"       from              [2021-12-25 Sat 23:36] \\
+    This would be a simple way of making things modular. If process gives me an array of json, I can modularly handle searches from TMDB and queries into my database
+  :END:

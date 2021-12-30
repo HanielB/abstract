@@ -46,7 +46,7 @@ function mapResults(res: any[]): Movie[] {
   });
 }
 
-export function getMovie(id: string): Promise<Movie[]> {
+export function getMovie(id: any): Promise<Movie[]> {
   return fetch(
     `${movieApiBaseUrl}/movie/${id}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
   )
@@ -80,12 +80,33 @@ function mapResult(res: any): Movie[] {
     }];
 }
 
+function getPicture (movie : Movie) : Promise<Movie> {
+  console.log("Get picture of " + movie.title + " with id " + movie.id);
+  return getMovie(movie.id).then((movies) => {
+    console.log("\tFrom " + movies.length + " movies getting pic " + movies[0].picture);
+    const newMovie = movies[0];
+    newMovie.year = movie.year;
+    newMovie.runtime = movie.runtime;
+    newMovie.rating = movie.rating;
+    return newMovie;
+  });
+}
+
 export function loadMovies(): Promise<Movie[]> {
   return fetch(
     `test1.json`
   )
     .then((res) => res.json())
     .then((response) => mapLoaded(response.items))
+  // Using "Promise.all" to convert the vector of promises resulting
+  // from the map into a promise of a vector, which is the expected
+  // type.
+  //
+  // I don't actually need this once I improve my local data base to
+  // store the poster link, but this sort of chaining of fetchs will
+  // be necessary anyway when I integrate JW.
+    .then((movies) => Promise.all(
+      movies.map((movie) => getPicture(movie))).then((results) => results))
     .catch((_) => {
       return [];
     });

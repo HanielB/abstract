@@ -80,6 +80,43 @@ function mapResult(res: any): Movie[] {
     }];
 }
 
+export function loadMovies(): Promise<Movie[]> {
+  return fetch(
+    `test1.json`
+  )
+    .then((res) => res.json())
+    .then((response) => mapLoaded(response.items))
+    .catch((_) => {
+      return [];
+    });
+}
+
+function mapLoaded(res: any[]): Movie[] {
+  return res.map((movie) => {
+    const {
+      watched,
+      title,
+      year,
+      runtime,
+      rating,
+      lbLink,
+      id
+    } = movie;
+
+    return {
+      id,
+      year,
+      title,
+      release_date: watched,
+      rating,
+      runtime,
+      picture: undefined,
+      lbDiaryEntry: undefined,
+      lbFilmLink: lbLink,
+    };
+  });
+}
+
 export interface Movie {
   id: number;
   year?: string;

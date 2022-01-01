@@ -149,3 +149,81 @@ export interface Movie {
   lbDiaryEntry?: string;
   lbFilmLink?: string;
 }
+
+//// dunno why this does not work
+// import script from "../../python/main.py";
+
+//// this is bad. See https://stackoverflow.com/questions/56457935/typescript-error-property-x-does-not-exist-on-type-window/56458070
+declare const window: any;
+
+const runScript = async (code : any) => {
+  console.log("Running script...");
+  const pyodide = await window.loadPyodide({
+    indexURL : "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/"
+  });
+  console.log("Loaded pyodide");
+
+  await pyodide.loadPackage("datetime");
+  // await pyodide.loadPackage("micropip");
+
+  // pyodide.runPythonAsync(`
+  // import micropip
+  // await micropip.install('python-datetutil')
+  // `);
+  await pyodide.loadPackage("python-dateutil");
+
+  const watchedText =
+        await (await fetch(`test.csv`,
+                           {
+                             method: 'get',
+                             headers: {
+                               'content-type': 'text/csv;charset=UTF-8',
+                             }
+                           })).text();
+  console.log("Read from watched: " + watchedText)
+  // const watchedCsv = await Papa.parse(watchedText);
+  // console.log("Papa parsed: " + watchedCsv)
+
+  const headers = watchedText.slice(0, watchedText.indexOf("\n")).split(",");
+  const rowsFlat = watchedText.slice(watchedText.indexOf("\n") + 1).split("\n");
+
+  const rows = rowsFlat.map((row) => row.split(","));
+
+  console.log("Headers (" + headers.length + "): " + headers);
+  console.log("Rows: (" + rows.length + "): " + rows.forEach((r) => console.log("\n\t" + r.length + ": " + r)));
+
+  let my_js_namespace = { x : watchedText, w : rows };
+  pyodide.registerJsModule("my_js_namespace", my_js_namespace);
+
+  const res = await pyodide.runPythonAsync(code);
+  console.log("Length of read: " + window.y);
+  console.log("First array elem: " + window.z);
+  return res;
+}
+
+export function getMovies(search: string): Promise<Movie[]> {
+  return fetch(
+    `main.py`
+  )
+    .then((res) => res.text())
+    .then((scriptText) => runScript(scriptText))
+      // // console.log("Code is:\n" + scriptText);
+      // const out =  runScript(scriptText);
+      // console.log("Length of read: " + window.y);
+      // console.log("First array elem: " + window.z);
+      // console.log("Result: " + out);
+      // return out;
+    .then((res) => {
+      console.log("Result: " + res);
+      return [];
+      // return getMovie(res[0]);
+      // movies = []
+      // for (let i = 0; i < out.length; i++) {
+      //   getMovie(out[i]).then((res) => {movies += res;});
+      // }
+      // return Promise.all(movies);
+    })
+    .catch((_) => {
+      return [];
+    });
+}

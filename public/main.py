@@ -28,6 +28,8 @@ def getPattern(p):
 def filterDiary(row, name, tags, fyear, wdate, rating):
   if len(row) == 1:
     return False
+  if len(row) > 8:
+    return False
   keep = True
   if name:
     keep = keep and (re.match(name, row[1], re.IGNORECASE) or name.lower() in row[1].lower())
@@ -156,6 +158,13 @@ def filterMaster(row, director, writer, actor, genre, runtime, credited):
     keep = keep and givenRuntime >= lb and givenRuntime <= ub
   return keep
 
+def getId(mapping, f):
+  matched = list(filter(lambda x : len(x) > 1 and x[1] == f[3] \
+                        or (x[2] == f[1] and x[3] == f[2]), mapping))
+  assert not matched or len(matched) == 1, \
+    "Got more than on match: {0}".format(matched)
+  return matched[0][0] if matched and matched[0][0] != "_" else None
+
 def getFilms(filmList, name=None, tags=None, fyear=None, \
              date=None, rating=None, director=None, writer=None, actor=None, \
              genre=None, runtime=None, credited=False, sort="watched"):
@@ -174,16 +183,19 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
                                               else master
     debug = ""
 
-    js.y = masterFiltered
     for m in masterFiltered:
       if not len(m) > 1:
         debug += "\n\tMasterFiltered row with weird length {0}".format(m)
     newFilms = []
     # if films[0][0] != masterFiltered[0][0]:
-    if not (films[0][1] == masterFiltered[0][1] and films[0][2] == masterFiltered[0][2]):
-      debug += "\n\tFirst film {0}\n\tdifferent from first master {1}".format(films[0], masterFiltered[0])
+    # if not (films[0][1] == masterFiltered[0][1] and films[0][2] == masterFiltered[0][2]):
+    #   debug += "\n\tFirst film {0}\n\tdifferent from first master {1}".format(films[0], masterFiltered[0])
     for f in films:
-      matched = list(filter(lambda x : len(x) > 1 and x[1].lower() == f[1].lower() and x[2] == f[2], masterFiltered))
+      tmdbId = getId(mapping, f)
+      if tmdbId:
+        matched = list(filter(lambda x : len(x) > 1 and x[0] == tmdbId, masterFiltered))
+      else:
+        matched = list(filter(lambda x : len(x) > 1 and x[1].lower() == f[1].lower() and x[2] == f[2], masterFiltered))
       if matched and len(matched) == 1:
         # debug += "\n\tMatched film {0}\n\t with master {1}".format(f, matched)
         # newFilms += [matched[0]] + f[1:]
@@ -196,7 +208,6 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
     #          if (matched := list(filter(lambda x : x[1].lower() == f[1].lower() and x[2] == f[2], masterFiltered))) \
     #          and len(matched) == 1]
 
-    js.z = newFilms
     films = newFilms
     if sort == "watched":
       # already sorted but in reverse order
@@ -213,7 +224,7 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
     return films
 
 def func():
-    films = getFilms(test)
+    films = getFilms(diary, rating="7..10", fyear="2021")
 
     res = [str(f[0][0]) for f in films if len(f) > 1]
     # res = ["376867", "339419"]

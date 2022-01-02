@@ -174,42 +174,35 @@ async function runScript(code : any): Promise<String[]> {
   // `);
   await pyodide.loadPackage("python-dateutil");
   console.log("Loaded pyodide. Now fetch csv");
-  return fetch(`test.csv`,
-               {
-                 method: 'get',
-                 headers: {
-                   'content-type': 'text/csv;charset=UTF-8',
-                 }
-               })
-    .then((res) => res.text())
-    .then((watchedText) => {
-      console.log("Read from watched: " + watchedText)
-      const headers = watchedText.slice(0, watchedText.indexOf("\n")).split(",");
-      const rowsFlat = watchedText.slice(watchedText.indexOf("\n") + 1).split("\n");
+  const watchedText =
+        await (await
+               fetch(`test.csv`,
+                     {
+                       method: 'get',
+                       headers: {
+                         'content-type': 'text/csv;charset=UTF-8',
+                       }
+                     })).text();
+  console.log("Read from watched: " + watchedText)
 
-      const rows = rowsFlat.map((row) => row.split(","));
+  const headers = watchedText.slice(0, watchedText.indexOf("\n")).split(",");
+  const rowsFlat = watchedText.slice(watchedText.indexOf("\n") + 1).split("\n");
+  const rows = rowsFlat.map((row) => row.split(","));
 
-      console.log("Headers (" + headers.length + "): " + headers);
-      console.log("Rows: (" + rows.length + "): " + rows.forEach((r) => console.log("\n\t" + r.length + ": " + r)));
+  // console.log("Headers (" + headers.length + "): " + headers);
+  // console.log("Rows: (" + rows.length + "): " + rows.forEach((r) => console.log("\n\t" + r.length + ": " + r)));
 
-      let my_js_namespace = { x : watchedText, w : rows };
-      // pyodide.registerJsModule("my_js_namespace", my_js_namespace);
+  let my_js_namespace = { x : watchedText, w : rows };
+  pyodide.registerJsModule("my_js_namespace", my_js_namespace);
 
-      // return pyodide.runPythonAsync(code);
-      return ["376867", "339419"];
-    }
-         )
-    // .then((res) =>
-    //   {
-    //     console.log("Length of read: " + window.y);
-    //     console.log("First array elem: " + window.z);
-    //     return res;
-    //   });
-    .catch((_) => {
-      console.log("Something failed")
-      return [];
-    });
+  // const res = await pyodide.runPythonAsync(code);
+  // // return ["376867", "339419"];
+  // console.log("Length of read: " + window.y);
+  // console.log("First array elem: " + window.z);
+  // return res;
+  return pyodide.runPythonAsync(code).then((res) => res);
 }
+
 
 export function getMovies(search: string): Promise<Movie[]> {
   return fetch(
@@ -217,8 +210,8 @@ export function getMovies(search: string): Promise<Movie[]> {
   )
     .then((res) => res.text())
     .then((scriptText) => runScript(scriptText))
-    .then((res) => {
-      console.log("Got here with res " + res);
+    .then((tmp) => {
+      let res = Array.from(tmp);
       return Promise.all(
         res.map((movieId) => (
           getMovie(movieId).then((out) => {
@@ -226,9 +219,5 @@ export function getMovies(search: string): Promise<Movie[]> {
             return out[0];
           })
         )));
-    }).
-  .catch((_) => {
-    console.log("Something broke in getMovies");
-    return [];
-  });
+    });
 }

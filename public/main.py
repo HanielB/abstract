@@ -4,8 +4,13 @@ from dateutil.relativedelta import relativedelta
 import math, re, argparse, csv, codecs, statistics
 
 import js
-from my_js_namespace import x
-from my_js_namespace import w
+from my_js_namespace import test
+from my_js_namespace import master
+from my_js_namespace import diary
+from my_js_namespace import watched
+from my_js_namespace import watchlist
+from my_js_namespace import mapping
+
 
 fileFromSrc = {"diary" : "data/diary.csv", "watchlist" : "data/watchlist.csv", "watched" : "data/watched.csv"}
 
@@ -109,6 +114,8 @@ def findInTuples(tuples, match):
 
 # Keeps any that matches all
 def filterMaster(row, director, writer, actor, genre, runtime, credited):
+  if len(row) == 1:
+    return False
   keep = True
   if director:
     keep = keep and findInTuples(row[5], director)
@@ -149,7 +156,7 @@ def filterMaster(row, director, writer, actor, genre, runtime, credited):
     keep = keep and givenRuntime >= lb and givenRuntime <= ub
   return keep
 
-def getFilms(filmList, masterList=[], name=None, tags=None, fyear=None, \
+def getFilms(filmList, name=None, tags=None, fyear=None, \
              date=None, rating=None, director=None, writer=None, actor=None, \
              genre=None, runtime=None, credited=False, sort="watched"):
     # filter by info already in films file
@@ -159,16 +166,38 @@ def getFilms(filmList, masterList=[], name=None, tags=None, fyear=None, \
     if not films:
       return []
     # maybe filter by master info
-    # masterFiltered = list(filter(lambda x: \
-    #                              filterMaster(x, director, writer, actor, \
-    #                                           genre, runtime, credited), masterList)) \
-    #                                           if (director or writer or actor \
-    #                                               or genre or runtime) \
-    #                                           else masterList
+    masterFiltered = list(filter(lambda x: \
+                                 filterMaster(x, director, writer, actor, \
+                                              genre, runtime, credited), master)) \
+                                              if (director or writer or actor \
+                                                  or genre or runtime) \
+                                              else master
+    debug = ""
+
+    js.y = masterFiltered
+    for m in masterFiltered:
+      if not len(m) > 1:
+        debug += "\n\tMasterFiltered row with weird length {0}".format(m)
+    newFilms = []
+    # if films[0][0] != masterFiltered[0][0]:
+    if not (films[0][1] == masterFiltered[0][1] and films[0][2] == masterFiltered[0][2]):
+      debug += "\n\tFirst film {0}\n\tdifferent from first master {1}".format(films[0], masterFiltered[0])
+    for f in films:
+      matched = list(filter(lambda x : len(x) > 1 and x[1].lower() == f[1].lower() and x[2] == f[2], masterFiltered))
+      if matched and len(matched) == 1:
+        # debug += "\n\tMatched film {0}\n\t with master {1}".format(f, matched)
+        # newFilms += [matched[0]] + f[1:]
+        f[0] = matched[0]
+        newFilms += [f]
+
+    js.debug = debug
+
     # films = [[matched[0]] + f[1:] for f in films \
     #          if (matched := list(filter(lambda x : x[1].lower() == f[1].lower() and x[2] == f[2], masterFiltered))) \
     #          and len(matched) == 1]
 
+    js.z = newFilms
+    films = newFilms
     if sort == "watched":
       # already sorted but in reverse order
       films = films[::-1]
@@ -184,14 +213,10 @@ def getFilms(filmList, masterList=[], name=None, tags=None, fyear=None, \
     return films
 
 def func():
-    # return 5 + 7
-    # films = getFilms(w, name="loving")
-    films = getFilms(w)
+    films = getFilms(test)
 
-    js.y = len(films)
-    js.z = films[0]
-
-    res = [str(f[0]) for f in films if len(f) > 1]
+    res = [str(f[0][0]) for f in films if len(f) > 1]
+    # res = ["376867", "339419"]
 
     # return str(datetime.strptime("2021-03-12", "%Y-%m-%d") + relativedelta(day=31))
     # return str(films)

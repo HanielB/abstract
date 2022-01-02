@@ -3,9 +3,15 @@ import "./Catalog.css";
 import imgPlaceholder from "./movie_placeholder.png";
 import { MoviesContext } from "../../services/context";
 
-export const Catalog = () => {
-  const { movies } = useContext(MoviesContext);
 
+export const Catalog = () => {
+  const { movies, loading } = useContext(MoviesContext);
+
+  if (loading) {
+    return (<div>
+              <h1>LOADING</h1>
+            </div>);
+  }
   return (
     <div className="catalogContainer">
       {movies.map((movie) => (

@@ -160,6 +160,12 @@ declare const window: any;
 //   https://python.plainenglish.io/python-in-react-with-pyodide-a9c45d4d38ff
 // the part about One Final Problem: Multiple Components
 
+function processCSV(csv : any) : any {
+  const rowsFlat = csv.slice(csv.indexOf("\n") + 1).split("\n");
+  return rowsFlat.map((row) => row.split(","));
+}
+
+
 async function runScript(code : any): Promise<String[]> {
   console.log("Running script...");
   const pyodide = await window.loadPyodide({
@@ -174,7 +180,7 @@ async function runScript(code : any): Promise<String[]> {
   // `);
   await pyodide.loadPackage("python-dateutil");
   console.log("Loaded pyodide. Now fetch csv");
-  const watchedText =
+  const testText =
         await (await
                fetch(`test.csv`,
                      {
@@ -183,24 +189,60 @@ async function runScript(code : any): Promise<String[]> {
                          'content-type': 'text/csv;charset=UTF-8',
                        }
                      })).text();
-  console.log("Read from watched: " + watchedText)
+  const diaryText =
+        await (await fetch(`diary.csv`,
+                           { method: 'get',
+                             headers: {
+                               'content-type': 'text/csv;charset=UTF-8',
+                             }})).text();
+  const watchlistText =
+        await (await fetch(`watchlist.csv`,
+                           { method: 'get',
+                             headers: {
+                               'content-type': 'text/csv;charset=UTF-8',
+                             }})).text();
+  const masterText =
+        await (await fetch(`master.csv`,
+                           { method: 'get',
+                             headers: {
+                               'content-type': 'text/csv;charset=UTF-8',
+                             }})).text();
+  const mapText =
+        await (await fetch(`map.csv`,
+                           { method: 'get',
+                             headers: {
+                               'content-type': 'text/csv;charset=UTF-8',
+                             }})).text();
+  const watchedText =
+        await (await fetch(`watched.csv`,
+                           { method: 'get',
+                             headers: {
+                               'content-type': 'text/csv;charset=UTF-8',
+                             }})).text();
 
-  const headers = watchedText.slice(0, watchedText.indexOf("\n")).split(",");
-  const rowsFlat = watchedText.slice(watchedText.indexOf("\n") + 1).split("\n");
-  const rows = rowsFlat.map((row) => row.split(","));
+  const testRows = processCSV(testText);
+  const masterRows = processCSV(masterText);
+  const diaryRows = processCSV(diaryText);
+  const watchedRows = processCSV(watchedText);
+  const watchlistRows = processCSV(watchlistText);
+  const mappingRows = processCSV(mapText);
 
   // console.log("Headers (" + headers.length + "): " + headers);
   // console.log("Rows: (" + rows.length + "): " + rows.forEach((r) => console.log("\n\t" + r.length + ": " + r)));
 
-  let my_js_namespace = { x : watchedText, w : rows };
+  let my_js_namespace = { test : testRows, master : masterRows, diary : diaryRows,
+                          watched: watchedRows, watchlist: watchlistRows,
+                          mapping: mappingRows
+                        };
   pyodide.registerJsModule("my_js_namespace", my_js_namespace);
 
-  // const res = await pyodide.runPythonAsync(code);
-  // // return ["376867", "339419"];
-  // console.log("Length of read: " + window.y);
-  // console.log("First array elem: " + window.z);
-  // return res;
-  return pyodide.runPythonAsync(code).then((res) => res);
+  return pyodide.runPythonAsync(code).then((res) => {
+    // console.log("Master filtered length: " + window.y.length);
+    // console.log("Master filtered first row: " + window.y[0]);
+    // console.log("Master filtered first row id: " + window.y[0][0]);
+    console.log("Debug: " + window.debug);
+    return res;
+  });
 }
 
 

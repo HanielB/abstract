@@ -13,10 +13,10 @@ function App() {
   }, []);
 
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   return (
-    <MoviesContext.Provider value={{ movies, updateMovies: setMovies }}>
-
+      <MoviesContext.Provider value={{ movies, updateMovies: setMovies, loading, setLoading: setLoading }}>
       <div className="App">
         <Header></Header>
         <Catalog></Catalog>

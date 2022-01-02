@@ -191,7 +191,7 @@ def func():
     js.y = len(films)
     js.z = films[0]
 
-    res = [str(f[0]) for f in films]
+    res = [str(f[0]) for f in films if len(f) > 1]
 
     # return str(datetime.strptime("2021-03-12", "%Y-%m-%d") + relativedelta(day=31))
     # return str(films)

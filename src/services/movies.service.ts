@@ -156,13 +156,15 @@ export interface Movie {
 //// this is bad. See https://stackoverflow.com/questions/56457935/typescript-error-property-x-does-not-exist-on-type-window/56458070
 declare const window: any;
 
-const runScript = async (code : any) => {
+// To prevent issues with loading pyodide multiple times, see
+//   https://python.plainenglish.io/python-in-react-with-pyodide-a9c45d4d38ff
+// the part about One Final Problem: Multiple Components
+
+async function runScript(code : any): Promise<String[]> {
   console.log("Running script...");
   const pyodide = await window.loadPyodide({
     indexURL : "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/"
   });
-  console.log("Loaded pyodide");
-
   await pyodide.loadPackage("datetime");
   // await pyodide.loadPackage("micropip");
 
@@ -171,34 +173,42 @@ const runScript = async (code : any) => {
   // await micropip.install('python-datetutil')
   // `);
   await pyodide.loadPackage("python-dateutil");
+  console.log("Loaded pyodide. Now fetch csv");
+  return fetch(`test.csv`,
+               {
+                 method: 'get',
+                 headers: {
+                   'content-type': 'text/csv;charset=UTF-8',
+                 }
+               })
+    .then((res) => res.text())
+    .then((watchedText) => {
+      console.log("Read from watched: " + watchedText)
+      const headers = watchedText.slice(0, watchedText.indexOf("\n")).split(",");
+      const rowsFlat = watchedText.slice(watchedText.indexOf("\n") + 1).split("\n");
 
-  const watchedText =
-        await (await fetch(`test.csv`,
-                           {
-                             method: 'get',
-                             headers: {
-                               'content-type': 'text/csv;charset=UTF-8',
-                             }
-                           })).text();
-  console.log("Read from watched: " + watchedText)
-  // const watchedCsv = await Papa.parse(watchedText);
-  // console.log("Papa parsed: " + watchedCsv)
+      const rows = rowsFlat.map((row) => row.split(","));
 
-  const headers = watchedText.slice(0, watchedText.indexOf("\n")).split(",");
-  const rowsFlat = watchedText.slice(watchedText.indexOf("\n") + 1).split("\n");
+      console.log("Headers (" + headers.length + "): " + headers);
+      console.log("Rows: (" + rows.length + "): " + rows.forEach((r) => console.log("\n\t" + r.length + ": " + r)));
 
-  const rows = rowsFlat.map((row) => row.split(","));
+      let my_js_namespace = { x : watchedText, w : rows };
+      // pyodide.registerJsModule("my_js_namespace", my_js_namespace);
 
-  console.log("Headers (" + headers.length + "): " + headers);
-  console.log("Rows: (" + rows.length + "): " + rows.forEach((r) => console.log("\n\t" + r.length + ": " + r)));
-
-  let my_js_namespace = { x : watchedText, w : rows };
-  pyodide.registerJsModule("my_js_namespace", my_js_namespace);
-
-  const res = await pyodide.runPythonAsync(code);
-  console.log("Length of read: " + window.y);
-  console.log("First array elem: " + window.z);
-  return res;
+      // return pyodide.runPythonAsync(code);
+      return ["376867", "339419"];
+    }
+         )
+    // .then((res) =>
+    //   {
+    //     console.log("Length of read: " + window.y);
+    //     console.log("First array elem: " + window.z);
+    //     return res;
+    //   });
+    .catch((_) => {
+      console.log("Something failed")
+      return [];
+    });
 }
 
 export function getMovies(search: string): Promise<Movie[]> {
@@ -207,23 +217,18 @@ export function getMovies(search: string): Promise<Movie[]> {
   )
     .then((res) => res.text())
     .then((scriptText) => runScript(scriptText))
-      // // console.log("Code is:\n" + scriptText);
-      // const out =  runScript(scriptText);
-      // console.log("Length of read: " + window.y);
-      // console.log("First array elem: " + window.z);
-      // console.log("Result: " + out);
-      // return out;
     .then((res) => {
-      console.log("Result: " + res);
-      return [];
-      // return getMovie(res[0]);
-      // movies = []
-      // for (let i = 0; i < out.length; i++) {
-      //   getMovie(out[i]).then((res) => {movies += res;});
-      // }
-      // return Promise.all(movies);
-    })
-    .catch((_) => {
-      return [];
-    });
+      console.log("Got here with res " + res);
+      return Promise.all(
+        res.map((movieId) => (
+          getMovie(movieId).then((out) => {
+            console.log("From id " + movieId + " got " + out.length + " movies");
+            return out[0];
+          })
+        )));
+    }).
+  .catch((_) => {
+    console.log("Something broke in getMovies");
+    return [];
+  });
 }

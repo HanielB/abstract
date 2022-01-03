@@ -1,6 +1,13 @@
 const movieApiBaseUrl = "https://api.themoviedb.org/3";
 const posterBaseUrl = "https://image.tmdb.org/t/p/w300";
 
+export function getFavorites(): Promise<Movie[]> {
+  let res = ["265177", "18491", "62", "12477"];
+  return Promise.all(
+    res.map((movieId) => getMovie(movieId).then((out) => out[0]))
+  );
+}
+
 export function discoverMovies(): Promise<Movie[]> {
   return fetch(
     `${movieApiBaseUrl}/discover/movie?sort_by=popularity.desc&api_key=${process.env.REACT_APP_API_KEY}`

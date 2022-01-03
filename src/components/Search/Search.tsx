@@ -10,6 +10,7 @@ export const Search = () => {
   const [rating, setRating] = useState("");
   const [runtime, setRuntime] = useState("");
   const [director, setDirector] = useState("");
+  const [writer, setWriter] = useState("");
   const [actor, setActor] = useState("");
   const [genre, setGenre] = useState("");
   const [sorting, setSorting] = useState("");
@@ -20,7 +21,8 @@ export const Search = () => {
     event.preventDefault();
     console.log("Handling preloaded");
     setLoading(true);
-    getMovies(name).then((movies) => {
+    getMovies(name, year, date, rating, runtime, director, writer, actor, genre,
+              sorting ? sorting : "watched", unrated).then((movies) => {
       console.log("Got back " + movies.length + " movie items");
       setLoading(false);
       updateMovies(movies);
@@ -77,6 +79,14 @@ export const Search = () => {
           placeholder="Director ... "
           value={director}
           onChange={(e) => setDirector(e.target.value)}
+        />
+        <input
+          type="text"
+          name="actor"
+          className="search__input"
+          placeholder="Writer ... "
+          value={writer}
+          onChange={(e) => setWriter(e.target.value)}
         />
         <input
           type="text"

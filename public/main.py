@@ -4,13 +4,25 @@ from dateutil.relativedelta import relativedelta
 import math, re, argparse, csv, codecs, statistics
 
 import js
-from my_js_namespace import test
+# files
 from my_js_namespace import master
 from my_js_namespace import diary
 from my_js_namespace import watched
 from my_js_namespace import watchlist
 from my_js_namespace import mapping
 
+# args
+from my_js_namespace import name
+from my_js_namespace import year
+from my_js_namespace import date
+from my_js_namespace import rating
+from my_js_namespace import runtime
+from my_js_namespace import director
+from my_js_namespace import writer
+from my_js_namespace import actor
+from my_js_namespace import genre
+from my_js_namespace import sorting
+from my_js_namespace import unrated
 
 fileFromSrc = {"diary" : "data/diary.csv", "watchlist" : "data/watchlist.csv", "watched" : "data/watched.csv"}
 
@@ -61,7 +73,13 @@ def filterDiary(row, name, tags, fyear, wdate, rating):
     filmYear = datetime.strptime(row[2], '%Y')
     keep = keep and filmYear >= lb and filmYear <= ub
   if wdate:
-    entryDate = datetime.strptime(row[7], '%Y-%m-%d')
+    try:
+      entryDate = datetime.strptime(row[7], "%Y-%m-%d")
+    except:
+      # TODO this is breaking I don't know why
+      debug = "Would have checked {0} \n\tEntire row: {1}".format(row[7], row)
+      js.debug = debug
+      return False
     if ".." in wdate:
       splitDates = wdate.split("..")
       try:
@@ -202,7 +220,7 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
         f[0] = matched[0]
         newFilms += [f]
 
-    js.debug = debug
+    # js.debug = debug
 
     # films = [[matched[0]] + f[1:] for f in films \
     #          if (matched := list(filter(lambda x : x[1].lower() == f[1].lower() and x[2] == f[2], masterFiltered))) \
@@ -224,7 +242,9 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
     return films
 
 def func():
-    films = getFilms(diary, rating="7..10", fyear="2021")
+    films = getFilms(diary, name=name, fyear=year, date=date, \
+                     rating= -1 if unrated else rating, director=director, \
+                     writer=writer, actor=actor, genre=genre, runtime=runtime)
 
     res = [str(f[0][0]) for f in films if len(f) > 1]
     # res = ["376867", "339419"]

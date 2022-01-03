@@ -2,6 +2,7 @@ const movieApiBaseUrl = "https://api.themoviedb.org/3";
 const posterBaseUrl = "https://image.tmdb.org/t/p/w300";
 
 export function getFavorites(): Promise<Movie[]> {
+  // My favorites: MOMMY, THE END OF EVANGELION, 2001, HOTARU NO HAKA
   let res = ["265177", "18491", "62", "12477"];
   return Promise.all(
     res.map((movieId) => getMovie(movieId).then((out) => out[0]))
@@ -173,29 +174,26 @@ function processCSV(csv : any) : any {
 }
 
 
-async function runScript(code : any): Promise<String[]> {
+async function runScript(code : any, name: string, year: string, date: string,
+                         rating: string, runtime: string, director: string,
+                         writer : string, actor: string, genre: string,
+                         sorting: string, unrated: string):
+Promise<String[]> {
   console.log("Running script...");
   const pyodide = await window.loadPyodide({
     indexURL : "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/"
   });
-  await pyodide.loadPackage("datetime");
-  // await pyodide.loadPackage("micropip");
 
+  // await pyodide.loadPackage("micropip");
   // pyodide.runPythonAsync(`
   // import micropip
-  // await micropip.install('python-datetutil')
+  // await micropip.install('datetime')
   // `);
+  // await pyodide.loadPackage("datetime");
+
   await pyodide.loadPackage("python-dateutil");
   console.log("Loaded pyodide. Now fetch csv");
-  const testText =
-        await (await
-               fetch(`test.csv`,
-                     {
-                       method: 'get',
-                       headers: {
-                         'content-type': 'text/csv;charset=UTF-8',
-                       }
-                     })).text();
+
   const diaryText =
         await (await fetch(`diary.csv`,
                            { method: 'get',
@@ -227,7 +225,6 @@ async function runScript(code : any): Promise<String[]> {
                                'content-type': 'text/csv;charset=UTF-8',
                              }})).text();
 
-  const testRows = processCSV(testText);
   const masterRows = processCSV(masterText);
   const diaryRows = processCSV(diaryText);
   const watchedRows = processCSV(watchedText);
@@ -237,9 +234,14 @@ async function runScript(code : any): Promise<String[]> {
   // console.log("Headers (" + headers.length + "): " + headers);
   // console.log("Rows: (" + rows.length + "): " + rows.forEach((r) => console.log("\n\t" + r.length + ": " + r)));
 
-  let my_js_namespace = { test : testRows, master : masterRows, diary : diaryRows,
+  console.log("Sorting: " + sorting)
+  console.log("Unrated: " + unrated)
+  let my_js_namespace = { master : masterRows, diary : diaryRows,
                           watched: watchedRows, watchlist: watchlistRows,
-                          mapping: mappingRows
+                          mapping: mappingRows, name : name, year : year,
+                          date : date, rating : rating, runtime : runtime,
+                          director : director, writer : writer, actor : actor,
+                          genre : genre, sorting : sorting, unrated : unrated
                         };
   pyodide.registerJsModule("my_js_namespace", my_js_namespace);
 
@@ -253,12 +255,20 @@ async function runScript(code : any): Promise<String[]> {
 }
 
 
-export function getMovies(search: string): Promise<Movie[]> {
+export function getMovies(name: string, year: string, date: string,
+                          rating: string, runtime: string, director: string,
+                          writer: string, actor: string, genre: string,
+                          sorting: string, unrated: string
+                         ):
+Promise<Movie[]> {
   return fetch(
     `main.py`
   )
     .then((res) => res.text())
-    .then((scriptText) => runScript(scriptText))
+    .then((scriptText) => runScript(scriptText, name, year, date,
+                                    rating, runtime, director, writer,
+                                    actor, genre, sorting,
+                                    unrated))
     .then((tmp) => {
       let res = Array.from(tmp);
       return Promise.all(

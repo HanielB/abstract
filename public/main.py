@@ -73,6 +73,8 @@ def filterDiary(row, name, tags, fyear, wdate, rating):
     filmYear = datetime.strptime(row[2], '%Y')
     keep = keep and filmYear >= lb and filmYear <= ub
   if wdate:
+    # entryDate = datetime.strptime(row[7], "%Y-%m-%d")
+
     try:
       entryDate = datetime.strptime(row[7], "%Y-%m-%d")
     except:

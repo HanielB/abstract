@@ -168,6 +168,54 @@ declare const window: any;
 //   https://python.plainenglish.io/python-in-react-with-pyodide-a9c45d4d38ff
 // the part about One Final Problem: Multiple Components
 
+
+function csvToArray(csv : any) : any {
+  const rowsFlat = csv.slice(csv.indexOf("\n") + 1).split("\n");
+  var parsed : string[][] = [];
+  for (let i = 0; i < rowsFlat.length; i++)
+  {
+    // const test = rowsFlat[0];
+    const test = rowsFlat[i];
+    if (test.length == 0)
+    {
+      continue;
+    }
+    // console.log("Test with " + test);
+    var fields : string[] = [];
+    var curr : string = "";
+    var escaping = false;
+    for (let j = 0; j < test.length; j++) {
+      if (escaping)
+      {
+        if (test[j] === "\"" && test[j+1] === ",")
+        {
+          escaping = false;
+        }
+      }
+      else
+      {
+        if (test[j] === "," || j === (test.length - 1))
+        {
+          fields.push(curr);
+          curr = "";
+          continue;
+        }
+        if (test[j] === "\"" && (j === 0 || test[j-1] === ","))
+        {
+          escaping = true;
+        }
+      }
+      curr += test[j];
+    }
+    // if (fields.length != 8)
+    // {
+    //   console.log("From line " + test + " \n\t got " + fields.length + " elements: " + fields);
+    // }
+    parsed.push(fields)
+  }
+  return parsed;
+}
+
 function processCSV(csv : any) : any {
   const rowsFlat = csv.slice(csv.indexOf("\n") + 1).split("\n");
   return rowsFlat.map((row) => row.split(","));
@@ -225,13 +273,26 @@ Promise<String[]> {
                                'content-type': 'text/csv;charset=UTF-8',
                              }})).text();
 
+  // const diaryRows = processCSV(diaryText);
   const masterRows = processCSV(masterText);
-  const diaryRows = processCSV(diaryText);
   const watchedRows = processCSV(watchedText);
   const watchlistRows = processCSV(watchlistText);
   const mappingRows = processCSV(mapText);
 
-  // console.log("Headers (" + headers.length + "): " + headers);
+  const diaryRows = csvToArray(diaryText);
+  // const masterRows = csvToArray(masterText);
+  // const watchedRows = csvToArray(watchedText);
+  // const watchlistRows = csvToArray(watchlistText);
+  // const mappingRows = csvToArray(mapText);
+
+  // const testText =
+  //       await (await fetch(`test.csv`,
+  //                          { method: 'get',
+  //                            headers: {
+  //                              'content-type': 'text/csv;charset=UTF-8',
+  //                            }})).text();
+  // const testRows = csvToArray(testText);
+
   // console.log("Rows: (" + rows.length + "): " + rows.forEach((r) => console.log("\n\t" + r.length + ": " + r)));
 
   console.log("Sorting: " + sorting)

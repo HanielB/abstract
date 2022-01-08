@@ -73,15 +73,7 @@ def filterDiary(row, name, tags, fyear, wdate, rating):
     filmYear = datetime.strptime(row[2], '%Y')
     keep = keep and filmYear >= lb and filmYear <= ub
   if wdate:
-    # entryDate = datetime.strptime(row[7], "%Y-%m-%d")
-    try:
-      entryDate = datetime.strptime(row[7], "%Y-%m-%d")
-    except:
-      # TODO this is breaking I don't know why
-      # debug = "Would have checked {0} \n\tEntire row: {1}".format(row[7], row)
-      debug = "Broke for {0} elems row {1}".format(len(row), "\n\t".join(row))
-      js.debug = debug
-      return False
+    entryDate = datetime.strptime(row[7], "%Y-%m-%d")
     if ".." in wdate:
       splitDates = wdate.split("..")
       try:

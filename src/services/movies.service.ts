@@ -146,18 +146,6 @@ function mapLoaded(res: any[]): Movie[] {
   });
 }
 
-export interface Movie {
-  id: number;
-  year?: string;
-  title: string;
-  release_date: string;
-  rating?: number;
-  runtime?: number;
-  picture?: string;
-  lbDiaryEntry?: string;
-  lbFilmLink?: string;
-}
-
 //// dunno why this does not work
 // import script from "../../python/main.py";
 
@@ -306,13 +294,14 @@ Promise<String[]> {
                         };
   pyodide.registerJsModule("my_js_namespace", my_js_namespace);
 
-  return pyodide.runPythonAsync(code).then((res) => {
-    // console.log("Master filtered length: " + window.y.length);
-    // console.log("Master filtered first row: " + window.y[0]);
-    // console.log("Master filtered first row id: " + window.y[0][0]);
-    console.log("Debug: " + window.debug);
-    return res;
-  });
+  var ids : string[] = [];
+  const jsonResult = JSON.parse(await pyodide.runPythonAsync(code));
+  for (let i = 0; i < jsonResult.items.length; i++)
+  {
+    console.log("Json entry " + i + " watched: " + jsonResult.items[i].watched);
+    ids.push(jsonResult.items[i].id)
+  }
+  return ids;
 }
 
 
@@ -340,4 +329,16 @@ Promise<Movie[]> {
           })
         )));
     });
+}
+
+export interface Movie {
+  id: number;
+  year?: string;
+  title: string;
+  release_date: string;
+  rating?: number;
+  runtime?: number;
+  picture?: string;
+  lbDiaryEntry?: string;
+  lbFilmLink?: string;
 }

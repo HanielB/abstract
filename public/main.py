@@ -198,37 +198,45 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
     for m in masterFiltered:
       if not len(m) > 1:
         debug += "\n\tMasterFiltered row with weird length {0}".format(m)
+
     newFilms = []
-    # if films[0][0] != masterFiltered[0][0]:
-    # if not (films[0][1] == masterFiltered[0][1] and films[0][2] == masterFiltered[0][2]):
-    #   debug += "\n\tFirst film {0}\n\tdifferent from first master {1}".format(films[0], masterFiltered[0])
     for f in films:
       tmdbId = getId(mapping, f)
-      if tmdbId:
-        matched = list(filter(lambda x : len(x) > 1 and x[0] == tmdbId, masterFiltered))
-      else:
-        matched = list(filter(lambda x : len(x) > 1 and x[1].lower() == f[1].lower() and x[2] == f[2], masterFiltered))
+      matched = list(filter(lambda x : x[0] == tmdbId if tmdbId \
+                            else x[1].lower() == f[1].lower() and x[2] == f[2], \
+                            masterFiltered))
       if matched and len(matched) == 1:
-        # debug += "\n\tMatched film {0}\n\t with master {1}".format(f, matched)
-        # newFilms += [matched[0]] + f[1:]
+        # replace logged date by master info
         f[0] = matched[0]
+        # replace int rating by pair of its string rep (x+, x-, or x) and its
+        # floating equiv (x.75, x.25, or x)
+        if not f[4]:
+          f[4] = ("_", 0)
+        elif "high" in f[6]:
+          f[4] = (str(float(f[4])*2) + "↑", float(f[4])*2 + 0.75)
+        elif "low" in f[6]:
+          f[4] = (str(float(f[4])*2) + "↓", float(f[4])*2 + 0.25)
+        else:
+          f[4] = (str(float(f[4])*2), float(f[4])*2 + 0.5)
         newFilms += [f]
-
-    # js.debug = debug
-
-    # films = [[matched[0]] + f[1:] for f in films \
-    #          if (matched := list(filter(lambda x : x[1].lower() == f[1].lower() and x[2] == f[2], masterFiltered))) \
-    #          and len(matched) == 1]
-
+    # for f in films:
+    #   tmdbId = getId(mapping, f)
+    #   matched = list(filter(lambda x : len(x) > 1 and x[0] == tmdbId, \
+    #                         masterFiltered)) if tmdbId else \
+    #                         matched = \
+    #                         list(filter(lambda x : len(x) > 1 \ and \
+    #                                     x[1].lower() == f[1].lower() \
+    #                                     and x[2] == f[2], masterFiltered))
+    #   if matched and len(matched) == 1:
+    #     f[0] = matched[0]
+    #     newFilms += [f]
     films = newFilms
+
     if sort == "watched":
       # already sorted but in reverse order
       films = films[::-1]
     elif sort == "rating":
-      films = sorted(films, key = lambda x : float(x[4])*2 + \
-                     (0.75 if "high" in x[6] else 0.25 if "low" in x[6] \
-                      else 0.5) \
-                     if x[4] else 0, reverse=True)
+      films = sorted(films, key = lambda x : x[4][1], reverse=True)
     elif sort == "year":
       films = sorted(films, key = lambda x : int(x[0][2]), reverse=True)
     elif sort == "runtime":
@@ -240,11 +248,24 @@ def func():
                      rating= -1 if unrated else rating, director=director, \
                      writer=writer, actor=actor, genre=genre, runtime=runtime)
 
-    res = [str(f[0][0]) for f in films if len(f) > 1]
-    # res = ["376867", "339419"]
+    json = ""
+    if len(films) :
+      json = "{\"items\" : [\n"
+      for i in range(0, len(films)):
+        f = films[i]
+        tagsStr = ""
+        tags = f[6].split(", ")
+        # sanitize tags, since f[6] will be "tag1, tag2, ..., tag3". Need to
+        # remove first and last quote
+        tags[0] = tags[0][1:]
+        tags[-1] = tags[-1][:-1]
+        for tag in tags:
+          tagsStr += (", " if tagsStr else "") + "\"{0}\"".format(tag)
+        js.test2 = tagsStr
+        json += "{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2}, \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}], \"lbLink\": \"{6}\", \"id\" : {7}}}{8}\n".format(\
+                                                                                                                                                                                      f[7], f[1], f[2], f[0][3], f[4][0], tagsStr, f[3], f[0][0], "," if i < len(films) - 1 else "")
+      json += "]}"
 
-    # return str(datetime.strptime("2021-03-12", "%Y-%m-%d") + relativedelta(day=31))
-    # return str(films)
-    return res
+    return json
 
 func()

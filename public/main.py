@@ -219,17 +219,6 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
         else:
           f[4] = (str(float(f[4])*2), float(f[4])*2 + 0.5)
         newFilms += [f]
-    # for f in films:
-    #   tmdbId = getId(mapping, f)
-    #   matched = list(filter(lambda x : len(x) > 1 and x[0] == tmdbId, \
-    #                         masterFiltered)) if tmdbId else \
-    #                         matched = \
-    #                         list(filter(lambda x : len(x) > 1 \ and \
-    #                                     x[1].lower() == f[1].lower() \
-    #                                     and x[2] == f[2], masterFiltered))
-    #   if matched and len(matched) == 1:
-    #     f[0] = matched[0]
-    #     newFilms += [f]
     films = newFilms
 
     if sort == "watched":

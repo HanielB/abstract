@@ -296,11 +296,10 @@ Promise<String[]> {
 
   var ids : string[] = [];
   const jsonResult = JSON.parse(await pyodide.runPythonAsync(code));
-  for (let i = 0; i < jsonResult.items.length; i++)
-  {
-    console.log("Json entry " + i + " watched: " + jsonResult.items[i].watched);
-    ids.push(jsonResult.items[i].id)
-  }
+  jsonResult.items.map((entry) => {
+    console.log("Json entry's watched: " + entry.watched);
+    ids.push(entry.id);
+  })
   return ids;
 }
 

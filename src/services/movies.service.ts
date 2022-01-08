@@ -178,6 +178,7 @@ function csvToArray(csv : any) : any {
         if (test[j] === "\"" && test[j+1] === ",")
         {
           escaping = false;
+          continue;
         }
       }
       else
@@ -191,6 +192,7 @@ function csvToArray(csv : any) : any {
         if (test[j] === "\"" && (j === 0 || test[j-1] === ","))
         {
           escaping = true;
+          continue;
         }
       }
       curr += test[j];
@@ -297,7 +299,7 @@ Promise<String[]> {
   var ids : string[] = [];
   const jsonResult = JSON.parse(await pyodide.runPythonAsync(code));
   jsonResult.items.map((entry) => {
-    console.log("Json entry's watched: " + entry.watched);
+    console.log("Json entry's watched: " + entry.watched + "; tags: " + entry.tags);
     ids.push(entry.id);
   })
   return ids;

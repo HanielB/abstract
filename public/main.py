@@ -246,8 +246,6 @@ def func():
         tags = f[6].split(", ")
         # sanitize tags, since f[6] will be "tag1, tag2, ..., tag3". Need to
         # remove first and last quote
-        tags[0] = tags[0][1:]
-        tags[-1] = tags[-1][:-1]
         for tag in tags:
           tagsStr += (", " if tagsStr else "") + "\"{0}\"".format(tag)
         js.test2 = tagsStr

@@ -1,5 +1,7 @@
-* TODO Read muiltiple info
+* DONE Read muiltiple info
+  CLOSED: [2022-01-10 Mon 00:02]
   :STATES:
+  - State "DONE"       from "TODO"       [2022-01-10 Mon 00:02]
   - State "TODO"       from              [2021-12-25 Sat 23:32] \\
     Should have a way of simultaneously getting all the info I need for the python script, via forms, checkboxes, pre-defined lists
   :END:
@@ -13,13 +15,33 @@
   - State "TODO"       from              [2021-12-25 Sat 23:34] \\
     Default can be as is, with movie cards, or could be like LB list of diary entries. In this case I'd have the movie card and the info like when watched, rating, tags, LB link
   :END:
-* TODO Get movie rating
+* DONE Get movie rating
+  CLOSED: [2022-01-10 Mon 00:02]
   :STATES:
+  - State "DONE"       from "TODO"       [2022-01-10 Mon 00:02]
   - State "TODO"       from              [2021-12-25 Sat 23:35] \\
     To show in movie card. This would be interesting because I'd need to read the csv.
   :END:
-* TODO Get json out of process
+* DONE Get json out of process
+  CLOSED: [2022-01-10 Mon 00:02]
   :STATES:
+  - State "DONE"       from "TODO"       [2022-01-10 Mon 00:02]
   - State "TODO"       from              [2021-12-25 Sat 23:36] \\
     This would be a simple way of making things modular. If process gives me an array of json, I can modularly handle searches from TMDB and queries into my database
+  :END:
+* TODO Fix "unrated"
+  :STATES:
+  - State "TODO"       from              [2022-01-07 Fri 23:16] \\
+    Not working
+  :END:
+* DONE Check watchlist / watched
+  CLOSED: [2022-01-10 Mon 00:28]
+  :STATES:
+  - State "DONE"       from "TODO"       [2022-01-10 Mon 00:28]
+  - State "TODO"       from              [2022-01-10 Mon 00:02] \\
+    For now only diary
+  :END:
+* TODO Integrate JW
+  :STATES:
+  - State "TODO"       from              [2022-01-10 Mon 00:02]
   :END:

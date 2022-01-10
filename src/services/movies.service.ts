@@ -89,13 +89,9 @@ function mapResult(res: any): Movie[] {
 }
 
 function getPicture (movie : Movie) : Promise<Movie> {
-  console.log("Get picture of " + movie.title + " with id " + movie.id);
   return getMovie(movie.id).then((movies) => {
-    console.log("\tFrom " + movies.length + " movies getting pic " + movies[0].picture);
-    const newMovie = movies[0];
-    newMovie.year = movie.year;
-    newMovie.runtime = movie.runtime;
-    newMovie.rating = movie.rating;
+    var newMovie = movie;
+    newMovie.picture = movies[0].picture;
     return newMovie;
   });
 }
@@ -216,7 +212,7 @@ async function runScript(code : any, name: string, year: string, date: string,
                          rating: string, runtime: string, director: string,
                          writer : string, actor: string, genre: string,
                          sorting: string, unrated: string):
-Promise<String[]> {
+Promise<Movie[]> {
   console.log("Running script...");
   const pyodide = await window.loadPyodide({
     indexURL : "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/"
@@ -296,13 +292,38 @@ Promise<String[]> {
                         };
   pyodide.registerJsModule("my_js_namespace", my_js_namespace);
 
-  var ids : string[] = [];
-  const jsonResult = JSON.parse(await pyodide.runPythonAsync(code));
-  jsonResult.items.map((entry) => {
-    console.log("Json entry's watched: " + entry.watched + "; tags: " + entry.tags);
-    ids.push(entry.id);
+  const res = await pyodide.runPythonAsync(code);
+  console.log("Debug: " + window.debug);
+  console.log("Json: " + res);
+  const jsonResult = JSON.parse(res);
+  var movies : Movie[] = [];
+  jsonResult.items.map((movie) => {
+    const {
+      watched,
+      title,
+      year,
+      runtime,
+      rating,
+      tags,
+      lbLink,
+      id
+    } = movie;
+
+    // console.log("Json entry's watched: " + watched + "; tags: " + tags);
+    movies.push({
+      id,
+      year,
+      title,
+      release_date: watched,
+      rating,
+      runtime,
+      tags,
+      picture: undefined,
+      lbDiaryEntry: undefined,
+      lbFilmLink: lbLink,
+    });
   })
-  return ids;
+  return movies;
 }
 
 
@@ -320,15 +341,10 @@ Promise<Movie[]> {
                                     rating, runtime, director, writer,
                                     actor, genre, sorting,
                                     unrated))
-    .then((tmp) => {
-      let res = Array.from(tmp);
-      return Promise.all(
-        res.map((movieId) => (
-          getMovie(movieId).then((out) => {
-            console.log("From id " + movieId + " got " + out.length + " movies");
-            return out[0];
-          })
-        )));
+    .then((movies) => {
+      // let res = Array.from(tmp);
+      return Promise.all(movies.map((movie) => (getPicture(movie))))
+        .then((results) => results);
     });
 }
 
@@ -337,8 +353,9 @@ export interface Movie {
   year?: string;
   title: string;
   release_date: string;
-  rating?: number;
   runtime?: number;
+  rating?: string;
+  tags?: string[];
   picture?: string;
   lbDiaryEntry?: string;
   lbFilmLink?: string;

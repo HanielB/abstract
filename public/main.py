@@ -202,8 +202,8 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
     newFilms = []
     for f in films:
       tmdbId = getId(mapping, f)
-      matched = list(filter(lambda x : x[0] == tmdbId if tmdbId \
-                            else x[1].lower() == f[1].lower() and x[2] == f[2], \
+      matched = list(filter(lambda x : len(x) > 1 and (x[0] == tmdbId if tmdbId \
+                            else x[1].lower() == f[1].lower() and x[2] == f[2]), \
                             masterFiltered))
       if matched and len(matched) == 1:
         # replace logged date by master info
@@ -233,26 +233,25 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
     return films
 
 def func():
-    films = getFilms(diary, name=name, fyear=year, date=date, \
-                     rating= -1 if unrated else rating, director=director, \
-                     writer=writer, actor=actor, genre=genre, runtime=runtime)
+  films = getFilms(diary, name=name, fyear=year, date=date, \
+                   rating= -1 if unrated else rating, director=director, \
+                   writer=writer, actor=actor, genre=genre, runtime=runtime, sort=sorting)
+  json = ""
+  if len(films) :
+    json = "{\"items\" : [\n"
+    for i in range(0, len(films)):
+      f = films[i]
+      tagsStr = ""
+      tags = f[6].split(", ")
+      # sanitize tags, since f[6] will be "tag1, tag2, ..., tag3". Need to
+      # remove first and last quote
+      for tag in tags:
+        tagsStr += (", " if tagsStr else "") + "\"{0}\"".format(tag)
+      js.test2 = tagsStr
+      json += "{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2}, \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}], \"lbLink\": \"{6}\", \"id\" : {7}}}{8}\n".format(\
+                                                                                                                                                                                    f[7], f[1], f[2], f[0][3], f[4][0], tagsStr, f[3], f[0][0] if f[0][0] else -1, "," if i < len(films) - 1 else "")
+    json += "]}"
 
-    json = ""
-    if len(films) :
-      json = "{\"items\" : [\n"
-      for i in range(0, len(films)):
-        f = films[i]
-        tagsStr = ""
-        tags = f[6].split(", ")
-        # sanitize tags, since f[6] will be "tag1, tag2, ..., tag3". Need to
-        # remove first and last quote
-        for tag in tags:
-          tagsStr += (", " if tagsStr else "") + "\"{0}\"".format(tag)
-        js.test2 = tagsStr
-        json += "{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2}, \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}], \"lbLink\": \"{6}\", \"id\" : {7}}}{8}\n".format(\
-                                                                                                                                                                                      f[7], f[1], f[2], f[0][3], f[4][0], tagsStr, f[3], f[0][0], "," if i < len(films) - 1 else "")
-      json += "]}"
-
-    return json
+  return json
 
 func()

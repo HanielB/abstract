@@ -21,6 +21,8 @@ export const Search = () => {
     event.preventDefault();
     console.log("Handling preloaded");
     setLoading(true);
+    console.log("Sorting value: " + sorting);
+    console.log("Unrated value: " + unrated);
     getMovies(name, year, date, rating, runtime, director, writer, actor, genre,
               sorting ? sorting : "watched", unrated).then((movies) => {
       console.log("Got back " + movies.length + " movie items");
@@ -115,20 +117,20 @@ export const Search = () => {
         <div>
           <p>Sorting:</p>
         <div>
-          <input type="radio" id="wacthed" name="sorting" value="watched"
+          <input type="radio" id="wacthed" name="sorting" value="watched" onChange={(e) => setSorting(e.target.value)}
                  />
           <label htmlFor="watched">Watched</label>
         </div>
         <div>
-          <input type="radio" id="year" name="sorting" value="year"/>
+          <input type="radio" id="year" name="sorting" value="year" onChange={(e) => setSorting(e.target.value)}/>
           <label htmlFor="year">Year</label>
         </div>
         <div>
-          <input type="radio" id="rating" name="sorting" value="rating"/>
+          <input type="radio" id="rating" name="sorting" value="rating" onChange={(e) => setSorting(e.target.value)}/>
           <label htmlFor="rating">Rating</label>
         </div>
         <div>
-          <input type="radio" id="runtime" name="sorting" value="runtime"/>
+          <input type="radio" id="runtime" name="sorting" value="runtime" onChange={(e) => setSorting(e.target.value)}/>
           <label htmlFor="runtime">Runtime</label>
         </div>
         </div>

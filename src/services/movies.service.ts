@@ -153,7 +153,7 @@ declare const window: any;
 // the part about One Final Problem: Multiple Components
 
 
-function csvToArray(csv : any) : any {
+function csvToArray(csv : any, dos = false) : any {
   const rowsFlat = csv.slice(csv.indexOf("\n") + 1).split("\n");
   var parsed : string[][] = [];
   for (let i = 0; i < rowsFlat.length; i++)
@@ -181,6 +181,12 @@ function csvToArray(csv : any) : any {
       {
         if (test[j] === "," || j === (test.length - 1))
         {
+          // don't miss last char if not in a DOS file (which alwas
+          // end with weird newline char)
+          if (!dos && j === (test.length - 1))
+          {
+            curr += test[j];
+          }
           fields.push(curr);
           curr = "";
           continue;
@@ -193,6 +199,11 @@ function csvToArray(csv : any) : any {
       }
       curr += test[j];
     }
+    // if row inds in comma, the above would not add a field
+    if (test[test.length - 1] == ",")
+    {
+      fields.push("")
+    }
     // if (fields.length != 8)
     // {
     //   console.log("From line " + test + " \n\t got " + fields.length + " elements: " + fields);
@@ -201,6 +212,7 @@ function csvToArray(csv : any) : any {
   }
   return parsed;
 }
+
 
 function processCSV(csv : any) : any {
   const rowsFlat = csv.slice(csv.indexOf("\n") + 1).split("\n");
@@ -260,16 +272,17 @@ Promise<Movie[]> {
                              }})).text();
 
   // const diaryRows = processCSV(diaryText);
-  const masterRows = processCSV(masterText);
-  const watchedRows = processCSV(watchedText);
-  const watchlistRows = processCSV(watchlistText);
-  const mappingRows = processCSV(mapText);
+  // const masterRows = processCSV(masterText);
+  // const watchedRows = processCSV(watchedText);
+  // const watchlistRows = processCSV(watchlistText);
+  // const mappingRows = processCSV(mapText);
 
-  const diaryRows = csvToArray(diaryText);
-  // const masterRows = csvToArray(masterText);
-  // const watchedRows = csvToArray(watchedText);
-  // const watchlistRows = csvToArray(watchlistText);
-  // const mappingRows = csvToArray(mapText);
+  const diaryRows = csvToArray(diaryText, true);
+  const masterRows = csvToArray(masterText);
+  const watchedRows = csvToArray(watchedText, true);
+  const watchlistRows = csvToArray(watchlistText, true);
+  const mappingRows = csvToArray(mapText);
+  // console.log("Read\n" + mappingRows)
 
   // const testText =
   //       await (await fetch(`test.csv`,
@@ -306,7 +319,9 @@ Promise<Movie[]> {
       rating,
       tags,
       lbLink,
-      id
+      id,
+      poster,
+      backdrop
     } = movie;
 
     // console.log("Json entry's watched: " + watched + "; tags: " + tags);
@@ -318,7 +333,7 @@ Promise<Movie[]> {
       rating,
       runtime,
       tags,
-      picture: undefined,
+      picture: poster? `${posterBaseUrl}${poster}` : undefined,
       lbDiaryEntry: undefined,
       lbFilmLink: lbLink,
     });
@@ -343,7 +358,13 @@ Promise<Movie[]> {
                                     unrated))
     .then((movies) => {
       // let res = Array.from(tmp);
-      return Promise.all(movies.map((movie) => (getPicture(movie))))
+      return Promise.all(movies.map((movie) => {
+        if (movie.picture)
+        {
+          return movie;
+        }
+        return getPicture(movie);
+      }))
         .then((results) => results);
     });
 }

@@ -171,8 +171,8 @@ def filterMaster(row, director, writer, actor, genre, runtime, credited):
   return keep
 
 def getId(mapping, f):
-  matched = list(filter(lambda x : len(x) > 1 and x[1] == f[3] \
-                        or (x[2] == f[1] and x[3] == f[2]), mapping))
+  matched = list(filter(lambda x : len(x) > 1 and (x[1] == f[3] \
+                        or (x[2] == f[1] and x[3] == f[2])), mapping))
   assert not matched or len(matched) == 1, \
     "Got more than on match: {0}".format(matched)
   return matched[0][0] if matched and matched[0][0] != "_" else None
@@ -248,8 +248,8 @@ def func():
       for tag in tags:
         tagsStr += (", " if tagsStr else "") + "\"{0}\"".format(tag)
       js.test2 = tagsStr
-      json += "{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2}, \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}], \"lbLink\": \"{6}\", \"id\" : {7}}}{8}\n".format(\
-                                                                                                                                                                                    f[7], f[1], f[2], f[0][3], f[4][0], tagsStr, f[3], f[0][0] if f[0][0] else -1, "," if i < len(films) - 1 else "")
+      json += "{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2}, \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}], \"lbLink\": \"{6}\", \"id\" : {7}, \"poster\" : \"{8}\", \"backdrop\" : \"{9}\"}}{10}".format(\
+                                                                                                                                                                                 f[7], f[1], f[2], f[0][3], f[4][0], tagsStr, f[3], f[0][0] if f[0][0] else -1, f[0][-2], f[0][-1], "," if i < len(films) - 1 else "")
     json += "]}"
 
   return json

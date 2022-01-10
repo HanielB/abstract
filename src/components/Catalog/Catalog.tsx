@@ -17,12 +17,15 @@ export const Catalog = () => {
       {movies.map((movie) => (
         <div className="catalog__item" key={movie.id}>
           <div className="catalog__item__img">
-            <img src={movie.picture || imgPlaceholder} alt={movie.title} />
+              <img src={movie.picture || imgPlaceholder} alt={movie.title}
+              />
             <div className="catalog__item__resume">{movie.runtime}</div>
           </div>
           <div className="catalog__item__footer">
             <div className="catalog__item__footer__name">
+            <a href={movie.lbFilmLink}>
               {movie.title} ({movie.year})
+              </a>
             </div>
             <div className="catalog__item__footer__rating">{movie.rating}</div>
           </div>

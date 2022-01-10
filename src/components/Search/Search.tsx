@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import "./Search.css";
-import { searchMovies, getMovie, loadMovies, getMovies } from "../../services/movies.service";
+import { getMovie, loadMovies, getMovies } from "../../services/movies.service";
 import { MoviesContext } from "../../services/context";
 
 export const Search = () => {

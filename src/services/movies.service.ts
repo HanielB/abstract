@@ -30,7 +30,7 @@ export function getFavorites(): Promise<Movie[]> {
           id,
           year,
           title,
-          release_date: watched,
+          watched,
           rating,
           runtime,
           tags,
@@ -48,51 +48,6 @@ export function getFavorites(): Promise<Movie[]> {
   // return Promise.all(
   //   res.map((movieId) => getMovie(movieId).then((out) => out[0]))
   // );
-}
-
-export function discoverMovies(): Promise<Movie[]> {
-  return fetch(
-    `${movieApiBaseUrl}/discover/movie?sort_by=popularity.desc&api_key=${process.env.REACT_APP_API_KEY}`
-  )
-    .then((res) => res.json())
-    .then((response) => mapResults(response.results))
-    .catch((_) => {
-      return [];
-    });
-}
-
-export function searchMovies(search: string): Promise<Movie[]> {
-  return fetch(
-    `${movieApiBaseUrl}/search/movie?query=${search}&api_key=${process.env.REACT_APP_API_KEY}`
-  )
-    .then((res) => res.json())
-    .then((response) => mapResults(response.results))
-    .catch((_) => {
-      return [];
-    });
-}
-
-function mapResults(res: any[]): Movie[] {
-  return res.map((movie) => {
-    const {
-      id,
-      title,
-      poster_path,
-      release_date,
-    } = movie;
-
-    return {
-      id,
-      year : undefined,
-      title,
-      release_date: release_date,
-      rating: undefined,
-      runtime: undefined,
-      picture: poster_path ? `${posterBaseUrl}${poster_path}` : undefined,
-      lbDiaryEntry: undefined,
-      lbFilmLink: undefined,
-    };
-  });
 }
 
 export function getMovie(id: any): Promise<Movie[]> {
@@ -118,9 +73,8 @@ function mapResult(res: any): Movie[] {
 
     return [{
       id,
-      year : undefined,
+      year : new Date(release_date).getFullYear().toString(),
       title,
-      release_date: release_date,
       rating: undefined,
       runtime,
       picture: poster_path ? `${posterBaseUrl}${poster_path}` : undefined,
@@ -173,7 +127,7 @@ function mapLoaded(res: any[]): Movie[] {
       id,
       year,
       title,
-      release_date: watched,
+      watched,
       rating,
       runtime,
       picture: undefined,
@@ -368,7 +322,7 @@ Promise<Movie[]> {
       id,
       year,
       title,
-      release_date: watched,
+      watched,
       rating,
       runtime,
       tags,
@@ -410,9 +364,9 @@ Promise<Movie[]> {
 
 export interface Movie {
   id: number;
+  watched?: string
   year?: string;
   title: string;
-  release_date: string;
   runtime?: number;
   rating?: string;
   tags?: string[];

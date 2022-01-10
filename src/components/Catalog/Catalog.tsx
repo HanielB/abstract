@@ -19,7 +19,11 @@ export const Catalog = () => {
           <div className="catalog__item__img">
               <img src={movie.picture || imgPlaceholder} alt={movie.title}
               />
-            <div className="catalog__item__resume">{movie.runtime}</div>
+            <div className="catalog__item__resume">
+              <p>Watched: {movie.watched}<br />
+              Runtime: {movie.runtime}<br />
+              Tags: {movie.tags}</p>
+            </div>
           </div>
           <div className="catalog__item__footer">
             <div className="catalog__item__footer__name">

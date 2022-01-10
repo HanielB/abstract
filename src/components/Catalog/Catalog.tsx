@@ -22,7 +22,7 @@ export const Catalog = () => {
           </div>
           <div className="catalog__item__footer">
             <div className="catalog__item__footer__name">
-              {movie.title} ({new Date(movie.release_date).getFullYear()})
+              {movie.title} ({movie.year})
             </div>
             <div className="catalog__item__footer__rating">{movie.rating}</div>
           </div>

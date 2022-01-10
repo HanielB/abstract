@@ -23,6 +23,7 @@ from my_js_namespace import actor
 from my_js_namespace import genre
 from my_js_namespace import sorting
 from my_js_namespace import unrated
+from my_js_namespace import src
 
 fileFromSrc = {"diary" : "data/diary.csv", "watchlist" : "data/watchlist.csv", "watched" : "data/watched.csv"}
 
@@ -38,10 +39,10 @@ def getPattern(p):
                            else ('%Y%m' if len(p) <= 6 else '%Y%m%d'))
 
 def filterDiary(row, name, tags, fyear, wdate, rating):
-  if len(row) != 8:
-    debug = "Got malformed row: {0}\n\twith length {1}".format(row, len(row))
-    js.debug = debug
-    return False
+  # if len(row) != 8:
+  #   debug = "Got malformed row: {0}\n\twith length {1}".format(row, len(row))
+  #   js.debug = debug
+  #   return False
   keep = True
   if name:
     keep = keep and (re.match(name, row[1], re.IGNORECASE) or name.lower() in row[1].lower())
@@ -210,14 +211,15 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
         f[0] = matched[0]
         # replace int rating by pair of its string rep (x+, x-, or x) and its
         # floating equiv (x.75, x.25, or x)
-        if not f[4]:
-          f[4] = ("_", 0)
-        elif "high" in f[6]:
-          f[4] = (str(float(f[4])*2) + "↑", float(f[4])*2 + 0.75)
-        elif "low" in f[6]:
-          f[4] = (str(float(f[4])*2) + "↓", float(f[4])*2 + 0.25)
-        else:
-          f[4] = (str(float(f[4])*2), float(f[4])*2 + 0.5)
+        if src == "diary":
+          if not f[4]:
+            f[4] = ("_", 0)
+          elif "high" in f[6]:
+            f[4] = (str(float(f[4])*2) + "↑", float(f[4])*2 + 0.75)
+          elif "low" in f[6]:
+            f[4] = (str(float(f[4])*2) + "↓", float(f[4])*2 + 0.25)
+          else:
+            f[4] = (str(float(f[4])*2), float(f[4])*2 + 0.5)
         newFilms += [f]
     films = newFilms
 
@@ -233,7 +235,9 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
     return films
 
 def func():
-  films = getFilms(diary, name=name, fyear=year, date=date, \
+  assert src == "diary" or src == "watched" or src == "watchlist"
+  inputFile = diary if src == "diary" else watched if src == "watched" else watchlist
+  films = getFilms(inputFile, name=name, fyear=year, date=date, \
                    rating= -1 if unrated else rating, director=director, \
                    writer=writer, actor=actor, genre=genre, runtime=runtime, sort=sorting)
   json = ""
@@ -241,15 +245,19 @@ def func():
     json = "{\"items\" : [\n"
     for i in range(0, len(films)):
       f = films[i]
-      tagsStr = ""
-      tags = f[6].split(", ")
-      # sanitize tags, since f[6] will be "tag1, tag2, ..., tag3". Need to
-      # remove first and last quote
-      for tag in tags:
-        tagsStr += (", " if tagsStr else "") + "\"{0}\"".format(tag)
-      js.test2 = tagsStr
-      json += "{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2}, \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}], \"lbLink\": \"{6}\", \"id\" : {7}, \"poster\" : \"{8}\", \"backdrop\" : \"{9}\"}}{10}".format(\
-                                                                                                                                                                                 f[7], f[1], f[2], f[0][3], f[4][0], tagsStr, f[3], f[0][0] if f[0][0] else -1, f[0][-2], f[0][-1], "," if i < len(films) - 1 else "")
+      if src == "diary":
+        tagsStr = ""
+        tags = f[6].split(", ")
+        # sanitize tags, since f[6] will be "tag1, tag2, ..., tag3". Need to
+        # remove first and last quote
+        for tag in tags:
+          tagsStr += (", " if tagsStr else "") + "\"{0}\"".format(tag)
+        json += "{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2}, \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}], \"lbLink\": \"{6}\", \"id\" : {7}, \"poster\" : \"{8}\", \"backdrop\" : \"{9}\"}}{10}".format(\
+                                                                                                                                                                                   f[7], f[1], f[2], f[0][3], f[4][0], tagsStr, f[3], f[0][0] if f[0][0] else -1, f[0][-2], f[0][-1], "," if i < len(films) - 1 else "")
+      else:
+        json += "{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2}, \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}], \"lbLink\": \"{6}\", \"id\" : {7}, \"poster\" : \"{8}\", \"backdrop\" : \"{9}\"}}{10}".format(\
+                                                                                                                                                                                 "", f[1], f[2], f[0][3], "", "", f[3], f[0][0] if f[0][0] else -1, f[0][-2], f[0][-1], "," if i < len(films) - 1 else "")
+
     json += "]}"
 
   return json

@@ -223,7 +223,7 @@ function processCSV(csv : any) : any {
 async function runScript(code : any, name: string, year: string, date: string,
                          rating: string, runtime: string, director: string,
                          writer : string, actor: string, genre: string,
-                         sorting: string, unrated: string):
+                         sorting: string, unrated: string, src : string):
 Promise<Movie[]> {
   console.log("Running script...");
   const pyodide = await window.loadPyodide({
@@ -271,12 +271,6 @@ Promise<Movie[]> {
                                'content-type': 'text/csv;charset=UTF-8',
                              }})).text();
 
-  // const diaryRows = processCSV(diaryText);
-  // const masterRows = processCSV(masterText);
-  // const watchedRows = processCSV(watchedText);
-  // const watchlistRows = processCSV(watchlistText);
-  // const mappingRows = processCSV(mapText);
-
   const diaryRows = csvToArray(diaryText, true);
   const masterRows = csvToArray(masterText);
   const watchedRows = csvToArray(watchedText, true);
@@ -294,6 +288,7 @@ Promise<Movie[]> {
 
   // console.log("Rows: (" + rows.length + "): " + rows.forEach((r) => console.log("\n\t" + r.length + ": " + r)));
 
+  console.log("Source: " + src)
   console.log("Sorting: " + sorting)
   console.log("Unrated: " + unrated)
   let my_js_namespace = { master : masterRows, diary : diaryRows,
@@ -301,13 +296,16 @@ Promise<Movie[]> {
                           mapping: mappingRows, name : name, year : year,
                           date : date, rating : rating, runtime : runtime,
                           director : director, writer : writer, actor : actor,
-                          genre : genre, sorting : sorting, unrated : unrated
+                          genre : genre, sorting : sorting, unrated : unrated,
+                          src : src
                         };
   pyodide.registerJsModule("my_js_namespace", my_js_namespace);
 
   const res = await pyodide.runPythonAsync(code);
   console.log("Debug: " + window.debug);
   console.log("Json: " + res);
+  if (res === "")
+    return []
   const jsonResult = JSON.parse(res);
   var movies : Movie[] = [];
   jsonResult.items.map((movie) => {
@@ -345,7 +343,7 @@ Promise<Movie[]> {
 export function getMovies(name: string, year: string, date: string,
                           rating: string, runtime: string, director: string,
                           writer: string, actor: string, genre: string,
-                          sorting: string, unrated: string
+                          sorting: string, unrated: string, src : string
                          ):
 Promise<Movie[]> {
   return fetch(
@@ -355,7 +353,7 @@ Promise<Movie[]> {
     .then((scriptText) => runScript(scriptText, name, year, date,
                                     rating, runtime, director, writer,
                                     actor, genre, sorting,
-                                    unrated))
+                                    unrated, src))
     .then((movies) => {
       // let res = Array.from(tmp);
       return Promise.all(movies.map((movie) => {

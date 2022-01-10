@@ -15,6 +15,7 @@ export const Search = () => {
   const [genre, setGenre] = useState("");
   const [sorting, setSorting] = useState("");
   const [unrated, setUnrated] = useState("");
+  const [src, setSrc] = useState("");
   const { updateMovies, setLoading } = useContext(MoviesContext);
 
   const handleOnSubmitPreloaded = (event: React.FormEvent) => {
@@ -24,7 +25,7 @@ export const Search = () => {
     console.log("Sorting value: " + sorting);
     console.log("Unrated value: " + unrated);
     getMovies(name, year, date, rating, runtime, director, writer, actor, genre,
-              sorting ? sorting : "watched", unrated).then((movies) => {
+              sorting ? sorting : "watched", unrated, src ? src : "diary").then((movies) => {
       console.log("Got back " + movies.length + " movie items");
       setLoading(false);
       updateMovies(movies);
@@ -115,25 +116,34 @@ export const Search = () => {
         </label>
 
         <div>
-          <p>Sorting:</p>
+          <p>Sorting (def "watched"):</p>
+          <div>
+            <input type="radio" id="year" name="sorting" value="year" onChange={(e) => setSorting(e.target.value)}/>
+            <label htmlFor="year">Year</label>
+          </div>
+          <div>
+            <input type="radio" id="rating" name="sorting" value="rating" onChange={(e) => setSorting(e.target.value)}/>
+            <label htmlFor="rating">Rating</label>
+          </div>
+          <div>
+            <input type="radio" id="runtime" name="sorting" value="runtime" onChange={(e) => setSorting(e.target.value)}/>
+            <label htmlFor="runtime">Runtime</label>
+          </div>
+        </div>
+
         <div>
-          <input type="radio" id="wacthed" name="sorting" value="watched" onChange={(e) => setSorting(e.target.value)}
-                 />
-          <label htmlFor="watched">Watched</label>
+          <p>Source (def "diary"):</p>
+          <div>
+            <input type="radio" id="watched" name="src" value="watched" onChange={(e) => setSrc(e.target.value)}
+            />
+            <label htmlFor="watched">Watched</label>
+          </div>
+          <div>
+            <input type="radio" id="watchlist" name="src" value="watchlist" onChange={(e) => setSrc(e.target.value)}/>
+            <label htmlFor="watchlist">Watchlist</label>
+          </div>
         </div>
-        <div>
-          <input type="radio" id="year" name="sorting" value="year" onChange={(e) => setSorting(e.target.value)}/>
-          <label htmlFor="year">Year</label>
-        </div>
-        <div>
-          <input type="radio" id="rating" name="sorting" value="rating" onChange={(e) => setSorting(e.target.value)}/>
-          <label htmlFor="rating">Rating</label>
-        </div>
-        <div>
-          <input type="radio" id="runtime" name="sorting" value="runtime" onChange={(e) => setSorting(e.target.value)}/>
-          <label htmlFor="runtime">Runtime</label>
-        </div>
-        </div>
+
         <button name="Button" className="search__button" type="submit">Search</button>
       </form>
     </div>

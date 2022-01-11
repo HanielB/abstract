@@ -1,7 +1,7 @@
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-import math, re, argparse, csv, codecs, statistics
+import math, re, argparse, csv, codecs, statistics, unidecode
 
 import js
 # files
@@ -129,19 +129,22 @@ def findInTuples(tuples, match):
 
 # Keeps any that matches all
 def filterMaster(row, director, writer, actor, genre, runtime, credited):
-  if len(row) == 1:
-    return False
   keep = True
   if director:
-    keep = keep and findInTuples(row[5], director)
+    cleanDirMaster = unidecode.unidecode(row[5])
+    if row[0] == "97989":
+      js.debug = "Clean dir: {0}".format(cleanDirMaster)
+    keep = keep and findInTuples(cleanDirMaster, director)
   if writer:
-    keep = keep and findInTuples(row[6], writer)
+    cleanWriterMaster = unidecode.unidecode(row[6])
+    keep = keep and findInTuples(cleanWriterMaster, writer)
   if actor:
     found = False
+    cleanActorMaster = unidecode.unidecode(row[7])
     if not credited:
-      found = findInTuples(row[7], actor)
+      found = findInTuples(cleanActorMaster, actor)
     else:
-      entries = row[7].split("), ")
+      entries = cleanActorMaster.split("), ")
       for entry in entries:
         if not entry:
           continue

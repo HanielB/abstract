@@ -225,14 +225,14 @@ Promise<Movie[]> {
     indexURL : "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/"
   });
 
-  // await pyodide.loadPackage("micropip");
-  // pyodide.runPythonAsync(`
-  // import micropip
-  // await micropip.install('datetime')
-  // `);
-  // await pyodide.loadPackage("datetime");
+  await pyodide.loadPackage("micropip");
+  await pyodide.runPythonAsync(`
+  import micropip
+  await micropip.install('unidecode')
+  `);
 
   await pyodide.loadPackage("python-dateutil");
+
   console.log("Loaded pyodide. Now fetch csv");
 
   const diaryText =

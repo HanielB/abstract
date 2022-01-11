@@ -9,6 +9,7 @@ export const Search = () => {
   const [date, setDate] = useState("");
   const [rating, setRating] = useState("");
   const [runtime, setRuntime] = useState("");
+  const [tags, setTags] = useState("");
   const [director, setDirector] = useState("");
   const [writer, setWriter] = useState("");
   const [actor, setActor] = useState("");
@@ -24,12 +25,14 @@ export const Search = () => {
     setLoading(true);
     console.log("Sorting value: " + sorting);
     console.log("Unrated value: " + unrated);
-    getMovies(name, year, date, rating, runtime, director, writer, actor, genre,
-              sorting ? sorting : "watched", unrated, src ? src : "diary").then((movies) => {
-      console.log("Got back " + movies.length + " movie items");
-      setLoading(false);
-      updateMovies(movies);
-    });
+    getMovies(name, year, date, rating, runtime, tags.split(","),
+              director, writer, actor, genre,
+              sorting ? sorting : "watched",
+              unrated, src ? src : "diary").then((movies) => {
+                console.log("Got back " + movies.length + " movie items");
+                setLoading(false);
+                updateMovies(movies);
+              });
   };
 
   return (
@@ -76,6 +79,13 @@ export const Search = () => {
           onChange={(e) => setRuntime(e.target.value)}
         />
         <input
+          type="text"
+          name="tags"
+          className="search__input"
+          placeholder="Tags ... "
+          value={tags}
+          onChange={(e) => setTags(e.target.value)}
+        />        <input
           type="text"
           name="director"
           className="search__input"

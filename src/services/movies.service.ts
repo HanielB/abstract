@@ -216,9 +216,10 @@ function processCSV(csv : any) : any {
 
 
 async function runScript(code : any, name: string, year: string, date: string,
-                         rating: string, runtime: string, director: string,
-                         writer : string, actor: string, genre: string,
-                         sorting: string, unrated: string, src : string):
+                         rating: string, runtime: string, tags : string[],
+                         director: string, writer : string, actor: string,
+                         genre: string, sorting: string, unrated: string,
+                         src : string):
 Promise<Movie[]> {
   console.log("Running script...");
   const pyodide = await window.loadPyodide({
@@ -290,6 +291,7 @@ Promise<Movie[]> {
                           watched: watchedRows, watchlist: watchlistRows,
                           mapping: mappingRows, name : name, year : year,
                           date : date, rating : rating, runtime : runtime,
+                          tags : tags,
                           director : director, writer : writer, actor : actor,
                           genre : genre, sorting : sorting, unrated : unrated,
                           src : src
@@ -336,7 +338,8 @@ Promise<Movie[]> {
 
 
 export function getMovies(name: string, year: string, date: string,
-                          rating: string, runtime: string, director: string,
+                          rating: string, runtime: string, tags : string[],
+                          director: string,
                           writer: string, actor: string, genre: string,
                           sorting: string, unrated: string, src : string
                          ):
@@ -346,7 +349,7 @@ Promise<Movie[]> {
   )
     .then((res) => res.text())
     .then((scriptText) => runScript(scriptText, name, year, date,
-                                    rating, runtime, director, writer,
+                                    rating, runtime, tags, director, writer,
                                     actor, genre, sorting,
                                     unrated, src))
     .then((movies) => {

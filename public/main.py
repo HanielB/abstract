@@ -17,6 +17,7 @@ from my_js_namespace import year
 from my_js_namespace import date
 from my_js_namespace import rating
 from my_js_namespace import runtime
+from my_js_namespace import tags
 from my_js_namespace import director
 from my_js_namespace import writer
 from my_js_namespace import actor
@@ -240,7 +241,7 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
 def func():
   assert src == "diary" or src == "watched" or src == "watchlist"
   inputFile = diary if src == "diary" else watched if src == "watched" else watchlist
-  films = getFilms(inputFile, name=name, fyear=year, date=date, \
+  films = getFilms(inputFile, name=name, tags=tags, fyear=year, date=date, \
                    rating= -1 if unrated else rating, director=director, \
                    writer=writer, actor=actor, genre=genre, runtime=runtime, sort=sorting)
   json = ""
@@ -250,10 +251,10 @@ def func():
       f = films[i]
       if src == "diary":
         tagsStr = ""
-        tags = f[6].split(", ")
+        allTags = f[6].split(", ")
         # sanitize tags, since f[6] will be "tag1, tag2, ..., tag3". Need to
         # remove first and last quote
-        for tag in tags:
+        for tag in allTags:
           tagsStr += (", " if tagsStr else "") + "\"{0}\"".format(tag)
         json += "{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2}, \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}], \"lbLink\": \"{6}\", \"id\" : {7}, \"poster\" : \"{8}\", \"backdrop\" : \"{9}\"}}{10}".format(\
                                                                                                                                                                                    f[7], f[1], f[2], f[0][3], f[4][0], tagsStr, f[3], f[0][0] if f[0][0] else -1, f[0][-2], f[0][-1], "," if i < len(films) - 1 else "")

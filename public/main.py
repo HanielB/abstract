@@ -219,11 +219,11 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
           if not f[4]:
             f[4] = ("_", 0)
           elif "high" in f[6]:
-            f[4] = (str(float(f[4])*2) + "↑", float(f[4])*2 + 0.75)
+            f[4] = (str(int(float(f[4])*2)) + "↑", float(f[4])*2 + 0.75)
           elif "low" in f[6]:
-            f[4] = (str(float(f[4])*2) + "↓", float(f[4])*2 + 0.25)
+            f[4] = (str(int(float(f[4])*2)) + "↓", float(f[4])*2 + 0.25)
           else:
-            f[4] = (str(float(f[4])*2), float(f[4])*2 + 0.5)
+            f[4] = (str(int(float(f[4])*2)), float(f[4])*2 + 0.5)
         newFilms += [f]
     films = newFilms
 

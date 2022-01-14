@@ -19,19 +19,29 @@ export const Catalog = () => {
           <div className="catalog__item__img">
               <img src={movie.picture || imgPlaceholder} alt={movie.title}
               />
-            <div className="catalog__item__resume">
-              <p>Watched: {movie.watched}<br />
-              Runtime: {movie.runtime}<br />
-              Tags: {movie.tags}</p>
-            </div>
           </div>
-          <div className="catalog__item__footer">
-            <div className="catalog__item__footer__name">
-            <a href={movie.lbFilmLink}>
-              {movie.title} ({movie.year})
-              </a>
-            </div>
-            <div className="catalog__item__footer__rating">{movie.rating}</div>
+          <div className="catalog__item__info">
+            <span>
+              {movie.title}
+            </span>
+            <span>
+              ({movie.year})
+            </span>
+            <span>
+              {movie.watched}
+            </span>
+            <span>
+              {movie.rating}
+            </span>
+            <span className="tags">
+              {movie.tags}
+            </span>
+            <span>
+              {movie.director}
+            </span>
+            <span>
+              {movie.runtime}
+            </span>
           </div>
         </div>
       ))}

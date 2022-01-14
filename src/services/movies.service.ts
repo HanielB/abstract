@@ -376,4 +376,5 @@ export interface Movie {
   picture?: string;
   lbDiaryEntry?: string;
   lbFilmLink?: string;
+  director?: string;
 }

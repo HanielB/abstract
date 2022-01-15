@@ -7,15 +7,19 @@
   - State "TODO"       from              [2021-12-25 Sat 23:32] \\
     Should have a way of simultaneously getting all the info I need for the python script, via forms, checkboxes, pre-defined lists
   :END:
-* TODO Get info from master file
+* DONE Get info from master file
+  CLOSED: [2022-01-15 Sat 11:00]
   :STATES:
+  - State "DONE"       from "TODO"       [2022-01-15 Sat 11:00]
   - State "TODO"       from              [2021-12-25 Sat 23:33] \\
     Be able to get the list of ids when searching for watched/watchlist movies and the list of diary entries with their extra info when searching for diary entries
   :END:
 * TODO Show results in different ways
   :STATES:
   - State "TODO"       from              [2021-12-25 Sat 23:34] \\
-    Default can be as is, with movie cards, or could be like LB list of diary entries. In this case I'd have the movie card and the info like when watched, rating, tags, LB link
+    Default can be as is, with movie cards, or could be like LB list of diary
+    entries. In this case I'd have the movie card and the info like when
+    watched, rating, tags, LB link
   :END:
 * DONE Get movie rating
   CLOSED: [2022-01-10 Mon 00:02]
@@ -52,4 +56,17 @@
 * TODO Integrate JW
   :STATES:
   - State "TODO"       from              [2022-01-10 Mon 00:02]
+  :END:
+* TODO Deal with many director-titles
+  :STATES:
+  - State "TODO"       from              [2022-01-15 Sat 11:01] \\
+    Like Paris Je t'aime. If too big it'll force increasing the card size.
+  :END:
+* TODO Don't underline links
+  :STATES:
+  - State "TODO"       from              [2022-01-15 Sat 11:01]
+  :END:
+* TODO Link poster to film, watched to diary
+  :STATES:
+  - State "TODO"       from              [2022-01-15 Sat 11:02]
   :END:

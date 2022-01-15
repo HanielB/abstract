@@ -19,7 +19,8 @@ export function getFavorites(): Promise<Movie[]> {
           runtime,
           rating,
           tags,
-          lbLink,
+          lbFilm,
+          lbDiary,
           id,
           poster,
           backdrop,
@@ -36,8 +37,8 @@ export function getFavorites(): Promise<Movie[]> {
           runtime,
           tags,
           picture: poster? `${posterBaseUrl}${poster}` : undefined,
-          lbDiaryEntry: undefined,
-          lbFilmLink: lbLink,
+          lbDiaryLink: lbDiary,
+          lbFilmLink: lbFilm,
           directors
         };
         return returnMovie;
@@ -80,7 +81,7 @@ function mapResult(res: any): Movie[] {
       rating: undefined,
       runtime,
       picture: poster_path ? `${posterBaseUrl}${poster_path}` : undefined,
-      lbDiaryEntry: undefined,
+      lbDiaryLink: undefined,
       lbFilmLink: undefined,
     }];
 }
@@ -121,7 +122,7 @@ function mapLoaded(res: any[]): Movie[] {
       year,
       runtime,
       rating,
-      lbLink,
+      lbFilm,
       id
     } = movie;
 
@@ -133,8 +134,8 @@ function mapLoaded(res: any[]): Movie[] {
       rating,
       runtime,
       picture: undefined,
-      lbDiaryEntry: undefined,
-      lbFilmLink: lbLink,
+      lbDiaryLink: undefined,
+      lbFilmLink: lbFilm,
     };
   });
 }
@@ -315,7 +316,8 @@ Promise<Movie[]> {
       runtime,
       rating,
       tags,
-      lbLink,
+      lbFilm,
+      lbDiary,
       id,
       poster,
       backdrop,
@@ -332,8 +334,8 @@ Promise<Movie[]> {
       runtime,
       tags,
       picture: poster? `${posterBaseUrl}${poster}` : undefined,
-      lbDiaryEntry: undefined,
-      lbFilmLink: lbLink,
+      lbDiaryLink: lbDiary,
+      lbFilmLink: lbFilm,
       directors
     });
   })
@@ -378,7 +380,7 @@ export interface Movie {
   rating?: string;
   tags?: string[];
   picture?: string;
-  lbDiaryEntry?: string;
+  lbDiaryLink?: string;
   lbFilmLink?: string;
   directors?: string[];
 }

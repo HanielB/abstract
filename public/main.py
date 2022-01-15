@@ -47,9 +47,8 @@ def filterDiary(row, name, tags, fyear, wdate, rating):
   keep = True
   if name:
     keep = keep and (re.match(name, row[1], re.IGNORECASE) or name.lower() in row[1].lower())
-  if rating:
-    # can only filter by rating if diary. Otherwise we are just selecting for unrated
-    assert len(row) > 4 or rating == -1
+  # can only filter by rating if diary. Otherwise we are just selecting for unrated
+  if rating and (len(row) > 4 or rating == -1):
     if rating == -1:
       # if diary, unrated if no rating in entry. Otherwise unrated if not in ratings file
       keep = keep and (not row[4] if len(row) > 4 \
@@ -74,7 +73,7 @@ def filterDiary(row, name, tags, fyear, wdate, rating):
     ub = datetime.strptime(split[1], '%Y') + relativedelta(month=12,day=31)
     filmYear = datetime.strptime(row[2], '%Y')
     keep = keep and filmYear >= lb and filmYear <= ub
-  if wdate:
+  if wdate and len(row) > 4:
     entryDate = datetime.strptime(row[7], "%Y-%m-%d")
     if ".." in wdate:
       splitDates = wdate.split("..")
@@ -107,7 +106,7 @@ def filterDiary(row, name, tags, fyear, wdate, rating):
         # print("Invalid data format {0}".format(wdate))
     keep = keep and entryDate >= since and entryDate <= until
   # check tag
-  if tags:
+  if tags and len(row) > 4:
     currTags = [x.strip() for x in row[6].split(',')]
     found = False
     for tag in tags:
@@ -175,12 +174,20 @@ def filterMaster(row, director, writer, actor, genre, runtime, credited):
     keep = keep and givenRuntime >= lb and givenRuntime <= ub
   return keep
 
-def getId(mapping, f):
-  matched = list(filter(lambda x : len(x) > 1 and (x[1] == f[3] \
-                        or (x[2] == f[1] and x[3] == f[2])), mapping))
+def getIdAndLink(mapping, f):
+  matched = list(filter(lambda x : x[1] == f[3] \
+                        or (x[2] == f[1] and x[3] == f[2]), mapping))
   assert not matched or len(matched) == 1, \
     "Got more than on match: {0}".format(matched)
-  return matched[0][0] if matched and matched[0][0] != "_" else None
+  if not matched:
+    return (None, None)
+  return (matched[0][0] if matched[0][0] != "_" else None, matched[0][1])
+
+def getLink(mapping, tmdbId):
+  matched = list(filter(lambda x : x[0] == tmdbId, mapping))
+  assert not matched or len(matched) == 1, \
+    "Got more than on match: {0}".format(matched)
+  return matched[0][1] if matched else None
 
 def getFilms(filmList, name=None, tags=None, fyear=None, \
              date=None, rating=None, director=None, writer=None, actor=None, \
@@ -198,17 +205,11 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
                                               if (director or writer or actor \
                                                   or genre or runtime) \
                                               else master
-    debug = ""
-
-    for m in masterFiltered:
-      if not len(m) > 1:
-        debug += "\n\tMasterFiltered row with weird length {0}".format(m)
-
     newFilms = []
     for f in films:
-      tmdbId = getId(mapping, f)
-      matched = list(filter(lambda x : len(x) > 1 and (x[0] == tmdbId if tmdbId \
-                            else x[1].lower() == f[1].lower() and x[2] == f[2]), \
+      tmdbId, lbFilmLink = getIdAndLink(mapping, f)
+      matched = list(filter(lambda x : x[0] == tmdbId if tmdbId \
+                            else x[1].lower() == f[1].lower() and x[2] == f[2], \
                             masterFiltered))
       if matched and len(matched) == 1:
         # replace logged date by master info
@@ -216,6 +217,9 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
         # replace int rating by pair of its string rep (x+, x-, or x) and its
         # floating equiv (x.75, x.25, or x)
         if src == "diary":
+          # also make link entry be a pair with diary and film link
+          f[3] = (f[3], lbFilmLink if lbFilmLink else \
+                  (link := getLink(mapping, f[0][0])) if link else "")
           if not f[4]:
             f[4] = ("_", 0)
           # if rating-qualifying tags, account for them and remove them from tags
@@ -252,25 +256,29 @@ def func():
     json = "{\"items\" : [\n"
     for i in range(0, len(films)):
       f = films[i]
+      directorsStr = ""
+      for direc in f[0][5].split("), "):
+        directorsStr += (", " if directorsStr else "") + "\"{0}\"".format(direc.split(";")[0][1:])
       if src == "diary":
         tagsStr = ""
         allTags = f[6].split(", ")
         for tag in allTags:
           tagsStr += (", " if tagsStr else "") + "\"{0}\"".format(tag)
-        directorsStr = ""
-        for direc in f[0][5].split("), "):
-          directorsStr += (", " if directorsStr else "") + "\"{0}\"".format(direc.split(";")[0][1:])
-
         json += """{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2},
 \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}],
-\"directors\" : [{6}], \"lbLink\": \"{7}\", \"id\" : {8}, \"poster\" : \"{9}\",
-\"backdrop\" : \"{10}\"}}{11}""".format(f[7], f[1], f[2], f[0][3], f[4][0], \
-                                       tagsStr, directorsStr, f[3], f[0][0] if f[0][0] else -1, \
-                                       f[0][-2], f[0][-1], "," if i < len(films) - 1 else "")
+\"directors\" : [{6}], \"lbFilm\": \"{7}\", \"lbDiary\": \"{8}\", \"id\" : {9}, \"poster\" : \"{10}\",
+\"backdrop\" : \"{11}\"}}{12}""".format(f[7], f[1], f[2], f[0][3], f[4][0], \
+                                        tagsStr, directorsStr, f[3][0], f[3][1], \
+                                        f[0][0] if f[0][0] else -1, \
+                                        f[0][-2], f[0][-1], "," if i < len(films) - 1 else "")
       else:
-        json += "{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2}, \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}], \"lbLink\": \"{6}\", \"id\" : {7}, \"poster\" : \"{8}\", \"backdrop\" : \"{9}\"}}{10}".format(\
-                                                                                                                                                                                 "", f[1], f[2], f[0][3], "", "", f[3], f[0][0] if f[0][0] else -1, f[0][-2], f[0][-1], "," if i < len(films) - 1 else "")
-
+        json += """{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2},
+\"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}],
+\"directors\" : [{6}], \"lbFilm\": \"{7}\", "\"lbDiary\": \"{8}\", "\"id\" : {9}, \"poster\" : \"{10}\",
+\"backdrop\" : \"{11}\"}}{12}""".format("", f[1], f[2], f[0][3], "", "", \
+                                        directorsStr, f[3], "", \
+                                        f[0][0] if f[0][0] else -1, \
+                                        f[0][-2], f[0][-1], "," if i < len(films) - 1 else "")
     json += "]}"
 
   return json

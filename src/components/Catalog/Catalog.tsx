@@ -23,7 +23,9 @@ export const Catalog = () => {
           <div className="catalog__item__info">
             <div className="titleYear">
               <span className="title">
-                {movie.title}
+            <a href={movie.lbFilmLink}>
+              {movie.title}
+            </a>
               </span>
               <span className="year">
                 ({movie.year})
@@ -31,7 +33,7 @@ export const Catalog = () => {
             </div>
             <div className="watchedRating">
               <span className="watched">
-                <a href={movie.lbFilmLink}>{movie.watched}</a>
+                <a href={movie.lbDiaryLink}>{movie.watched}</a>
               </span>
               {
                 <span className={(movie.rating)? "rating" : "year"}>

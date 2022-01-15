@@ -218,10 +218,13 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
         if src == "diary":
           if not f[4]:
             f[4] = ("_", 0)
+          # if rating-qualifying tags, account for them and remove them from tags
           elif "high" in f[6]:
             f[4] = (str(int(float(f[4])*2)) + "↑", float(f[4])*2 + 0.75)
+            f[6] = ", ".join([tag for tag in f[6].split(", ") if tag != "high"])
           elif "low" in f[6]:
             f[4] = (str(int(float(f[4])*2)) + "↓", float(f[4])*2 + 0.25)
+            f[6] = ", ".join([tag for tag in f[6].split(", ") if tag != "low"])
           else:
             f[4] = (str(int(float(f[4])*2)), float(f[4])*2 + 0.5)
         newFilms += [f]
@@ -252,12 +255,18 @@ def func():
       if src == "diary":
         tagsStr = ""
         allTags = f[6].split(", ")
-        # sanitize tags, since f[6] will be "tag1, tag2, ..., tag3". Need to
-        # remove first and last quote
         for tag in allTags:
           tagsStr += (", " if tagsStr else "") + "\"{0}\"".format(tag)
-        json += "{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2}, \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}], \"lbLink\": \"{6}\", \"id\" : {7}, \"poster\" : \"{8}\", \"backdrop\" : \"{9}\"}}{10}".format(\
-                                                                                                                                                                                   f[7], f[1], f[2], f[0][3], f[4][0], tagsStr, f[3], f[0][0] if f[0][0] else -1, f[0][-2], f[0][-1], "," if i < len(films) - 1 else "")
+        directorsStr = ""
+        for direc in f[0][5].split("), "):
+          directorsStr += (", " if directorsStr else "") + "\"{0}\"".format(direc.split(";")[0][1:])
+
+        json += """{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2},
+\"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}],
+\"directors\" : [{6}], \"lbLink\": \"{7}\", \"id\" : {8}, \"poster\" : \"{9}\",
+\"backdrop\" : \"{10}\"}}{11}""".format(f[7], f[1], f[2], f[0][3], f[4][0], \
+                                       tagsStr, directorsStr, f[3], f[0][0] if f[0][0] else -1, \
+                                       f[0][-2], f[0][-1], "," if i < len(films) - 1 else "")
       else:
         json += "{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2}, \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}], \"lbLink\": \"{6}\", \"id\" : {7}, \"poster\" : \"{8}\", \"backdrop\" : \"{9}\"}}{10}".format(\
                                                                                                                                                                                  "", f[1], f[2], f[0][3], "", "", f[3], f[0][0] if f[0][0] else -1, f[0][-2], f[0][-1], "," if i < len(films) - 1 else "")

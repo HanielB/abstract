@@ -22,7 +22,8 @@ export function getFavorites(): Promise<Movie[]> {
           lbLink,
           id,
           poster,
-          backdrop
+          backdrop,
+          directors
         } = movie;
 
         // console.log("Json entry's watched: " + watched + "; tags: " + tags);
@@ -37,6 +38,7 @@ export function getFavorites(): Promise<Movie[]> {
           picture: poster? `${posterBaseUrl}${poster}` : undefined,
           lbDiaryEntry: undefined,
           lbFilmLink: lbLink,
+          directors
         };
         return returnMovie;
       }
@@ -316,7 +318,8 @@ Promise<Movie[]> {
       lbLink,
       id,
       poster,
-      backdrop
+      backdrop,
+      directors
     } = movie;
 
     // console.log("Json entry's watched: " + watched + "; tags: " + tags);
@@ -331,6 +334,7 @@ Promise<Movie[]> {
       picture: poster? `${posterBaseUrl}${poster}` : undefined,
       lbDiaryEntry: undefined,
       lbFilmLink: lbLink,
+      directors
     });
   })
   return movies;
@@ -376,5 +380,5 @@ export interface Movie {
   picture?: string;
   lbDiaryEntry?: string;
   lbFilmLink?: string;
-  director?: string;
+  directors?: string[];
 }

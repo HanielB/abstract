@@ -12,7 +12,7 @@
     display: flex;
     flex-flow: row nowrap;
     /* width: 22%; */
-    width: 450px;
+    width: 460px;
     position: relative;
     transition: all ease-in-out 0.3s;
     cursor: pointer;
@@ -55,12 +55,35 @@
     color: #242423;
 }
 
-.catalog__item__footer__name {
-    font-weight: bold;
-    font-size: 1rem;
+
+.titleYear {
+    display: flex;
+    flex-flow: column;
+    row-gap: .5rem;
 }
 
-.catalog__item__footer__rating {
+.title {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.year {
+}
+
+.watchedRating {
+    display: flex;
+    flex-flow: row;
+    column-gap: 1.8rem;
+}
+
+.watched {
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 5px;
+    text-decoration: none;
+}
+
+.rating {
     font-weight: bold;
     padding: 5px 10px;
     background-color: #343533;
@@ -69,5 +92,35 @@
 }
 
 .tags {
-    word-break: break-all;
+    display: flex;
+    flex-flow: row wrap;
+    gap: .25rem;
+}
+
+.tag {
+    /* word-break: break-all; */
+    background-color: gray;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+
+}
+
+.directors {
+    display: flex;
+    flex-flow: column;
+    row-gap: .5rem;
+}
+
+.director {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.runtime {
+    /* font-weight: bold; */
+    padding: 5px 10px;
+    background-color: #343533;
+    color: #f5cc5b;
+    border-radius: 10px;
 }

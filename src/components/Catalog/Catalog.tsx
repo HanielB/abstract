@@ -21,26 +21,46 @@ export const Catalog = () => {
               />
           </div>
           <div className="catalog__item__info">
-            <span>
-              {movie.title}
-            </span>
-            <span>
-              ({movie.year})
-            </span>
-            <span>
-              {movie.watched}
-            </span>
-            <span>
-              {movie.rating}
-            </span>
-            <span className="tags">
-              {movie.tags}
-            </span>
-            <span>
-              {movie.director}
-            </span>
-            <span>
-              {movie.runtime}
+            <div className="titleYear">
+              <span className="title">
+                {movie.title}
+              </span>
+              <span className="year">
+                ({movie.year})
+              </span>
+            </div>
+            <div className="watchedRating">
+              <span className="watched">
+                <a href={movie.lbFilmLink}>{movie.watched}</a>
+              </span>
+              {
+                <span className={(movie.rating)? "rating" : "year"}>
+                {movie.rating}
+              </span>
+              }
+            </div>
+            <div className="tags">
+              {
+                (movie.tags)?
+                  movie.tags.map((tag) => (
+                    <span className="tag">
+                      {tag}
+                    </span>
+                  )) : <span></span>
+              }
+            </div>
+            <div className="directors">
+              {
+                (movie.directors)?
+                  movie.directors.map((director) => (
+                    <span className="director">
+                      {director}
+                    </span>
+                  )) : <span></span>
+              }
+            </div>
+            <span className="runtime">
+              {movie.runtime}min
             </span>
           </div>
         </div>

@@ -221,7 +221,7 @@ function processCSV(csv : any) : any {
 async function runScript(code : any, name: string, year: string, date: string,
                          rating: string, runtime: string, tags : string[],
                          director: string, writer : string, actor: string,
-                         genre: string, sorting: string, unrated: string,
+                         genre: string, sorting: string,
                          src : string):
 Promise<Movie[]> {
   console.log("Running script...");
@@ -270,11 +270,22 @@ Promise<Movie[]> {
                                'content-type': 'text/csv;charset=UTF-8',
                              }})).text();
 
+  const ratingsText =
+        await (await fetch(`ratings.csv`,
+                           { method: 'get',
+                             headers: {
+                               'content-type': 'text/csv;charset=UTF-8',
+                             }})).text();
+
   const diaryRows = csvToArray(diaryText, true);
   const masterRows = csvToArray(masterText);
   const watchedRows = csvToArray(watchedText, true);
   const watchlistRows = csvToArray(watchlistText, true);
   const mappingRows = csvToArray(mapText);
+  const ratingsRows = csvToArray(ratingsText);
+
+  console.log("Now process");
+
   // console.log("Read\n" + mappingRows)
 
   // const testText =
@@ -287,23 +298,20 @@ Promise<Movie[]> {
 
   // console.log("Rows: (" + rows.length + "): " + rows.forEach((r) => console.log("\n\t" + r.length + ": " + r)));
 
-  console.log("Source: " + src)
-  console.log("Sorting: " + sorting)
-  console.log("Unrated: " + unrated)
   let my_js_namespace = { master : masterRows, diary : diaryRows,
                           watched: watchedRows, watchlist: watchlistRows,
-                          mapping: mappingRows, name : name, year : year,
+                          mapping: mappingRows, ratings: ratingsRows, name : name, year : year,
                           date : date, rating : rating, runtime : runtime,
                           tags : tags,
                           director : director, writer : writer, actor : actor,
-                          genre : genre, sorting : sorting, unrated : unrated,
+                          genre : genre, sorting : sorting,
                           src : src
                         };
   pyodide.registerJsModule("my_js_namespace", my_js_namespace);
 
   const res = await pyodide.runPythonAsync(code);
-  console.log("Debug: " + window.debug);
-  console.log("Json: " + res);
+  // console.log("Debug: " + window.debug);
+  // console.log("Json: " + res);
   if (res === "")
     return []
   const jsonResult = JSON.parse(res);
@@ -347,7 +355,7 @@ export function getMovies(name: string, year: string, date: string,
                           rating: string, runtime: string, tags : string[],
                           director: string,
                           writer: string, actor: string, genre: string,
-                          sorting: string, unrated: string, src : string
+                          sorting: string, src : string
                          ):
 Promise<Movie[]> {
   return fetch(
@@ -356,8 +364,7 @@ Promise<Movie[]> {
     .then((res) => res.text())
     .then((scriptText) => runScript(scriptText, name, year, date,
                                     rating, runtime, tags, director, writer,
-                                    actor, genre, sorting,
-                                    unrated, src))
+                                    actor, genre, sorting, src))
     .then((movies) => {
       // let res = Array.from(tmp);
       return Promise.all(movies.map((movie) => {

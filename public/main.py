@@ -10,6 +10,7 @@ from my_js_namespace import diary
 from my_js_namespace import watched
 from my_js_namespace import watchlist
 from my_js_namespace import mapping
+from my_js_namespace import ratings
 
 # args
 from my_js_namespace import name
@@ -23,7 +24,6 @@ from my_js_namespace import writer
 from my_js_namespace import actor
 from my_js_namespace import genre
 from my_js_namespace import sorting
-from my_js_namespace import unrated
 from my_js_namespace import src
 
 fileFromSrc = {"diary" : "data/diary.csv", "watchlist" : "data/watchlist.csv", "watched" : "data/watched.csv"}
@@ -31,9 +31,7 @@ fileFromSrc = {"diary" : "data/diary.csv", "watchlist" : "data/watchlist.csv", "
 nameOfMonth = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 def isUnrated(name, year):
-  with open ("data/ratings.csv", "rb") as ratings:
-    ratings = list(csv.reader(codecs.iterdecode(ratings, 'utf-8'), delimiter = ','))[1:]
-    return not list(filter(lambda x : x[1].lower() == name.lower() and x[2] == year, ratings))
+  return not list(filter(lambda x : x[1].lower() == name.lower() and x[2] == year, ratings))
 
 def getPattern(p):
   return datetime.strptime(p, '%Y' if len(p) == 4 \
@@ -218,8 +216,8 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
         # floating equiv (x.75, x.25, or x)
         if src == "diary":
           # also make link entry be a pair with diary and film link
-          f[3] = (f[3], lbFilmLink if lbFilmLink else \
-                  (link := getLink(mapping, f[0][0])) if link else "")
+          f[3] = (lbFilmLink if lbFilmLink else \
+                  (link := getLink(mapping, f[0][0])) if link else "", f[3])
           if not f[4]:
             f[4] = ("_", 0)
           # if rating-qualifying tags, account for them and remove them from tags
@@ -249,7 +247,7 @@ def func():
   assert src == "diary" or src == "watched" or src == "watchlist"
   inputFile = diary if src == "diary" else watched if src == "watched" else watchlist
   films = getFilms(inputFile, name=name, tags=tags, fyear=year, date=date, \
-                   rating= -1 if unrated else rating, director=director, \
+                   rating= -1 if rating == "-1" else rating , director=director, \
                    writer=writer, actor=actor, genre=genre, runtime=runtime, sort=sorting)
   json = ""
   if len(films) :

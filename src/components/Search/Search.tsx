@@ -15,7 +15,6 @@ export const Search = () => {
   const [actor, setActor] = useState("");
   const [genre, setGenre] = useState("");
   const [sorting, setSorting] = useState("");
-  const [unrated, setUnrated] = useState("");
   const [src, setSrc] = useState("");
   const { updateMovies, setLoading } = useContext(MoviesContext);
 
@@ -24,11 +23,10 @@ export const Search = () => {
     console.log("Handling preloaded");
     setLoading(true);
     console.log("Sorting value: " + sorting);
-    console.log("Unrated value: " + unrated);
     getMovies(name, year, date, rating, runtime, tags.split(","),
               director, writer, actor, genre,
               sorting ? sorting : "watched",
-              unrated, src ? src : "diary").then((movies) => {
+              src ? src : "diary").then((movies) => {
                 console.log("Got back " + movies.length + " movie items");
                 setLoading(false);
                 updateMovies(movies);
@@ -117,14 +115,6 @@ export const Search = () => {
           value={genre}
           onChange={(e) => setGenre(e.target.value)}
         />
-        <label>
-          <input type="checkbox" name="checkbox"
-                 value={unrated}
-                 onChange={(e) => setUnrated(e.target.value)}
-          />
-          Unrated
-        </label>
-
         <div>
           <p>Sorting (def "watched"):</p>
           <div>

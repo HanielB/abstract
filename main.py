@@ -218,8 +218,8 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
         # floating equiv (x.75, x.25, or x)
         if src == "diary":
           # also make link entry be a pair with diary and film link
-          f[3] = (f[3], lbFilmLink if lbFilmLink else \
-                  (link := getLink(mapping, f[0][0])) if link else "")
+          f[3] = (lbFilmLink if lbFilmLink else \
+                  (link := getLink(mapping, f[0][0])) if link else "", f[3])
           if not f[4]:
             f[4] = ("_", 0)
           # if rating-qualifying tags, account for them and remove them from tags

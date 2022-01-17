@@ -1,21 +1,14 @@
-# Movie App 🎬
+# Abstract
 
-A React project to search movies in advanced ways based on a user's Letterboxd data and TMDB data.
+A React project to perform advanced queries on my Letterboxd data (combined with
+TMDB data) and present the results nicely.
 
-Built with React, TypeScript, and some CSS.
+Built with React, TypeScript, CSS, Python, and [Pyodide](https://pyodide.org/en/stable/).
 
 ## Preset
 
 - **Node** : if you have not installed node yet, consider to use [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm)
 - **npm** installed
-
-## Environment files
-
-Please consider using an `.env` file at project root with :
-
-```env
-REACT_APP_API_KEY=**YOUR API KEY**
-```
 
 this api key will be used when we fetch the api
 
@@ -42,5 +35,3 @@ To build the project, please run :
 ```bash
 npm run build
 ```
-
-Your build will be avaible in `dist/`

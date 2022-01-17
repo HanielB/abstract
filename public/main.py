@@ -272,7 +272,7 @@ def func():
       else:
         json += """{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2},
 \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}],
-\"directors\" : [{6}], \"lbFilm\": \"{7}\", "\"lbDiary\": \"{8}\", "\"id\" : {9}, \"poster\" : \"{10}\",
+\"directors\" : [{6}], \"lbFilm\": \"{7}\", \"lbDiary\": \"{8}\", \"id\" : {9}, \"poster\" : \"{10}\",
 \"backdrop\" : \"{11}\"}}{12}""".format("", f[1], f[2], f[0][3], "", "", \
                                         directorsStr, f[3], "", \
                                         f[0][0] if f[0][0] else -1, \

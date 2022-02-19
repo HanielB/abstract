@@ -216,8 +216,11 @@ def getFilms(filmList, name=None, tags=None, fyear=None, \
         # floating equiv (x.75, x.25, or x)
         if src == "diary":
           # also make link entry be a pair with diary and film link
-          f[3] = (lbFilmLink if lbFilmLink else \
-                  (link := getLink(mapping, f[0][0])) if link else "", f[3])
+          if lbFilmLink:
+            f[3] = (lbFilmLink, f[3])
+          else:
+            link = getLink(mapping, f[0][0])
+            f[3] = (link, f[3]) if link else ("", f[3])
           if not f[4]:
             f[4] = ("_", 0)
           # if rating-qualifying tags, account for them and remove them from tags
@@ -272,7 +275,7 @@ def func():
       else:
         json += """{{\"watched\" : \"{0}\", \"title\" : \"{1}\", \"year\": {2},
 \"runtime\" : {3}, \"rating\" : \"{4}\", \"tags\" : [{5}],
-\"directors\" : [{6}], \"lbFilm\": \"{7}\", "\"lbDiary\": \"{8}\", "\"id\" : {9}, \"poster\" : \"{10}\",
+\"directors\" : [{6}], \"lbFilm\": \"{7}\", \"lbDiary\": \"{8}\", \"id\" : {9}, \"poster\" : \"{10}\",
 \"backdrop\" : \"{11}\"}}{12}""".format("", f[1], f[2], f[0][3], "", "", \
                                         directorsStr, f[3], "", \
                                         f[0][0] if f[0][0] else -1, \

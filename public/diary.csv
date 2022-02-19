@@ -777,7 +777,7 @@ Date,Name,Year,Letterboxd URI,Rating,Rewatch,Tags,Watched Date
 2020-11-29,Snowpiercer,2013,https://boxd.it/1tWVDz,4,Yes,low,2020-11-27
 2020-12-06,Gone Girl,2014,https://boxd.it/1uKiTt,4,Yes,"low, netflix",2020-11-28
 2020-12-06,Girlhood,2014,https://boxd.it/1uKjaJ,4,,"low, criterionchannel, cried, female-director",2020-11-29
-2020-12-06,Zodiac,2007,https://boxd.it/1uKjmP,4.5,,low,2020-11-29
+2020-12-06,Zodiac,2007,https://boxd.it/1uKjmP,4.5,Yes,low,2020-11-29
 2020-12-06,The Quiet Family,1998,https://boxd.it/1uKjvx,2.5,,"high, criterionchannel",2020-12-02
 2020-12-12,The Ascent,1977,https://boxd.it/1vpFZL,3.5,,"high, female-director, criterionchannel",2020-12-05
 2020-12-12,Yentl,1983,https://boxd.it/1vpG6R,3,,"high, female-director, criterionchannel",2020-12-06
@@ -955,3 +955,9 @@ Date,Name,Year,Letterboxd URI,Rating,Rewatch,Tags,Watched Date
 2022-01-25,The French Dispatch,2021,https://boxd.it/2w5A4R,4,Yes,"high, cinema",2022-01-23
 2022-01-31,Heist,2001,https://boxd.it/2xiVet,3,,"high, hbomax",2022-01-29
 2022-01-31,Benedetta,2021,https://boxd.it/2xlS6H,2.5,,"high, cinema",2022-01-30
+2022-02-07,The Way Back,2020,https://boxd.it/2ywcV5,3,,"high, hbomax",2022-02-05
+2022-02-13,Red Rocket,2021,https://boxd.it/2zJBNF,4,,low,2022-02-12
+2022-02-14,Manhunter,1986,https://boxd.it/2zOLk9,3.5,,"low, youtube",2022-02-12
+2022-02-14,Spencer,2021,https://boxd.it/2zVmPb,3,,"high, cinema",2022-02-13
+2022-02-16,Mission: Impossible,1996,https://boxd.it/2Ac5M9,3.5,Yes,"high, netflix",2022-02-13
+2022-02-17,Parallel Mothers,2021,https://boxd.it/2ArM3B,3,,"low, cinema",2022-02-15

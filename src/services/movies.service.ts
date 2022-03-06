@@ -217,6 +217,104 @@ function processCSV(csv : any) : any {
   return rowsFlat.map((row) => row.split(","));
 }
 
+function filterMovie(movie : any, name: string, year: string, date: string,
+                         rating: string, runtime: string, tags : string[],
+                         director: string, writer : string, actor: string,
+                         genre: string,
+                     src : string):
+Movie[] {
+  console.log("Filtering ", movie.title, movie.year, "; status ", movie.status)
+  var result : Movie[] = [];
+  if (src == "watchlist")
+  {
+    if (movie.status > 0)
+    {
+      return result;
+    }
+    // TODO
+    return result;
+  }
+  if (movie.status === 0)
+  {
+    return result;
+  }
+  // get latest diary entry to have the rating and watched date, if any
+  if (src == "watched")
+  {
+    // TODO get watched and rating and link
+    return [
+      {
+        id : movie.tmdbId,
+        year : movie.year,
+        title : movie.title,
+        watched : "",
+        rating : "",
+        runtime : movie.runtime,
+        tags : [],
+        picture: `${posterBaseUrl}${movie.posterPath}`,
+        lbDiaryLink: "",
+        lbFilmLink: movie.libURL,
+        directors : movie.directors
+      }
+    ];
+  }
+  // for each diary entry, create a new movie
+  if (movie.diary.length == 0)
+  {
+    return [
+      {
+        id : movie.tmdbId,
+        year : movie.year,
+        title : movie.title,
+        watched : "",
+        rating : "",
+        runtime : movie.runtime,
+        tags : [],
+        picture: `${posterBaseUrl}${movie.posterPath}`,
+        lbDiaryLink: "",
+        lbFilmLink: movie.libURL,
+        directors : movie.directors
+      }
+    ];
+  }
+  console.log("Got into diaries")
+  movie.diary.map((entry) => {
+    result.push(
+      {
+        id : movie.tmdbId,
+        year : movie.year,
+        title : movie.title,
+        watched : entry.date,
+        rating : entry.rating.str,
+        runtime : movie.runtime,
+        tags : entry.tags,
+        picture: `${posterBaseUrl}${movie.posterPath}`,
+        lbDiaryLink: entry.entryURL,
+        lbFilmLink: movie.libURL,
+        directors : movie.directors
+      }
+    )
+  });
+  return result;
+}
+
+function filterMovies(master : any, name: string, year: string, date: string,
+                         rating: string, runtime: string, tags : string[],
+                         director: string, writer : string, actor: string,
+                         genre: string, sorting: string,
+                         src : string):
+Promise<Movie[]> {
+  console.log("Now process with src ", src);
+  var movies : Movie[] = [];
+  master.movies.map((movie) => {
+    movies = movies.concat(filterMovie(movie, name, year, date,
+                                       rating, runtime, tags, director, writer,
+                                       actor, genre, src));
+  });
+  // TODO sorting
+  return Promise.all(movies).then((movies) => movies);
+}
+
 
 async function runScript(code : any, name: string, year: string, date: string,
                          rating: string, runtime: string, tags : string[],
@@ -359,12 +457,15 @@ export function getMovies(name: string, year: string, date: string,
                          ):
 Promise<Movie[]> {
   return fetch(
-    `main.py`
-  )
-    .then((res) => res.text())
-    .then((scriptText) => runScript(scriptText, name, year, date,
-                                    rating, runtime, tags, director, writer,
-                                    actor, genre, sorting, src))
+    `master.json`,
+    { method: 'get',
+      headers: {
+        'content-type': 'text/csv;charset=UTF-8',
+      }})
+    .then((res) => res.json())
+    .then((master) => filterMovies(master, name, year, date,
+                                   rating, runtime, tags, director, writer,
+                                   actor, genre, sorting, src))
     .then((movies) => {
       // let res = Array.from(tmp);
       return Promise.all(movies.map((movie) => {

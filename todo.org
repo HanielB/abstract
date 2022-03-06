@@ -97,3 +97,11 @@
   - State "TODO"       from              [2022-03-06 Sun 18:43] \\
     When I get a result and I search again, I start from existing list. To restart I have to refresh
   :END:
+* TODO Filter by first watch
+  :STATES:
+  - State "TODO"       from              [2022-03-06 Sun 18:55]
+  :END:
+* TODO Filter unrated
+  :STATES:
+  - State "TODO"       from              [2022-03-06 Sun 18:55]
+  :END:

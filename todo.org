@@ -92,3 +92,8 @@
   :STATES:
   - State "TODO"       from              [2022-03-05 Sat 21:57]
   :END:
+* TODO Allow further restricting
+  :STATES:
+  - State "TODO"       from              [2022-03-06 Sun 18:43] \\
+    When I get a result and I search again, I start from existing list. To restart I have to refresh
+  :END:

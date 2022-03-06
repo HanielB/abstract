@@ -140,12 +140,36 @@ function mapLoaded(res: any[]): Movie[] {
   });
 }
 
-function filterStatic(movie : any, title : RegExp, year: number[], date: string,
+function filterDiary(entry : any, date: Date[], rating: number[], tags : RegExp)
+: Boolean
+{
+  const yearEntry = Number(entry.date.split("-")[0])
+  const monthEntry = Number(entry.date.split("-")[1])-1
+  const dayEntry = Number(entry.date.split("-")[2])
+
+  const entryDate = new Date(yearEntry, monthEntry, dayEntry)
+  if (date.length > 0 && (entryDate < date[0] || entryDate > date[1]))
+  {
+    return false;
+  }
+  if (rating.length > 0 &&
+      (entry.rating.num < rating[0] || entry.rating.num > rating[1]))
+  {
+    return false;
+  }
+  if (entry.tags.length > 0
+      && !entry.tags.some((tag) => tags.test(tag)))
+  {
+    return false;
+  }
+  return true;
+}
+
+function filterStatic(movie : any, title : RegExp, year: number[],
                       runtime: number[], director: RegExp, writer : RegExp,
                       actor: RegExp, genre: RegExp)
 : Boolean
 {
-  // console.log("some director match?", movie.directors.some((directorName) => director.test(directorName)))
   if (!title.test(movie.title)
       || (movie.directors.length > 0
           && !movie.directors.some((dirName) => director.test(dirName)))
@@ -167,12 +191,11 @@ function filterStatic(movie : any, title : RegExp, year: number[], date: string,
   {
     return false;
   }
-
   return true;
 }
 
-function filterMovie(movie : any, title: RegExp, year: number[], date: string,
-                         rating: string, runtime: number[], tags : RegExp,
+function filterMovie(movie : any, title: RegExp, year: number[], date: Date[],
+                         rating: number[], runtime: number[], tags : RegExp,
                          director: RegExp, writer : RegExp, actor: RegExp,
                          genre: RegExp, src : string):
 Movie[] {
@@ -180,24 +203,27 @@ Movie[] {
   var result : Movie[] = [];
   if (src == "watchlist")
   {
-    if (movie.status > 0)
+    if (movie.status > 0
+        || !filterStatic(movie, title, year, runtime, director, writer,
+                         actor, genre))
     {
       return [];
     }
-    if (!filterStatic(movie, title, year, date, runtime, director, writer, actor,
-                      genre))
-    {
-      return [];
-    }
-    // TODO
-    return result;
+    return [
+      {
+        id : movie.tmdbId,
+        year : movie.year,
+        title : movie.title,
+        runtime : movie.runtime,
+        picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
+        lbFilmLink: movie.libURL,
+        directors : movie.directors
+      }
+    ];
   }
-  if (movie.status === 0)
-  {
-    return result;
-  }
-  if (!filterStatic(movie, title, year, date, runtime, director, writer, actor,
-                    genre))
+  if (movie.status === 0
+      || !filterStatic(movie, title, year, runtime, director, writer, actor,
+                       genre))
   {
     return [];
   }
@@ -225,14 +251,13 @@ Movie[] {
         ratingNum : ratingNum,
         runtime : movie.runtime,
         tags : tagsInfo,
-        picture: `${posterBaseUrl}${movie.posterPath}`,
+        picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
         lbDiaryLink: "",
         lbFilmLink: movie.libURL,
         directors : movie.directors
       }
     ];
   }
-  // for each diary entry, create a new movie
   if (movie.diary.length == 0)
   {
     return [
@@ -245,17 +270,19 @@ Movie[] {
         ratingNum : 0,
         runtime : movie.runtime,
         tags : [],
-        picture: `${posterBaseUrl}${movie.posterPath}`,
+        picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
         lbDiaryLink: "",
         lbFilmLink: movie.libURL,
         directors : movie.directors
       }
     ];
   }
+  // for each diary entry, create a new movie if it fits criteria
   console.log("Got into diaries")
   movie.diary.map((entry) => {
-    result.push(
-      {
+    if (filterDiary(entry, date, rating, tags))
+    {
+      result.push({
         id : movie.tmdbId,
         year : movie.year,
         title : movie.title,
@@ -264,12 +291,12 @@ Movie[] {
         ratingNum : entry.rating.num,
         runtime : movie.runtime,
         tags : entry.tags,
-        picture: `${posterBaseUrl}${movie.posterPath}`,
+        picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
         lbDiaryLink: entry.entryURL,
         lbFilmLink: movie.libURL,
         directors : movie.directors
-      }
-    )
+      })
+    }
   });
   return result;
 }
@@ -307,12 +334,67 @@ Promise<Movie[]> {
     runtimes.push(runtimes[0])
   }
 
+  var ratings : number[] = rating === "" ? [] : rating.split("..").map(
+    (rating) => rating != "" ? Number(rating) : 10)
+  if (ratings.length === 1)
+  {
+    ratings.push(ratings[0])
+  }
+  var dates : Date[] = [];
+  if (date != "" )
+  {
+    const split = date.split("..")
+    // first four digits are year
+    var dateYear = Number(split[0].substring(0, 4))
+    // if no month is given, get first (by index, which is 0). Otherwise next
+    // two digits, subtracted by one since index
+    var dateMonth =
+        split[0].length === 4 ? 0 : Number(split[0].substring(4, 6)) - 1;
+    // if no day, get first day. Otherwise last two digits
+    var dateDay = split[0].length <= 6? 1 : Number(split[0].substring(6, 8))
+    dates.push(new Date(dateYear, dateMonth, dateDay));
+    // no end given then go until end of given year/month/day
+    if (split.length === 1)
+    {
+      // to get last day of year, in case only year given, go to last month
+      // index + 1 (12) and day 0, which makes it go back one day.
+      //
+      // If month was given but no day, we also go a month up and will use day 0
+      // to go back.
+      //
+      // If day was given we use same year, month and day
+      dates.push(new Date(dateYear,
+                          split[0].length === 4 ? 12 :
+                          dateMonth + (split[0].length <= 6 ? 1 : 0),
+                          split[0].length <= 6 ? 0 : dateDay
+                         ));
+    }
+    // implicity end of interval is today
+    else if (split[1] === "")
+    {
+      dates.push(new Date())
+    }
+    else
+    {
+      // if only year is given, we go to last day similarly to above. Same for
+      // only month being given, so we go to last day of month
+      dateYear = Number(split[1].substring(0, 4))
+      dateMonth =
+        split[1].length === 4 ? 12 :
+        Number(split[1].substring(4, 6)) - (split[1].length <= 6 ? 0 : 1);
+      dateDay = split[1].length <= 6? 0 : Number(split[1].substring(6, 8))
+      dates.push(new Date(dateYear, dateMonth, dateDay));
+    }
+  }
+
   console.log("years:", years)
   console.log("runtimes:", runtimes)
+  console.log("ratings:", ratings)
+  console.log("dates:", dates.map((date) => date.toString()))
 
   master.movies.map((movie) => {
-    movies = movies.concat(filterMovie(movie, titleRegex, years, date,
-                                       rating, runtimes, tagsRegex, directorRegex,
+    movies = movies.concat(filterMovie(movie, titleRegex, years, dates,
+                                       ratings, runtimes, tagsRegex, directorRegex,
                                        writerRegex, actorRegex, genreRegex, src));
   });
   // TODO sorting

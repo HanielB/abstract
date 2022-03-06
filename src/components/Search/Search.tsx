@@ -4,7 +4,7 @@ import { getMovie, loadMovies, getMovies } from "../../services/movies.service";
 import { MoviesContext } from "../../services/context";
 
 export const Search = () => {
-  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
   const [year, setYear] = useState("");
   const [date, setDate] = useState("");
   const [rating, setRating] = useState("");
@@ -23,7 +23,7 @@ export const Search = () => {
     console.log("Handling preloaded");
     setLoading(true);
     console.log("Sorting value: " + sorting);
-    getMovies(name, year, date, rating, runtime, tags.split(","),
+    getMovies(title, year, date, rating, runtime, tags,
               director, writer, actor, genre,
               sorting ? sorting : "watched",
               src ? src : "diary").then((movies) => {
@@ -35,14 +35,14 @@ export const Search = () => {
 
   return (
     <div>
-      <form name="form" onSubmit={(e) => handleOnSubmitPreloaded(e)} noValidate>
+      <form title="form" onSubmit={(e) => handleOnSubmitPreloaded(e)} noValidate>
         <input
           type="text"
           name="movie"
           className="search__input"
-          placeholder="Name ... "
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder="Title ... "
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <input
           type="text"

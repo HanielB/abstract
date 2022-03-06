@@ -140,88 +140,33 @@ function mapLoaded(res: any[]): Movie[] {
   });
 }
 
-//// dunno why this does not work
-// import script from "../../python/main.py";
-
-//// this is bad. See https://stackoverflow.com/questions/56457935/typescript-error-property-x-does-not-exist-on-type-window/56458070
-declare const window: any;
-
-// To prevent issues with loading pyodide multiple times, see
-//   https://python.plainenglish.io/python-in-react-with-pyodide-a9c45d4d38ff
-// the part about One Final Problem: Multiple Components
-
-
-function csvToArray(csv : any, dos = false) : any {
-  const rowsFlat = csv.slice(csv.indexOf("\n") + 1).split("\n");
-  var parsed : string[][] = [];
-  for (let i = 0; i < rowsFlat.length; i++)
+function filterStatic(movie : any, title : RegExp, year: string, date: string,
+                      runtime: string, director: RegExp, writer : RegExp,
+                      actor: RegExp, genre: RegExp)
+: Boolean
+{
+  // console.log("some director match?", movie.directors.some((directorName) => director.test(directorName)))
+  if (!title.test(movie.title)
+      || (movie.directors.length > 0
+          && !movie.directors.some((dirName) => director.test(dirName)))
+      || (movie.writers.length > 0
+          && !movie.writers.some((writerInfo) => writer.test(writerInfo.name)))
+      || (movie.actors.length > 0
+          && !movie.actors.some((actorInfo) => actor.test(actorInfo.name)))
+      || (movie.genres.length > 0
+          && !movie.genres.some((genreName) => genre.test(genreName)))
+     )
   {
-    // const test = rowsFlat[0];
-    const test = rowsFlat[i];
-    if (test.length == 0)
-    {
-      continue;
-    }
-    // console.log("Test with " + test);
-    var fields : string[] = [];
-    var curr : string = "";
-    var escaping = false;
-    for (let j = 0; j < test.length; j++) {
-      if (escaping)
-      {
-        if (test[j] === "\"" && test[j+1] === ",")
-        {
-          escaping = false;
-          continue;
-        }
-      }
-      else
-      {
-        if (test[j] === "," || j === (test.length - 1))
-        {
-          // don't miss last char if not in a DOS file (which alwas
-          // end with weird newline char)
-          if (!dos && j === (test.length - 1))
-          {
-            curr += test[j];
-          }
-          fields.push(curr);
-          curr = "";
-          continue;
-        }
-        if (test[j] === "\"" && (j === 0 || test[j-1] === ","))
-        {
-          escaping = true;
-          continue;
-        }
-      }
-      curr += test[j];
-    }
-    // if row inds in comma, the above would not add a field
-    if (test[test.length - 1] == ",")
-    {
-      fields.push("")
-    }
-    // if (fields.length != 8)
-    // {
-    //   console.log("From line " + test + " \n\t got " + fields.length + " elements: " + fields);
-    // }
-    parsed.push(fields)
+    return false;
   }
-  return parsed;
+
+  return true;
 }
 
-
-function processCSV(csv : any) : any {
-  const rowsFlat = csv.slice(csv.indexOf("\n") + 1).split("\n");
-  return rowsFlat.map((row) => row.split(","));
-}
-
-function filterMovie(movie : any, name: string, year: string, date: string,
-                         rating: string, runtime: string, tags : string[],
-                         director: string, writer : string, actor: string,
-                         genre: string,
-                     src : string):
+function filterMovie(movie : any, title: RegExp, year: string, date: string,
+                         rating: string, runtime: string, tags : RegExp,
+                         director: RegExp, writer : RegExp, actor: RegExp,
+                         genre: RegExp, src : string):
 Movie[] {
   console.log("Filtering ", movie.title, movie.year, "; status ", movie.status)
   var result : Movie[] = [];
@@ -229,7 +174,12 @@ Movie[] {
   {
     if (movie.status > 0)
     {
-      return result;
+      return [];
+    }
+    if (!filterStatic(movie, title, year, date, runtime, director, writer, actor,
+                      genre))
+    {
+      return [];
     }
     // TODO
     return result;
@@ -238,19 +188,35 @@ Movie[] {
   {
     return result;
   }
+  if (!filterStatic(movie, title, year, date, runtime, director, writer, actor,
+                    genre))
+  {
+    return [];
+  }
   // get latest diary entry to have the rating and watched date, if any
   if (src == "watched")
   {
-    // TODO get watched and rating and link
+    var watchedInfo = "";
+    var ratingInfo = "";
+    var ratingNum = 0;
+    var tagsInfo : string[] = [];
+    if (movie.diary.length > 0)
+    {
+      watchedInfo = movie.diary[movie.diary.length - 1].date;
+      ratingInfo = movie.diary[movie.diary.length - 1].rating.str;
+      ratingNum = movie.diary[movie.diary.length - 1].rating.num;
+      tagsInfo = movie.diary[movie.diary.length - 1].tags;
+    }
     return [
       {
         id : movie.tmdbId,
         year : movie.year,
         title : movie.title,
-        watched : "",
-        rating : "",
+        watched : watchedInfo,
+        rating : ratingInfo,
+        ratingNum : ratingNum,
         runtime : movie.runtime,
-        tags : [],
+        tags : tagsInfo,
         picture: `${posterBaseUrl}${movie.posterPath}`,
         lbDiaryLink: "",
         lbFilmLink: movie.libURL,
@@ -268,6 +234,7 @@ Movie[] {
         title : movie.title,
         watched : "",
         rating : "",
+        ratingNum : 0,
         runtime : movie.runtime,
         tags : [],
         picture: `${posterBaseUrl}${movie.posterPath}`,
@@ -286,6 +253,7 @@ Movie[] {
         title : movie.title,
         watched : entry.date,
         rating : entry.rating.str,
+        ratingNum : entry.rating.num,
         runtime : movie.runtime,
         tags : entry.tags,
         picture: `${posterBaseUrl}${movie.posterPath}`,
@@ -298,159 +266,36 @@ Movie[] {
   return result;
 }
 
-function filterMovies(master : any, name: string, year: string, date: string,
-                         rating: string, runtime: string, tags : string[],
+function filterMovies(master : any, title: string, year: string, date: string,
+                         rating: string, runtime: string, tags : string,
                          director: string, writer : string, actor: string,
                          genre: string, sorting: string,
                          src : string):
 Promise<Movie[]> {
   console.log("Now process with src ", src);
   var movies : Movie[] = [];
+  // create regex ignoring case
+  var titleRegex = new RegExp(title != "" ? title : /.*/, 'i');
+  var tagsRegex = new RegExp(tags != "" ? tags : /.*/, 'i');
+  var directorRegex = new RegExp(director != "" ? director : /.*/, 'i');
+  var writerRegex = new RegExp(writer != "" ? writer : /.*/, 'i');
+  var actorRegex = new RegExp(actor != "" ? actor : /.*/, 'i');
+  var genreRegex = new RegExp(genre != "" ? genre : /.*/, 'i');
+
+  console.log("Testing with title regex ", titleRegex)
+  console.log("Testing with director regex ", directorRegex)
   master.movies.map((movie) => {
-    movies = movies.concat(filterMovie(movie, name, year, date,
-                                       rating, runtime, tags, director, writer,
-                                       actor, genre, src));
+    movies = movies.concat(filterMovie(movie, titleRegex, year, date,
+                                       rating, runtime, tagsRegex, directorRegex,
+                                       writerRegex, actorRegex, genreRegex, src));
   });
   // TODO sorting
   return Promise.all(movies).then((movies) => movies);
 }
 
 
-async function runScript(code : any, name: string, year: string, date: string,
-                         rating: string, runtime: string, tags : string[],
-                         director: string, writer : string, actor: string,
-                         genre: string, sorting: string,
-                         src : string):
-Promise<Movie[]> {
-  console.log("Running script...");
-  const pyodide = await window.loadPyodide({
-    indexURL : "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/"
-  });
-
-  await pyodide.loadPackage("micropip");
-  await pyodide.runPythonAsync(`
-  import micropip
-  await micropip.install('unidecode')
-  `);
-
-  await pyodide.loadPackage("python-dateutil");
-
-  console.log("Loaded pyodide. Now fetch csv");
-
-  const diaryText =
-        await (await fetch(`diary.csv`,
-                           { method: 'get',
-                             headers: {
-                               'content-type': 'text/csv;charset=UTF-8',
-                             }})).text();
-  const watchlistText =
-        await (await fetch(`watchlist.csv`,
-                           { method: 'get',
-                             headers: {
-                               'content-type': 'text/csv;charset=UTF-8',
-                             }})).text();
-  const masterText =
-        await (await fetch(`master.csv`,
-                           { method: 'get',
-                             headers: {
-                               'content-type': 'text/csv;charset=UTF-8',
-                             }})).text();
-  const mapText =
-        await (await fetch(`map.csv`,
-                           { method: 'get',
-                             headers: {
-                               'content-type': 'text/csv;charset=UTF-8',
-                             }})).text();
-  const watchedText =
-        await (await fetch(`watched.csv`,
-                           { method: 'get',
-                             headers: {
-                               'content-type': 'text/csv;charset=UTF-8',
-                             }})).text();
-
-  const ratingsText =
-        await (await fetch(`ratings.csv`,
-                           { method: 'get',
-                             headers: {
-                               'content-type': 'text/csv;charset=UTF-8',
-                             }})).text();
-
-  const diaryRows = csvToArray(diaryText, true);
-  const masterRows = csvToArray(masterText);
-  const watchedRows = csvToArray(watchedText, true);
-  const watchlistRows = csvToArray(watchlistText, true);
-  const mappingRows = csvToArray(mapText);
-  const ratingsRows = csvToArray(ratingsText);
-
-  console.log("Now process");
-
-  // console.log("Read\n" + mappingRows)
-
-  // const testText =
-  //       await (await fetch(`test.csv`,
-  //                          { method: 'get',
-  //                            headers: {
-  //                              'content-type': 'text/csv;charset=UTF-8',
-  //                            }})).text();
-  // const testRows = csvToArray(testText);
-
-  // console.log("Rows: (" + rows.length + "): " + rows.forEach((r) => console.log("\n\t" + r.length + ": " + r)));
-
-  let my_js_namespace = { master : masterRows, diary : diaryRows,
-                          watched: watchedRows, watchlist: watchlistRows,
-                          mapping: mappingRows, ratings: ratingsRows, name : name, year : year,
-                          date : date, rating : rating, runtime : runtime,
-                          tags : tags,
-                          director : director, writer : writer, actor : actor,
-                          genre : genre, sorting : sorting,
-                          src : src
-                        };
-  pyodide.registerJsModule("my_js_namespace", my_js_namespace);
-
-  const res = await pyodide.runPythonAsync(code);
-  // console.log("Debug: " + window.debug);
-  // console.log("Json: " + res);
-  if (res === "")
-    return []
-  const jsonResult = JSON.parse(res);
-  var movies : Movie[] = [];
-  jsonResult.items.map((movie) => {
-    const {
-      watched,
-      title,
-      year,
-      runtime,
-      rating,
-      tags,
-      lbFilm,
-      lbDiary,
-      id,
-      poster,
-      backdrop,
-      directors
-    } = movie;
-
-    // console.log("Json entry's watched: " + watched + "; tags: " + tags);
-    movies.push({
-      id,
-      year,
-      title,
-      watched,
-      rating,
-      runtime,
-      tags,
-      picture: poster? `${posterBaseUrl}${poster}` : undefined,
-      lbDiaryLink: lbDiary,
-      lbFilmLink: lbFilm,
-      directors
-    });
-  })
-  return movies;
-}
-
-
-export function getMovies(name: string, year: string, date: string,
-                          rating: string, runtime: string, tags : string[],
+export function getMovies(title: string, year: string, date: string,
+                          rating: string, runtime: string, tags : string,
                           director: string,
                           writer: string, actor: string, genre: string,
                           sorting: string, src : string
@@ -463,7 +308,7 @@ Promise<Movie[]> {
         'content-type': 'text/csv;charset=UTF-8',
       }})
     .then((res) => res.json())
-    .then((master) => filterMovies(master, name, year, date,
+    .then((master) => filterMovies(master, title, year, date,
                                    rating, runtime, tags, director, writer,
                                    actor, genre, sorting, src))
     .then((movies) => {
@@ -486,6 +331,7 @@ export interface Movie {
   title: string;
   runtime?: number;
   rating?: string;
+  ratingNum?: number;
   tags?: string[];
   picture?: string;
   lbDiaryLink?: string;

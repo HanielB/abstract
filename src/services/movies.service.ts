@@ -140,8 +140,8 @@ function mapLoaded(res: any[]): Movie[] {
   });
 }
 
-function filterStatic(movie : any, title : RegExp, year: string, date: string,
-                      runtime: string, director: RegExp, writer : RegExp,
+function filterStatic(movie : any, title : RegExp, year: number[], date: string,
+                      runtime: number[], director: RegExp, writer : RegExp,
                       actor: RegExp, genre: RegExp)
 : Boolean
 {
@@ -159,12 +159,20 @@ function filterStatic(movie : any, title : RegExp, year: string, date: string,
   {
     return false;
   }
+  if (year.length > 0 && movie.year < year[0] || movie.year > year[1])
+  {
+    return false;
+  }
+  if (runtime.length > 0 && movie.runtime < runtime[0] || movie.runtime > runtime[1])
+  {
+    return false;
+  }
 
   return true;
 }
 
-function filterMovie(movie : any, title: RegExp, year: string, date: string,
-                         rating: string, runtime: string, tags : RegExp,
+function filterMovie(movie : any, title: RegExp, year: number[], date: string,
+                         rating: string, runtime: number[], tags : RegExp,
                          director: RegExp, writer : RegExp, actor: RegExp,
                          genre: RegExp, src : string):
 Movie[] {
@@ -275,18 +283,36 @@ Promise<Movie[]> {
   console.log("Now process with src ", src);
   var movies : Movie[] = [];
   // create regex ignoring case
-  var titleRegex = new RegExp(title != "" ? title : /.*/, 'i');
-  var tagsRegex = new RegExp(tags != "" ? tags : /.*/, 'i');
-  var directorRegex = new RegExp(director != "" ? director : /.*/, 'i');
-  var writerRegex = new RegExp(writer != "" ? writer : /.*/, 'i');
-  var actorRegex = new RegExp(actor != "" ? actor : /.*/, 'i');
-  var genreRegex = new RegExp(genre != "" ? genre : /.*/, 'i');
+  const titleRegex = new RegExp(title != "" ? title : /.*/, 'i');
+  const tagsRegex = new RegExp(tags != "" ? tags : /.*/, 'i');
+  const directorRegex = new RegExp(director != "" ? director : /.*/, 'i');
+  const writerRegex = new RegExp(writer != "" ? writer : /.*/, 'i');
+  const actorRegex = new RegExp(actor != "" ? actor : /.*/, 'i');
+  const genreRegex = new RegExp(genre != "" ? genre : /.*/, 'i');
 
-  console.log("Testing with title regex ", titleRegex)
-  console.log("Testing with director regex ", directorRegex)
+  // year is "y1[..][y2]". If there isn't ".." then we will set upper
+  // bound as y1, otherwise it's y2 if given, otherwise it's current
+  // year
+  var years : number[] = year === "" ? [] : year.split("..").map(
+    (year) => Number(year != "" ? year : new Date().getFullYear()))
+  if (years.length === 1)
+  {
+    years.push(years[0])
+  }
+
+  var runtimes : number[] = runtime === "" ? [] : runtime.split("..").map(
+    (runtime) => runtime != "" ? Number(runtime) : 10000)
+  if (runtimes.length === 1)
+  {
+    runtimes.push(runtimes[0])
+  }
+
+  console.log("years:", years)
+  console.log("runtimes:", runtimes)
+
   master.movies.map((movie) => {
-    movies = movies.concat(filterMovie(movie, titleRegex, year, date,
-                                       rating, runtime, tagsRegex, directorRegex,
+    movies = movies.concat(filterMovie(movie, titleRegex, years, date,
+                                       rating, runtimes, tagsRegex, directorRegex,
                                        writerRegex, actorRegex, genreRegex, src));
   });
   // TODO sorting

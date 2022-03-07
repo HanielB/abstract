@@ -27,7 +27,6 @@ export function getFavorites(): Promise<Movie[]> {
           directors
         } = movie;
 
-        // console.log("Json entry's watched: " + watched + "; tags: " + tags);
         var returnMovie : Movie = {
           id,
           year,
@@ -157,7 +156,7 @@ function filterDiary(entry : any, date: Date[], rating: number[], tags : RegExp)
   {
     return false;
   }
-  if (entry.tags.length > 0
+  if (String(new RegExp(/.*/,'i')) != String(tags)
       && !entry.tags.some((tag) => tags.test(tag)))
   {
     return false;
@@ -199,7 +198,6 @@ function filterMovie(movie : any, title: RegExp, year: number[], date: Date[],
                          director: RegExp, writer : RegExp, actor: RegExp,
                          genre: RegExp, src : string):
 Movie[] {
-  console.log("Filtering ", movie.title, movie.year, "; status ", movie.status)
   var result : Movie[] = [];
   if (src == "watchlist")
   {
@@ -215,6 +213,7 @@ Movie[] {
         year : movie.year,
         title : movie.title,
         runtime : movie.runtime,
+        ratingNum: 0,
         picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
         lbFilmLink: movie.libURL,
         directors : movie.directors
@@ -260,6 +259,11 @@ Movie[] {
   }
   if (movie.diary.length == 0)
   {
+    // if asked for rating or date, ignore
+    if (date.length > 0 || rating.length > 0 || String(new RegExp(/.*/,'i')) != String(tags))
+    {
+      return [];
+    }
     return [
       {
         id : movie.tmdbId,
@@ -278,7 +282,6 @@ Movie[] {
     ];
   }
   // for each diary entry, create a new movie if it fits criteria
-  console.log("Got into diaries")
   movie.diary.map((entry) => {
     if (filterDiary(entry, date, rating, tags))
     {
@@ -398,6 +401,74 @@ Promise<Movie[]> {
                                        writerRegex, actorRegex, genreRegex, src));
   });
   // TODO sorting
+  console.log("sorting:", sorting)
+  if (sorting == "watched")
+  {
+    movies.sort((movie1, movie2) => {
+      if (!movie1.watched || movie1.watched.length === 0)
+      {
+        console.log(movie1.title, "no date, go back")
+        return 1;
+      }
+      if (!movie2.watched || movie2.watched.length === 0)
+      {
+        console.log(movie2.title, "no date, maintain")
+        return 0;
+      }
+      var year = Number(movie1.watched.split("-")[0]);
+      var month = Number(movie1.watched.split("-")[1]) - 1;
+      var day = Number(movie1.watched.split("-")[2]);
+      const date1 = new Date(year, month, day);
+      year = Number(movie2.watched.split("-")[0]);
+      month = Number(movie2.watched.split("-")[1]) - 1;
+      day = Number(movie2.watched.split("-")[2]);
+      const date2 = new Date(year, month, day);
+      // console.log("Got", date2 > date1, Number(date2 > date1), "from comparing",movie2.title,movie1.title)
+      return date2 > date1 ? 1 : -1;
+    })
+  }
+  else if (sorting == "year")
+  {
+    movies.sort((movie1, movie2) => {
+      if (!movie1.year)
+      {
+        return 1;
+      }
+      if (!movie2.year)
+      {
+        return 0;
+      }
+      return Number(movie2.year) - Number(movie1.year)
+    })
+  }
+  else if (sorting == "rating")
+  {
+    movies.sort((movie1, movie2) => {
+      if (!movie1.ratingNum)
+      {
+        return 1;
+      }
+      if (!movie2.ratingNum)
+      {
+        return 0;
+      }
+      return movie2.ratingNum - movie1.ratingNum
+    })
+  }
+  else if (sorting == "runtime")
+  {
+    movies.sort((movie1, movie2) => {
+      if (!movie1.runtime)
+      {
+        return 1;
+      }
+      if (!movie2.runtime)
+      {
+        return 0;
+      }
+      return movie2.runtime - movie1.runtime
+    })
+  }
   return Promise.all(movies).then((movies) => movies);
 }
 

@@ -215,7 +215,7 @@ Movie[] {
         runtime : movie.runtime,
         ratingNum: 0,
         picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
-        lbFilmLink: movie.libURL,
+        lbFilmLink: movie.lbURL,
         directors : movie.directors
       }
     ];
@@ -252,7 +252,7 @@ Movie[] {
         tags : tagsInfo,
         picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
         lbDiaryLink: "",
-        lbFilmLink: movie.libURL,
+        lbFilmLink: movie.lbURL,
         directors : movie.directors
       }
     ];
@@ -276,7 +276,7 @@ Movie[] {
         tags : [],
         picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
         lbDiaryLink: "",
-        lbFilmLink: movie.libURL,
+        lbFilmLink: movie.lbURL,
         directors : movie.directors
       }
     ];
@@ -296,7 +296,7 @@ Movie[] {
         tags : entry.tags,
         picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
         lbDiaryLink: entry.entryURL,
-        lbFilmLink: movie.libURL,
+        lbFilmLink: movie.lbURL,
         directors : movie.directors
       })
     }

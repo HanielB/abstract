@@ -62,8 +62,10 @@
   - State "TODO"       from              [2022-01-15 Sat 11:01] \\
     Like Paris Je t'aime. If too big it'll force increasing the card size.
   :END:
-* TODO Don't underline links
+* DONE Don't underline links
+  CLOSED: [2022-03-06 Sun 22:19]
   :STATES:
+  - State "DONE"       from "TODO"       [2022-03-06 Sun 22:19]
   - State "TODO"       from              [2022-01-15 Sat 11:01]
   :END:
 * DONE Link poster to film, watched to diary

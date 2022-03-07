@@ -232,6 +232,7 @@ Movie[] {
     var watchedInfo = "";
     var ratingInfo = "";
     var ratingNum = 0;
+    var lbDiaryLink = "";
     var tagsInfo : string[] = [];
     if (movie.diary.length > 0)
     {
@@ -239,6 +240,7 @@ Movie[] {
       ratingInfo = movie.diary[movie.diary.length - 1].rating.str;
       ratingNum = movie.diary[movie.diary.length - 1].rating.num;
       tagsInfo = movie.diary[movie.diary.length - 1].tags;
+      lbDiaryLink = movie.diary[movie.diary.length - 1].entryURL;
     }
     return [
       {
@@ -251,7 +253,7 @@ Movie[] {
         runtime : movie.runtime,
         tags : tagsInfo,
         picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
-        lbDiaryLink: "",
+        lbDiaryLink: lbDiaryLink,
         lbFilmLink: movie.lbURL,
         directors : movie.directors
       }

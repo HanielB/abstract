@@ -35,8 +35,10 @@
   - State "TODO"       from              [2021-12-25 Sat 23:36] \\
     This would be a simple way of making things modular. If process gives me an array of json, I can modularly handle searches from TMDB and queries into my database
   :END:
-* TODO Fix "unrated"
+* CANCELLED Fix "unrated"
+  CLOSED: [2022-03-08 Tue 01:02]
   :STATES:
+  - State "CANCELLED"  from "TODO"       [2022-03-08 Tue 01:02]
   - State "TODO"       from              [2022-01-07 Fri 23:16] \\
     Not working
   :END:
@@ -103,7 +105,9 @@
   :STATES:
   - State "TODO"       from              [2022-03-06 Sun 18:55]
   :END:
-* TODO Filter unrated
+* DONE Filter unrated
+  CLOSED: [2022-03-08 Tue 01:02]
   :STATES:
+  - State "DONE"       from "TODO"       [2022-03-08 Tue 01:02]
   - State "TODO"       from              [2022-03-06 Sun 18:55]
   :END:

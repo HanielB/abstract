@@ -11,37 +11,37 @@ export function getFavorites(): Promise<Movie[]> {
     .then((res) => res.json())
     .then((response) =>
       response.items.map((movie) =>
-      {
-        const {
-          watched,
-          title,
-          year,
-          runtime,
-          rating,
-          tags,
-          lbFilm,
-          lbDiary,
-          id,
-          poster,
-          backdrop,
-          directors
-        } = movie;
+        {
+          const {
+            watched,
+            title,
+            year,
+            runtime,
+            rating,
+            tags,
+            lbFilm,
+            lbDiary,
+            id,
+            poster,
+            backdrop,
+            directors
+          } = movie;
 
-        var returnMovie : Movie = {
-          id,
-          year,
-          title,
-          watched,
-          rating,
-          runtime,
-          tags,
-          picture: poster? `${posterBaseUrl}${poster}` : undefined,
-          lbDiaryLink: lbDiary,
-          lbFilmLink: lbFilm,
-          directors
-        };
-        return returnMovie;
-      }
+          var returnMovie : Movie = {
+            id,
+            year,
+            title,
+            watched,
+            rating,
+            runtime,
+            tags,
+            picture: poster? `${posterBaseUrl}${poster}` : undefined,
+            lbDiaryLink: lbDiary,
+            lbFilmLink: lbFilm,
+            directors
+          };
+          return returnMovie;
+        }
       ));
 
   ///////to get from IDs and TMDB, could do:
@@ -139,25 +139,31 @@ function mapLoaded(res: any[]): Movie[] {
   });
 }
 
-function filterDiary(entry : any, date: Date[], rating: number[], tags : RegExp)
+function filterDiary(movie : any, date: Date[], rating: number[], tags : RegExp)
 : Boolean
 {
-  const yearEntry = Number(entry.date.split("-")[0])
-  const monthEntry = Number(entry.date.split("-")[1])-1
-  const dayEntry = Number(entry.date.split("-")[2])
-
-  const entryDate = new Date(yearEntry, monthEntry, dayEntry)
-  if (date.length > 0 && (entryDate < date[0] || entryDate > date[1]))
+  if (date.length > 0)
   {
-    return false;
+    if (movie.watched === "")
+    {
+      return false;
+    }
+    const yearMovie = Number(movie.watched.split("-")[0])
+    const monthMovie = Number(movie.watched.split("-")[1])-1
+    const dayMovie = Number(movie.watched.split("-")[2])
+    const movieDate = new Date(yearMovie, monthMovie, dayMovie)
+    if (movieDate < date[0] || movieDate > date[1])
+    {
+      return false;
+    }
   }
   if (rating.length > 0 &&
-      (entry.rating.num < rating[0] || entry.rating.num > rating[1]))
+      (movie.ratingNum < rating[0] || movie.ratingNum > rating[1]))
   {
     return false;
   }
   if (String(new RegExp(/.*/,'i')) != String(tags)
-      && !entry.tags.some((tag) => tags.test(tag)))
+      && !movie.tags.some((tag) => tags.test(tag)))
   {
     return false;
   }
@@ -198,15 +204,16 @@ function filterMovie(movie : any, title: RegExp, year: number[], date: Date[],
                          director: RegExp, writer : RegExp, actor: RegExp,
                          genre: RegExp, src : string):
 Movie[] {
-  var result : Movie[] = [];
+  var results : Movie[] = [];
+  if ((src === "watchlist" && movie.status > 0)
+      || (src != "watchlist" && movie.status === 0)
+      || !filterStatic(movie, title, year, runtime,
+                       director, writer, actor, genre))
+  {
+    return [];
+  }
   if (src == "watchlist")
   {
-    if (movie.status > 0
-        || !filterStatic(movie, title, year, runtime, director, writer,
-                         actor, genre))
-    {
-      return [];
-    }
     return [
       {
         id : movie.tmdbId,
@@ -219,12 +226,6 @@ Movie[] {
         directors : movie.directors
       }
     ];
-  }
-  if (movie.status === 0
-      || !filterStatic(movie, title, year, runtime, director, writer, actor,
-                       genre))
-  {
-    return [];
   }
   // get latest diary entry to have the rating and watched date, if any
   if (src == "watched")
@@ -242,52 +243,43 @@ Movie[] {
       tagsInfo = movie.diary[movie.diary.length - 1].tags;
       lbDiaryLink = movie.diary[movie.diary.length - 1].entryURL;
     }
-    return [
-      {
-        id : movie.tmdbId,
-        year : movie.year,
-        title : movie.title,
-        watched : watchedInfo,
-        rating : ratingInfo,
-        ratingNum : ratingNum,
-        runtime : movie.runtime,
-        tags : tagsInfo,
-        picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
-        lbDiaryLink: lbDiaryLink,
-        lbFilmLink: movie.lbURL,
-        directors : movie.directors
-      }
-    ];
+    results.push({
+      id : movie.tmdbId,
+      year : movie.year,
+      title : movie.title,
+      watched : watchedInfo,
+      rating : ratingInfo,
+      ratingNum : ratingNum,
+      runtime : movie.runtime,
+      tags : tagsInfo,
+      picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
+      lbDiaryLink: lbDiaryLink,
+      lbFilmLink: movie.lbURL,
+      directors : movie.directors
+    });
   }
-  if (movie.diary.length == 0)
+  else if (movie.diary.length == 0)
   {
-    // if asked for rating or date, ignore
-    if (date.length > 0 || rating.length > 0 || String(new RegExp(/.*/,'i')) != String(tags))
-    {
-      return [];
-    }
-    return [
-      {
-        id : movie.tmdbId,
-        year : movie.year,
-        title : movie.title,
-        watched : "",
-        rating : "",
-        ratingNum : 0,
-        runtime : movie.runtime,
-        tags : [],
-        picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
-        lbDiaryLink: "",
-        lbFilmLink: movie.lbURL,
-        directors : movie.directors
-      }
-    ];
+    results.push({
+      id : movie.tmdbId,
+      year : movie.year,
+      title : movie.title,
+      watched : "",
+      rating : "",
+      ratingNum : 0,
+      runtime : movie.runtime,
+      tags : [],
+      picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
+      lbDiaryLink: "",
+      lbFilmLink: movie.lbURL,
+      directors : movie.directors
+    });
   }
-  // for each diary entry, create a new movie if it fits criteria
-  movie.diary.map((entry) => {
-    if (filterDiary(entry, date, rating, tags))
-    {
-      result.push({
+  else
+  {
+    // for each diary entry, create a new movie if it fits criteria
+    movie.diary.map((entry) => {
+      results.push({
         id : movie.tmdbId,
         year : movie.year,
         title : movie.title,
@@ -301,9 +293,9 @@ Movie[] {
         lbFilmLink: movie.lbURL,
         directors : movie.directors
       })
-    }
-  });
-  return result;
+    });
+  }
+  return results.filter((result) => filterDiary(result, date, rating, tags));
 }
 
 function filterMovies(master : any, title: string, year: string, date: string,

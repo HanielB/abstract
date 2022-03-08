@@ -157,8 +157,8 @@ function filterDiary(movie : any, date: Date[], rating: number[], tags : RegExp)
       return false;
     }
   }
-  if (rating.length > 0 &&
-      (movie.ratingNum < rating[0] || movie.ratingNum > rating[1]))
+  if (rating.length > 0 && (rating[0] === -1 && movie.ratingNum > 0)
+      && (movie.ratingNum < rating[0] || movie.ratingNum > rating[1]))
   {
     return false;
   }
@@ -331,8 +331,9 @@ Promise<Movie[]> {
     runtimes.push(runtimes[0])
   }
 
-  var ratings : number[] = rating === "" ? [] : rating.split("..").map(
-    (rating) => rating != "" ? Number(rating) : 10)
+  var ratings : number[] = rating === "" ? [] :
+      (rating === "-1" ? [-1,-1] :
+       rating.split("..").map((rating) => rating != "" ? Number(rating) : 10))
   if (ratings.length === 1)
   {
     ratings.push(ratings[0])

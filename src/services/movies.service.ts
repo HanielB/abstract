@@ -157,8 +157,9 @@ function filterDiary(movie : any, date: Date[], rating: number[], tags : RegExp)
       return false;
     }
   }
-  if (rating.length > 0 && (rating[0] === -1 && movie.ratingNum > 0)
-      && (movie.ratingNum < rating[0] || movie.ratingNum > rating[1]))
+  if (rating.length > 0
+      && ((rating[0] === -1 && movie.ratingNum > 0)
+          || (movie.ratingNum < rating[0] || movie.ratingNum > rating[1])))
   {
     return false;
   }

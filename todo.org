@@ -111,3 +111,8 @@
   - State "DONE"       from "TODO"       [2022-03-08 Tue 01:02]
   - State "TODO"       from              [2022-03-06 Sun 18:55]
   :END:
+* TODO Select multiple option better
+  :STATES:
+  - State "TODO"       from              [2022-03-08 Tue 01:05] \\
+    With like a menu that opens up options, not showing them all all the time
+  :END:

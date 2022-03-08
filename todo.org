@@ -88,6 +88,11 @@
     So that I can choose how many to show per page line basically
   :END:
 * TODO Create permalinks for results
+  :NOTES:
+  - Note taken on [2022-03-08 Tue 01:09] \\
+    May help:
+    https://stackoverflow.com/questions/7558709/simple-javascript-search-url-for-string-do-something
+  :END:
   :STATES:
   - State "TODO"       from              [2022-03-05 Sat 21:57] \\
     So that I can more easily share
@@ -115,4 +120,13 @@
   :STATES:
   - State "TODO"       from              [2022-03-08 Tue 01:05] \\
     With like a menu that opens up options, not showing them all all the time
+  :END:
+* TODO When clicking on director's name, get me all movies watched by director
+  :STATES:
+  - State "TODO"       from              [2022-03-08 Tue 01:09]
+  :END:
+* TODO Export/import json
+  :STATES:
+  - State "TODO"       from              [2022-03-08 Tue 01:10] \\
+    This would be a simpler way to better gen lists. I do a search, export a json, edit it, and upload json which will have whatever order I want
   :END:

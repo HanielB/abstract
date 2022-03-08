@@ -91,30 +91,6 @@ export const Search = () => {
           value={director}
           onChange={(e) => setDirector(e.target.value)}
         />
-        <input
-          type="text"
-          name="actor"
-          className="search__input"
-          placeholder="Writer ... "
-          value={writer}
-          onChange={(e) => setWriter(e.target.value)}
-        />
-        <input
-          type="text"
-          name="actor"
-          className="search__input"
-          placeholder="Actor ... "
-          value={actor}
-          onChange={(e) => setActor(e.target.value)}
-        />
-        <input
-          type="text"
-          name="genre"
-          className="search__input"
-          placeholder="Genre ... "
-          value={genre}
-          onChange={(e) => setGenre(e.target.value)}
-        />
         <div>
           <p>Sorting (def "watched"):</p>
           <div>

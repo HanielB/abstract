@@ -36,6 +36,7 @@ export const Search = () => {
   return (
     <div>
       <form title="form" onSubmit={(e) => handleOnSubmitPreloaded(e)} noValidate>
+        <div>
         <input
           type="text"
           name="movie"
@@ -46,24 +47,26 @@ export const Search = () => {
         />
         <input
           type="text"
-          name="year"
-          className="search__input"
-          placeholder="Year ... "
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-        />
-        <input
-          type="text"
           name="date"
           className="search__input"
           placeholder="Date ... "
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
+        </div>
+        <div>
+        <input
+          type="text"
+          name="year"
+          className="search__inputShort"
+          placeholder="Year ... "
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+        />
         <input
           type="text"
           name="rating"
-          className="search__input"
+          className="search__inputShort"
           placeholder="Rating ... "
           value={rating}
           onChange={(e) => setRating(e.target.value)}
@@ -71,11 +74,13 @@ export const Search = () => {
         <input
           type="text"
           name="runtime"
-          className="search__input"
+          className="search__inputShort"
           placeholder="Runtime ... "
           value={runtime}
           onChange={(e) => setRuntime(e.target.value)}
         />
+        </div>
+        <div>
         <input
           type="text"
           name="tags"
@@ -91,6 +96,7 @@ export const Search = () => {
           value={director}
           onChange={(e) => setDirector(e.target.value)}
         />
+        </div>
         <div>
           <p>Sorting (def "watched"):</p>
           <div>
@@ -105,9 +111,6 @@ export const Search = () => {
             <input type="radio" id="runtime" name="sorting" value="runtime" onChange={(e) => setSorting(e.target.value)}/>
             <label htmlFor="runtime">Runtime</label>
           </div>
-        </div>
-
-        <div>
           <p>Source (def "diary"):</p>
           <div>
             <input type="radio" id="watched" name="src" value="watched" onChange={(e) => setSrc(e.target.value)}

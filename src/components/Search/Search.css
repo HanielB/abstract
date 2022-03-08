@@ -6,9 +6,27 @@
   font-size: 1rem;
   color: white;
   outline: none;
+  width: 180px;
+}
+
+.search__inputShort {
+  padding: 0.5rem 0.5rem;
+  border-radius: 50px;
+  background-color: #242423;
+  border: none;
+  font-size: 1rem;
+  color: white;
+  outline: none;
+  width: 100px;
 }
 
 .search__input::placeholder {
+  color: white;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.search__inputShort::placeholder {
   color: white;
   text-align: center;
   opacity: 0.7;

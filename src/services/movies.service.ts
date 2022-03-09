@@ -403,12 +403,10 @@ Promise<Movie[]> {
     movies.sort((movie1, movie2) => {
       if (!movie1.watched || movie1.watched.length === 0)
       {
-        console.log(movie1.title, "no date, go back")
         return 1;
       }
       if (!movie2.watched || movie2.watched.length === 0)
       {
-        console.log(movie2.title, "no date, maintain")
         return 0;
       }
       var year = Number(movie1.watched.split("-")[0]);
@@ -419,7 +417,6 @@ Promise<Movie[]> {
       month = Number(movie2.watched.split("-")[1]) - 1;
       day = Number(movie2.watched.split("-")[2]);
       const date2 = new Date(year, month, day);
-      // console.log("Got", date2 > date1, Number(date2 > date1), "from comparing",movie2.title,movie1.title)
       return date2 > date1 ? 1 : -1;
     })
   }

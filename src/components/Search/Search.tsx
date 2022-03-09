@@ -37,6 +37,13 @@ export const Search = () => {
     <div>
       <form title="form" onSubmit={(e) => handleOnSubmitPreloaded(e)} noValidate>
         <div>
+          <input type="file" className="search__button" id="fileInput"
+                 onChange="getFile()"/>
+          <button name="Button" className="search__button" type="submit">Load</button>
+        </div>
+      </form>
+      <form title="form" onSubmit={(e) => handleOnSubmitPreloaded(e)} noValidate>
+        <div>
         <input
           type="text"
           name="movie"
@@ -88,7 +95,8 @@ export const Search = () => {
           placeholder="Tags ... "
           value={tags}
           onChange={(e) => setTags(e.target.value)}
-        />        <input
+        />
+        <input
           type="text"
           name="director"
           className="search__input"

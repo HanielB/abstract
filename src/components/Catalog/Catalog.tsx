@@ -33,12 +33,15 @@ export const Catalog = () => {
             </div>
             <div className="watchedRating">
               <span className="watched">
-                <a href={movie.lbDiaryLink}>{movie.watched}</a>
+                <a href={movie.lbDiaryLink}>{
+                  movie.watched && movie.watched.split("-").length > 3?
+                    movie.watched.substring(0, 10) : movie.watched
+                }</a>
               </span>
               {
                 <span className={(movie.rating)? "rating" : "year"}>
-                {movie.rating}
-              </span>
+                  {movie.rating}
+                </span>
               }
             </div>
             <div className="tags">

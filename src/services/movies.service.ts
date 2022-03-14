@@ -148,10 +148,12 @@ function filterDiary(movie : any, date: Date[], rating: number[], tags : RegExp)
     {
       return false;
     }
-    const yearMovie = Number(movie.watched.split("-")[0])
-    const monthMovie = Number(movie.watched.split("-")[1])-1
-    const dayMovie = Number(movie.watched.split("-")[2])
-    const movieDate = new Date(yearMovie, monthMovie, dayMovie)
+    const split = movie.watched.split("-")
+    const yearMovie = Number(split[0])
+    const monthMovie = Number(split[1])-1
+    const dayMovie = Number(split[2])
+    const hourMovie = split.length > 3? Number(split[3]) : 0;
+    const movieDate = new Date(yearMovie, monthMovie, dayMovie, hourMovie)
     if (movieDate < date[0] || movieDate > date[1])
     {
       return false;
@@ -365,8 +367,8 @@ Promise<Movie[]> {
       dates.push(new Date(dateYear,
                           split[0].length === 4 ? 12 :
                           dateMonth + (split[0].length <= 6 ? 1 : 0),
-                          split[0].length <= 6 ? 0 : dateDay
-                         ));
+                          split[0].length <= 6 ? 0 : dateDay,
+                          23, 59));
     }
     // implicity end of interval is today
     else if (split[1] === "")
@@ -382,7 +384,7 @@ Promise<Movie[]> {
         split[1].length === 4 ? 12 :
         Number(split[1].substring(4, 6)) - (split[1].length <= 6 ? 0 : 1);
       dateDay = split[1].length <= 6? 0 : Number(split[1].substring(6, 8))
-      dates.push(new Date(dateYear, dateMonth, dateDay));
+      dates.push(new Date(dateYear, dateMonth, dateDay, 23, 59));
     }
   }
 
@@ -409,14 +411,18 @@ Promise<Movie[]> {
       {
         return 0;
       }
-      var year = Number(movie1.watched.split("-")[0]);
-      var month = Number(movie1.watched.split("-")[1]) - 1;
-      var day = Number(movie1.watched.split("-")[2]);
-      const date1 = new Date(year, month, day);
-      year = Number(movie2.watched.split("-")[0]);
-      month = Number(movie2.watched.split("-")[1]) - 1;
-      day = Number(movie2.watched.split("-")[2]);
-      const date2 = new Date(year, month, day);
+      const split1 = movie1.watched.split("-");
+      const split2 = movie2.watched.split("-");
+      var year = Number(split1[0]);
+      var month = Number(split1[1]) - 1;
+      var day = Number(split1[2]);
+      var hour = split1.length > 3? Number(split1[3]) : 0;
+      const date1 = new Date(year, month, day, hour);
+      year = Number(split2[0]);
+      month = Number(split2[1]) - 1;
+      day = Number(split2[2]);
+      hour = split2.length > 3? Number(split2[3]) : 0;
+      const date2 = new Date(year, month, day, hour);
       return date2 > date1 ? 1 : -1;
     })
   }

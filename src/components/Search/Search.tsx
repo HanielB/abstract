@@ -3,6 +3,22 @@ import "./Search.css";
 import { getMovie, loadMovies, getMovies } from "../../services/movies.service";
 import { MoviesContext } from "../../services/context";
 
+// function getFile() {
+//   const content = document.querySelector('.content');
+//   const [file] = document.querySelector('input[type=file]').files;
+//   const reader = new FileReader();
+
+//   reader.addEventListener("load", () => {
+//     // this will then display a text file
+//     setFile(reader.result)
+// // content.innerText = reader.result;
+//   }, false);
+
+//   if (file) {
+//     reader.readAsText(file);
+//   }
+// }
+
 export const Search = () => {
   const [title, setTitle] = useState("");
   const [year, setYear] = useState("");
@@ -16,6 +32,7 @@ export const Search = () => {
   const [genre, setGenre] = useState("");
   const [sorting, setSorting] = useState("");
   const [src, setSrc] = useState("");
+  const [file, setFile] = useState("");
   const { updateMovies, setLoading } = useContext(MoviesContext);
 
   const handleOnSubmitPreloaded = (event: React.FormEvent) => {
@@ -23,6 +40,7 @@ export const Search = () => {
     console.log("Handling preloaded");
     setLoading(true);
     console.log("Sorting value: " + sorting);
+    console.log("File: " + file);
     getMovies(title, year, date, rating, runtime, tags,
               director, writer, actor, genre,
               sorting ? sorting : "watched",
@@ -37,8 +55,7 @@ export const Search = () => {
     <div>
       <form title="form" onSubmit={(e) => handleOnSubmitPreloaded(e)} noValidate>
         <div>
-          <input type="file" className="search__button" id="fileInput"
-                 onChange="getFile()"/>
+          <input type="file" className="search__button" id="fileInput"/>
           <button name="Button" className="search__button" type="submit">Load</button>
         </div>
       </form>

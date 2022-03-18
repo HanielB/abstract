@@ -226,7 +226,8 @@ Movie[] {
         ratingNum: 0,
         picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
         lbFilmLink: movie.lbURL,
-        directors : movie.directors
+        directors : movie.directors,
+        rewatch : movie.rewatch
       }
     ];
   }
@@ -294,7 +295,8 @@ Movie[] {
         picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
         lbDiaryLink: entry.entryURL,
         lbFilmLink: movie.lbURL,
-        directors : movie.directors
+        directors : movie.directors,
+        rewatch : entry.rewatch
       })
     });
   }
@@ -515,4 +517,5 @@ export interface Movie {
   lbDiaryLink?: string;
   lbFilmLink?: string;
   directors?: string[];
+  rewatch?: boolean;
 }

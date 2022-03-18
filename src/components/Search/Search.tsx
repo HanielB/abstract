@@ -2,22 +2,7 @@ import React, { useState, useContext } from "react";
 import "./Search.css";
 import { getMovie, loadMovies, getMovies } from "../../services/movies.service";
 import { MoviesContext } from "../../services/context";
-
-// function getFile() {
-//   const content = document.querySelector('.content');
-//   const [file] = document.querySelector('input[type=file]').files;
-//   const reader = new FileReader();
-
-//   reader.addEventListener("load", () => {
-//     // this will then display a text file
-//     setFile(reader.result)
-// // content.innerText = reader.result;
-//   }, false);
-
-//   if (file) {
-//     reader.readAsText(file);
-//   }
-// }
+import { Movie, getFavorites } from "../../services/movies.service";
 
 export const Search = () => {
   const [title, setTitle] = useState("");
@@ -34,6 +19,43 @@ export const Search = () => {
   const [src, setSrc] = useState("");
   const [file, setFile] = useState("");
   const { updateMovies, setLoading } = useContext(MoviesContext);
+
+  const handleUpload = (e : React.ChangeEvent<HTMLInputElement>) => {
+    var files = e.target.files;
+
+    // FileReader support
+    if (FileReader && files && files.length) {
+        var fr = new FileReader();
+        fr.onload = function () {
+          console.log(fr.result);
+          if (!fr.result)
+          {
+            console.log("File is null");
+            return;
+          }
+          var obj = JSON.parse(fr.result as string);
+          var movies : Movie[] = [];
+          obj.movies.map((movie) => {
+            movies.push({
+              id : movie.tmdbId,
+              year : movie.year,
+              title : movie.title,
+              watched : movie.watched,
+              rating : movie.rating,
+              ratingNum : movie.ratingNum,
+              runtime : movie.runtime,
+              tags : movie.tags,
+              picture: movie.posterPath? `https://image.tmdb.org/t/p/w300${movie.posterPath}` : undefined,
+              lbDiaryLink: movie.lbDiaryLink,
+              lbFilmLink: movie.lbURL,
+              directors : movie.directors
+            });
+          });
+          updateMovies(movies);
+        }
+        fr.readAsText(files[0]);
+    }
+  };
 
   const handleOnSubmitPreloaded = (event: React.FormEvent) => {
     event.preventDefault();
@@ -53,12 +75,9 @@ export const Search = () => {
 
   return (
     <div>
-      <form title="form" onSubmit={(e) => handleOnSubmitPreloaded(e)} noValidate>
-        <div>
-          <input type="file" className="search__button" id="fileInput"/>
-          <button name="Button" className="search__button" type="submit">Load</button>
-        </div>
-      </form>
+      <div>
+        <input type="file" onChange={(e) => handleUpload(e)}/>
+      </div>
       <form title="form" onSubmit={(e) => handleOnSubmitPreloaded(e)} noValidate>
         <div>
         <input

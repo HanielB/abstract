@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import "./Catalog.css";
 import imgPlaceholder from "./movie_placeholder.png";
+import rewatchImg from "./two-circular-arrows.png";
 import { MoviesContext } from "../../services/context";
 
 
@@ -64,9 +65,19 @@ export const Catalog = () => {
                   )) : <span></span>
               }
             </div>
-            <span className="runtime">
-              {movie.runtime}min
-            </span>
+            <div className="runtimeRewatch">
+              <span className="runtime">
+                {movie.runtime}min
+              </span>
+              {
+                (movie.rewatch)?
+                  <span className="rewatch">
+                    <img src={rewatchImg}
+                    />
+                  </span>
+                : <span></span>
+              }
+            </div>
           </div>
         </div>
       ))}

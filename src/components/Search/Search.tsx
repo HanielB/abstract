@@ -52,12 +52,21 @@ const exportToJsonFile = () => {
     }
   };
 
-  const handleOnSubmitPreloaded = (event: React.FormEvent) => {
+  const handleOnSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Handling preloaded");
+    console.log("Handling search");
     setLoading(true);
     console.log("Sorting value: " + sorting);
-    console.log("File: " + file);
+    var onlywatched = document.getElementById("onlywatched")  as HTMLInputElement
+    var rewatch = document.getElementById("rewatch")  as HTMLInputElement
+    if (onlywatched)
+    {
+      console.log("Display value: " + onlywatched.checked);
+    }
+    if (rewatch)
+    {
+      console.log("Display value: " + rewatch.checked);
+    }
     getMovies(title, year, date, rating, runtime, tags,
               director, writer, actor, genre,
               sorting ? sorting : "watched",
@@ -70,7 +79,7 @@ const exportToJsonFile = () => {
 
   return (
     <div>
-      <form className="form" title="form" onSubmit={(e) => handleOnSubmitPreloaded(e)} noValidate>
+      <form className="form" title="form" onSubmit={(e) => handleOnSubmit(e)} noValidate>
         <div className="form_text">
           <div>
             <input
@@ -136,8 +145,8 @@ const exportToJsonFile = () => {
           </div>
         </div>
         <div className="form_sort">
-          <div>Sorting (def "watched"):</div>
-          <div><p></p></div>
+          <fieldset>
+            <legend>Sorting (def "watched")</legend>
           <div>
             <input type="radio" id="year" name="sorting" value="year" onChange={(e) => setSorting(e.target.value)}/>
             <label htmlFor="year">Year</label>
@@ -150,10 +159,11 @@ const exportToJsonFile = () => {
             <input type="radio" id="runtime" name="sorting" value="runtime" onChange={(e) => setSorting(e.target.value)}/>
             <label htmlFor="runtime">Runtime</label>
           </div>
+          </fieldset>
         </div>
         <div className="form_sort">
-          <div>Category:</div>
-          <div><p></p></div>
+          <fieldset>
+            <legend>Choose your interests</legend>
           <div>
             <input type="radio" id="watched" name="src" value="watched" onChange={(e) => setSrc(e.target.value)}
             />
@@ -163,6 +173,24 @@ const exportToJsonFile = () => {
             <input type="radio" id="watchlist" name="src" value="watchlist" onChange={(e) => setSrc(e.target.value)}/>
             <label htmlFor="watchlist">Watchlist</label>
           </div>
+          </fieldset>
+        </div>
+        <div className="form_sort">
+          <fieldset>
+            <legend>Choose your interests</legend>
+            <div>
+              <input type="checkbox" id="onlywatched" name="display" value="onlywatched"/>
+              <label htmlFor="onlywatched">Only watched</label>
+            </div>
+            <div>
+              <input type="checkbox" id="watchlist" name="display" value="watchlist"/>
+              <label htmlFor="watchlist">Watchlist</label>
+            </div>
+            <div>
+              <input type="checkbox" id="rewatch" name="display" value="rewatch" checked/>
+              <label htmlFor="rewatch">Rewatches</label>
+            </div>
+          </fieldset>
         </div>
 
         <div className="form_buttons">

@@ -45,3 +45,27 @@
 .search__button:hover {
   opacity: 0.8
 }
+input[type="file"] {
+    display: none;
+}
+
+.form {
+    display: flex;
+    flex-flow: row;
+    column-gap: 1.8rem;
+}
+
+.form_text {
+    display: flex;
+    flex-flow: column;
+}
+
+.form_sort {
+    display: flex;
+    flex-flow: column;
+}
+
+.form_buttons {
+    display: flex;
+    flex-flow: column;
+}

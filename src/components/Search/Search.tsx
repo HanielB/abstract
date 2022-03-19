@@ -18,7 +18,20 @@ export const Search = () => {
   const [sorting, setSorting] = useState("");
   const [src, setSrc] = useState("");
   const [file, setFile] = useState("");
-  const { updateMovies, setLoading } = useContext(MoviesContext);
+  const { movies, updateMovies, setLoading } = useContext(MoviesContext);
+
+const exportToJsonFile = () => {
+    let dataStr = JSON.stringify(movies);
+    let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+
+    let exportFileDefaultName = 'data.json';
+
+    let linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+}
+
 
   const handleUpload = (e : React.ChangeEvent<HTMLInputElement>) => {
     var files = e.target.files;
@@ -27,31 +40,13 @@ export const Search = () => {
     if (FileReader && files && files.length) {
         var fr = new FileReader();
         fr.onload = function () {
-          console.log(fr.result);
           if (!fr.result)
           {
             console.log("File is null");
             return;
           }
-          var obj = JSON.parse(fr.result as string);
-          var movies : Movie[] = [];
-          obj.movies.map((movie) => {
-            movies.push({
-              id : movie.tmdbId,
-              year : movie.year,
-              title : movie.title,
-              watched : movie.watched,
-              rating : movie.rating,
-              ratingNum : movie.ratingNum,
-              runtime : movie.runtime,
-              tags : movie.tags,
-              picture: movie.posterPath? `https://image.tmdb.org/t/p/w300${movie.posterPath}` : undefined,
-              lbDiaryLink: movie.lbDiaryLink,
-              lbFilmLink: movie.lbURL,
-              directors : movie.directors
-            });
-          });
-          updateMovies(movies);
+          var loadedMovies = JSON.parse(fr.result as string);
+          updateMovies(loadedMovies);
         }
         fr.readAsText(files[0]);
     }
@@ -75,74 +70,74 @@ export const Search = () => {
 
   return (
     <div>
-      <div>
-        <input type="file" onChange={(e) => handleUpload(e)}/>
-      </div>
-      <form title="form" onSubmit={(e) => handleOnSubmitPreloaded(e)} noValidate>
-        <div>
-        <input
-          type="text"
-          name="movie"
-          className="search__input"
-          placeholder="Title ... "
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          name="date"
-          className="search__input"
-          placeholder="Date ... "
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
+      <form className="form" title="form" onSubmit={(e) => handleOnSubmitPreloaded(e)} noValidate>
+        <div className="form_text">
+          <div>
+            <input
+              type="text"
+              name="movie"
+              className="search__input"
+              placeholder="Title ... "
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <input
+              type="text"
+              name="date"
+              className="search__input"
+              placeholder="Date ... "
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              name="year"
+              className="search__inputShort"
+              placeholder="Year ... "
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+            />
+            <input
+              type="text"
+              name="rating"
+              className="search__inputShort"
+              placeholder="Rating ... "
+              value={rating}
+              onChange={(e) => setRating(e.target.value)}
+            />
+            <input
+              type="text"
+              name="runtime"
+              className="search__inputShort"
+              placeholder="Runtime ... "
+              value={runtime}
+              onChange={(e) => setRuntime(e.target.value)}
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              name="tags"
+              className="search__input"
+              placeholder="Tags ... "
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+            />
+            <input
+              type="text"
+              name="director"
+              className="search__input"
+              placeholder="Director ... "
+              value={director}
+              onChange={(e) => setDirector(e.target.value)}
+            />
+          </div>
         </div>
-        <div>
-        <input
-          type="text"
-          name="year"
-          className="search__inputShort"
-          placeholder="Year ... "
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-        />
-        <input
-          type="text"
-          name="rating"
-          className="search__inputShort"
-          placeholder="Rating ... "
-          value={rating}
-          onChange={(e) => setRating(e.target.value)}
-        />
-        <input
-          type="text"
-          name="runtime"
-          className="search__inputShort"
-          placeholder="Runtime ... "
-          value={runtime}
-          onChange={(e) => setRuntime(e.target.value)}
-        />
-        </div>
-        <div>
-        <input
-          type="text"
-          name="tags"
-          className="search__input"
-          placeholder="Tags ... "
-          value={tags}
-          onChange={(e) => setTags(e.target.value)}
-        />
-        <input
-          type="text"
-          name="director"
-          className="search__input"
-          placeholder="Director ... "
-          value={director}
-          onChange={(e) => setDirector(e.target.value)}
-        />
-        </div>
-        <div>
-          <p>Sorting (def "watched"):</p>
+        <div className="form_sort">
+          <div>Sorting (def "watched"):</div>
+          <div><p></p></div>
           <div>
             <input type="radio" id="year" name="sorting" value="year" onChange={(e) => setSorting(e.target.value)}/>
             <label htmlFor="year">Year</label>
@@ -155,7 +150,10 @@ export const Search = () => {
             <input type="radio" id="runtime" name="sorting" value="runtime" onChange={(e) => setSorting(e.target.value)}/>
             <label htmlFor="runtime">Runtime</label>
           </div>
-          <p>Source (def "diary"):</p>
+        </div>
+        <div className="form_sort">
+          <div>Category:</div>
+          <div><p></p></div>
           <div>
             <input type="radio" id="watched" name="src" value="watched" onChange={(e) => setSrc(e.target.value)}
             />
@@ -167,7 +165,14 @@ export const Search = () => {
           </div>
         </div>
 
-        <button name="Button" className="search__button" type="submit">Search</button>
+        <div className="form_buttons">
+          <button name="Button" className="search__button" type="submit">Search</button>
+          <button name="Button" className="search__button" type="button" onClick={(e) => exportToJsonFile()}>Download</button>
+          <label className="search__button">
+            <input type="file" onChange={(e) => handleUpload(e)}/>
+            LOAD
+          </label>
+        </div>
       </form>
     </div>
   );

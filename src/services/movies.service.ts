@@ -139,7 +139,7 @@ function mapLoaded(res: any[]): Movie[] {
   });
 }
 
-function filterDiary(movie : any, date: Date[], rating: number[], tags : RegExp)
+function filterDiary(movie : any, date: Date[], rating: number[], tags : RegExp[])
 : Boolean
 {
   if (date.length > 0)
@@ -165,8 +165,8 @@ function filterDiary(movie : any, date: Date[], rating: number[], tags : RegExp)
   {
     return false;
   }
-  if (String(new RegExp(/.*/,'i')) != String(tags)
-      && !movie.tags.some((tag) => tags.test(tag)))
+  if (tags.length > 0
+      && !tags.every((tagRegex) => movie.tags.some((tag) => tagRegex.test(tag))))
   {
     return false;
   }
@@ -203,7 +203,7 @@ function filterStatic(movie : any, title : RegExp, year: number[],
 }
 
 function filterMovie(movie : any, title: RegExp, year: number[], date: Date[],
-                         rating: number[], runtime: number[], tags : RegExp,
+                         rating: number[], runtime: number[], tags : RegExp[],
                          director: RegExp, writer : RegExp, actor: RegExp,
                          genre: RegExp, src : string):
 Movie[] {
@@ -313,11 +313,21 @@ Promise<Movie[]> {
   var movies : Movie[] = [];
   // create regex ignoring case
   const titleRegex = new RegExp(title != "" ? title : /.*/, 'i');
-  const tagsRegex = new RegExp(tags != "" ? tags : /.*/, 'i');
   const directorRegex = new RegExp(director != "" ? director : /.*/, 'i');
   const writerRegex = new RegExp(writer != "" ? writer : /.*/, 'i');
   const actorRegex = new RegExp(actor != "" ? actor : /.*/, 'i');
   const genreRegex = new RegExp(genre != "" ? genre : /.*/, 'i');
+
+  // tags are a vector of regexes
+  var tagsRegexes : RegExp[] = [];
+  if (tags != "")
+  {
+    const allTags = tags.split(";");
+    for (let i = 0; i < allTags.length; i++)
+    {
+      tagsRegexes.push(new RegExp(allTags[i]))
+    }
+  }
 
   // year is "y1[..][y2]". If there isn't ".." then we will set upper
   // bound as y1, otherwise it's y2 if given, otherwise it's current
@@ -397,7 +407,7 @@ Promise<Movie[]> {
 
   master.movies.map((movie) => {
     movies = movies.concat(filterMovie(movie, titleRegex, years, dates,
-                                       ratings, runtimes, tagsRegex, directorRegex,
+                                       ratings, runtimes, tagsRegexes, directorRegex,
                                        writerRegex, actorRegex, genreRegex, src));
   });
   // TODO sorting

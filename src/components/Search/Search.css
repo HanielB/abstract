@@ -51,7 +51,7 @@ input[type="file"] {
 
 .form {
     display: flex;
-    flex-flow: row;
+    flex-flow: row wrap;
     column-gap: 1.8rem;
 }
 

@@ -106,6 +106,13 @@ a:active {
         font-size: .8rem;
     }
 
+    .runtimeRewatch {
+        display: flex;
+        flex-flow: row;
+        column-gap: 1.8rem;
+        width: 170px;
+        height: 25px;
+    }
 }
 
 /* For Tablets */
@@ -178,6 +185,15 @@ a:active {
         color: #f5cc5b;
         border-radius: 10px;
     }
+
+    .runtimeRewatch {
+        display: flex;
+        flex-flow: row;
+        column-gap: 1.8rem;
+        width: 170px;
+        height: 30px;
+    }
+
 }
 
 .catalog__item__info {
@@ -213,14 +229,6 @@ a:active {
 .director {
     font-weight: bold;
     font-size: 1rem;
-}
-
-.runtimeRewatch {
-    display: flex;
-    flex-flow: row;
-    column-gap: 1.8rem;
-    width: 170px;
-    height: 30px;
 }
 
 .rewatch {

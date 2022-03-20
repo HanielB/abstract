@@ -17,9 +17,9 @@ export const Search = () => {
   const [genre, setGenre] = useState("");
   const [sorting, setSorting] = useState("");
   const [file, setFile] = useState("");
-  const { movies, updateMovies, setLoading } = useContext(MoviesContext);
+  const {movies, updateMovies, setLoading} = useContext(MoviesContext);
 
-const exportToJsonFile = () => {
+  const exportToJsonFile = () => {
     let dataStr = JSON.stringify(movies);
     let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
 
@@ -29,8 +29,7 @@ const exportToJsonFile = () => {
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
-}
-
+  }
 
   const handleUpload = (e : React.ChangeEvent<HTMLInputElement>) => {
     var files = e.target.files;

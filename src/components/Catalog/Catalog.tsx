@@ -2,11 +2,24 @@ import React, { useContext } from "react";
 import "./Catalog.css";
 import imgPlaceholder from "./movie_placeholder.png";
 import rewatchImg from "./two-circular-arrows.png";
+import watchlistImg from "./not-watched.png";
 import { MoviesContext } from "../../services/context";
+import { getMovies } from "../../services/movies.service";
 
 
 export const Catalog = () => {
-  const { movies, loading } = useContext(MoviesContext);
+  const { movies, loading, setLoading, updateMovies } = useContext(MoviesContext);
+
+  const getDirected = (director: string) => {
+    setLoading(true);
+    getMovies("", "", "", "", "", "",
+              director, "", "", "",
+              "year", true, true, true)
+      .then((movies) => {
+        setLoading(false);
+        updateMovies(movies);
+      });
+  }
 
   if (loading) {
     return (<div>
@@ -59,7 +72,8 @@ export const Catalog = () => {
               {
                 (movie.directors)?
                   movie.directors.map((director) => (
-                    <span className="director">
+                    <span className="director"
+                          onClick={(e) => getDirected(director)}>
                       {director}
                     </span>
                   )) : <span></span>
@@ -73,6 +87,11 @@ export const Catalog = () => {
                 (movie.rewatch)?
                   <span className="rewatch">
                     <img src={rewatchImg}
+                    />
+                  </span>
+                : (movie.watchlist)?
+                  <span className="rewatch">
+                    <img src={watchlistImg}
                     />
                   </span>
                 : <span></span>

@@ -215,14 +215,13 @@ function filterMovie(movie : any, title: RegExp, year: number[], date: Date[],
                      watchlist: boolean, rewatch: boolean):
 Movie[] {
   var results : Movie[] = [];
-  if ((watchlist && movie.status > 0)
-      || (!watchlist && movie.status === 0)
+  if ((!watchlist && movie.status === 0)
       || !filterStatic(movie, title, year, runtime,
                        director, writer, actor, genre))
   {
     return [];
   }
-  if (watchlist)
+  if (movie.status === 0)
   {
     return [
       {
@@ -234,7 +233,7 @@ Movie[] {
         picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
         lbFilmLink: movie.lbURL,
         directors : movie.directors,
-        rewatch : movie.rewatch
+        watchlist : true
       }
     ];
   }
@@ -538,4 +537,5 @@ export interface Movie {
   lbFilmLink?: string;
   directors?: string[];
   rewatch?: boolean;
+  watchlist?: boolean;
 }

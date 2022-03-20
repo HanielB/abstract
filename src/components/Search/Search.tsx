@@ -144,20 +144,24 @@ const exportToJsonFile = () => {
         <div className="form_sort">
           <fieldset>
             <legend>Sorting</legend>
-          <div className="form_radio">
-            <input type="radio" id="watched" name="sorting" value="watched" checked={true} onChange={(e) => setSorting(e.target.value)}/>
-            <label htmlFor="watched">Watched</label>
-            <input type="radio" id="year" name="sorting" value="year" onChange={(e) => setSorting(e.target.value)}/>
-            <label htmlFor="year">Year</label>
-          </div>
-          <div className="form_radio">
-            <input type="radio" id="rating" name="sorting" value="rating" onChange={(e) => setSorting(e.target.value)}/>
-            <label htmlFor="rating">Rating</label>
-          </div>
-          <div>
-            <input type="radio" id="runtime" name="sorting" value="runtime" onChange={(e) => setSorting(e.target.value)}/>
-            <label htmlFor="runtime">Runtime</label>
-          </div>
+            <div className="form_radio">
+              <div className="form_radio_label">
+                <input type="radio" id="watched" name="sorting" value="watched" checked={true} onChange={(e) => setSorting(e.target.value)}/>
+                <label htmlFor="watched">Watched</label>
+              </div>
+              <div className="form_radio_label">
+              <input type="radio" id="year" name="sorting" value="year" onChange={(e) => setSorting(e.target.value)}/>
+              <label htmlFor="year">Year</label>
+            </div>
+            </div>
+            <div className="form_radio_label">
+              <input type="radio" id="rating" name="sorting" value="rating" onChange={(e) => setSorting(e.target.value)}/>
+              <label htmlFor="rating">Rating</label>
+            </div>
+            <div className="form_radio_label">
+              <input type="radio" id="runtime" name="sorting" value="runtime" onChange={(e) => setSorting(e.target.value)}/>
+              <label htmlFor="runtime">Runtime</label>
+            </div>
           </fieldset>
         </div>
         <div className="form_sort">

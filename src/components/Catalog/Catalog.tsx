@@ -10,6 +10,19 @@ import { getMovies } from "../../services/movies.service";
 export const Catalog = () => {
   const { movies, loading, setLoading, updateMovies } = useContext(MoviesContext);
 
+  const getId = (id: number, watched?: string) => {
+    if (!watched)
+    {
+      return id;
+    }
+    const split = watched.split("-")
+    const yearMovie = Number(split[0])
+    const monthMovie = Number(split[1])
+    const dayMovie = Number(split[2])
+
+    return id + yearMovie + monthMovie + dayMovie;
+  }
+
   const getDirected = (director: string) => {
     setLoading(true);
     getMovies("", "", "", "", "", "",
@@ -29,7 +42,7 @@ export const Catalog = () => {
   return (
     <div className="catalogContainer">
       {movies.map((movie) => (
-        <div className="catalog__item" key={movie.id}>
+        <div className="catalog__item" key={getId(movie.id, movie.watched)}>
           <div className="catalog__item__img">
               <img src={movie.picture || imgPlaceholder} alt={movie.title}
               />

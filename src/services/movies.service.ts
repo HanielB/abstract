@@ -139,9 +139,14 @@ function mapLoaded(res: any[]): Movie[] {
   });
 }
 
-function filterDiary(movie : any, date: Date[], rating: number[], tags : RegExp[])
+function filterDiary(movie : any, date: Date[], rating: number[],
+                     tags : RegExp[], rewatch: boolean)
 : Boolean
 {
+  if (!rewatch && movie.rewatch)
+  {
+    return false;
+  }
   if (date.length > 0)
   {
     if (movie.watched === "")
@@ -302,7 +307,7 @@ Movie[] {
       })
     });
   }
-  return results.filter((result) => filterDiary(result, date, rating, tags));
+  return results.filter((result) => filterDiary(result, date, rating, tags, rewatch));
 }
 
 function filterMovies(master : any, title: string, year: string, date: string,

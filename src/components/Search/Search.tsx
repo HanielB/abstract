@@ -60,10 +60,10 @@ const exportToJsonFile = () => {
           document.getElementById("onlywatched") as HTMLInputElement
     const watchlistCheck =
           document.getElementById("watchlist") as HTMLInputElement
-    const rewatchCheck = document.getElementById("rewatch") as HTMLInputElement
+    const norewatchCheck = document.getElementById("norewatch") as HTMLInputElement
     const onlywatched = onlywatchedCheck? onlywatchedCheck.checked : false;
     const watchlist = watchlistCheck? watchlistCheck.checked : false;
-    const rewatch = rewatchCheck? rewatchCheck.checked : false;
+    const rewatch = norewatchCheck? !norewatchCheck.checked : true;
     getMovies(title, year, date, rating, runtime, tags,
               director, writer, actor, genre,
               sorting ? sorting : "watched", onlywatched, watchlist, rewatch)
@@ -143,12 +143,14 @@ const exportToJsonFile = () => {
         </div>
         <div className="form_sort">
           <fieldset>
-            <legend>Sorting (def "watched")</legend>
-          <div>
+            <legend>Sorting</legend>
+          <div className="form_radio">
+            <input type="radio" id="watched" name="sorting" value="watched" checked={true} onChange={(e) => setSorting(e.target.value)}/>
+            <label htmlFor="watched">Watched</label>
             <input type="radio" id="year" name="sorting" value="year" onChange={(e) => setSorting(e.target.value)}/>
             <label htmlFor="year">Year</label>
           </div>
-          <div>
+          <div className="form_radio">
             <input type="radio" id="rating" name="sorting" value="rating" onChange={(e) => setSorting(e.target.value)}/>
             <label htmlFor="rating">Rating</label>
           </div>
@@ -170,8 +172,8 @@ const exportToJsonFile = () => {
               <label htmlFor="watchlist">Watchlist</label>
             </div>
             <div>
-              <input type="checkbox" id="rewatch" name="display" value="rewatch" checked/>
-              <label htmlFor="rewatch">Rewatches</label>
+              <input type="checkbox" id="norewatch" name="display" value="norewatch"/>
+              <label htmlFor="rewatch">No Rewatches</label>
             </div>
           </fieldset>
         </div>

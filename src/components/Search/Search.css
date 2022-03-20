@@ -60,6 +60,11 @@ input[type="file"] {
     flex-flow: column;
 }
 
+.form_radio {
+    display: flex;
+    flex-flow: row;
+}
+
 .form_sort {
     display: flex;
     flex-flow: column;

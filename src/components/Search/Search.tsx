@@ -16,7 +16,6 @@ export const Search = () => {
   const [actor, setActor] = useState("");
   const [genre, setGenre] = useState("");
   const [sorting, setSorting] = useState("");
-  const [src, setSrc] = useState("");
   const [file, setFile] = useState("");
   const { movies, updateMovies, setLoading } = useContext(MoviesContext);
 
@@ -57,24 +56,22 @@ const exportToJsonFile = () => {
     console.log("Handling search");
     setLoading(true);
     console.log("Sorting value: " + sorting);
-    var onlywatched = document.getElementById("onlywatched")  as HTMLInputElement
-    var rewatch = document.getElementById("rewatch")  as HTMLInputElement
-    if (onlywatched)
-    {
-      console.log("Display value: " + onlywatched.checked);
-    }
-    if (rewatch)
-    {
-      console.log("Display value: " + rewatch.checked);
-    }
+    const onlywatchedCheck =
+          document.getElementById("onlywatched") as HTMLInputElement
+    const watchlistCheck =
+          document.getElementById("watchlist") as HTMLInputElement
+    const rewatchCheck = document.getElementById("rewatch") as HTMLInputElement
+    const onlywatched = onlywatchedCheck? onlywatchedCheck.checked : false;
+    const watchlist = watchlistCheck? watchlistCheck.checked : false;
+    const rewatch = rewatchCheck? rewatchCheck.checked : false;
     getMovies(title, year, date, rating, runtime, tags,
               director, writer, actor, genre,
-              sorting ? sorting : "watched",
-              src ? src : "diary").then((movies) => {
-                console.log("Got back " + movies.length + " movie items");
-                setLoading(false);
-                updateMovies(movies);
-              });
+              sorting ? sorting : "watched", onlywatched, watchlist, rewatch)
+      .then((movies) => {
+        console.log("Got back " + movies.length + " movie items");
+        setLoading(false);
+        updateMovies(movies);
+      });
   };
 
   return (
@@ -163,21 +160,7 @@ const exportToJsonFile = () => {
         </div>
         <div className="form_sort">
           <fieldset>
-            <legend>Choose your interests</legend>
-          <div>
-            <input type="radio" id="watched" name="src" value="watched" onChange={(e) => setSrc(e.target.value)}
-            />
-            <label htmlFor="watched">Watched</label>
-          </div>
-          <div>
-            <input type="radio" id="watchlist" name="src" value="watchlist" onChange={(e) => setSrc(e.target.value)}/>
-            <label htmlFor="watchlist">Watchlist</label>
-          </div>
-          </fieldset>
-        </div>
-        <div className="form_sort">
-          <fieldset>
-            <legend>Choose your interests</legend>
+            <legend>Display</legend>
             <div>
               <input type="checkbox" id="onlywatched" name="display" value="onlywatched"/>
               <label htmlFor="onlywatched">Only watched</label>

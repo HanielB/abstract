@@ -161,7 +161,8 @@ function filterDiary(movie : any, date: Date[], rating: number[], tags : RegExp[
   }
   if (rating.length > 0
       && ((rating[0] === -1 && movie.ratingNum > 0)
-          || (rating[0] != -1 && (movie.ratingNum < rating[0] || movie.ratingNum > rating[1]))))
+          || (rating[0] != -1
+              && (movie.ratingNum < rating[0] || movie.ratingNum > rating[1]))))
   {
     return false;
   }
@@ -203,19 +204,20 @@ function filterStatic(movie : any, title : RegExp, year: number[],
 }
 
 function filterMovie(movie : any, title: RegExp, year: number[], date: Date[],
-                         rating: number[], runtime: number[], tags : RegExp[],
-                         director: RegExp, writer : RegExp, actor: RegExp,
-                         genre: RegExp, src : string):
+                     rating: number[], runtime: number[], tags : RegExp[],
+                     director: RegExp, writer : RegExp, actor: RegExp,
+                     genre: RegExp, onlywatched: boolean,
+                     watchlist: boolean, rewatch: boolean):
 Movie[] {
   var results : Movie[] = [];
-  if ((src === "watchlist" && movie.status > 0)
-      || (src != "watchlist" && movie.status === 0)
+  if ((watchlist && movie.status > 0)
+      || (!watchlist && movie.status === 0)
       || !filterStatic(movie, title, year, runtime,
                        director, writer, actor, genre))
   {
     return [];
   }
-  if (src == "watchlist")
+  if (watchlist)
   {
     return [
       {
@@ -232,7 +234,7 @@ Movie[] {
     ];
   }
   // get latest diary entry to have the rating and watched date, if any
-  if (src == "watched")
+  if (onlywatched)
   {
     var watchedInfo = "";
     var ratingInfo = "";
@@ -305,11 +307,11 @@ Movie[] {
 
 function filterMovies(master : any, title: string, year: string, date: string,
                          rating: string, runtime: string, tags : string,
-                         director: string, writer : string, actor: string,
-                         genre: string, sorting: string,
-                         src : string):
+                      director: string, writer : string, actor: string,
+                      genre: string, sorting: string,
+                      onlywatched: boolean,
+                      watchlist: boolean, rewatch: boolean):
 Promise<Movie[]> {
-  console.log("Now process with src ", src);
   var movies : Movie[] = [];
   // create regex ignoring case
   const titleRegex = new RegExp(title != "" ? title : /.*/, 'i');
@@ -408,7 +410,8 @@ Promise<Movie[]> {
   master.movies.map((movie) => {
     movies = movies.concat(filterMovie(movie, titleRegex, years, dates,
                                        ratings, runtimes, tagsRegexes, directorRegex,
-                                       writerRegex, actorRegex, genreRegex, src));
+                                       writerRegex, actorRegex, genreRegex,
+                                       onlywatched, watchlist, rewatch));
   });
   // TODO sorting
   console.log("sorting:", sorting)
@@ -488,7 +491,8 @@ export function getMovies(title: string, year: string, date: string,
                           rating: string, runtime: string, tags : string,
                           director: string,
                           writer: string, actor: string, genre: string,
-                          sorting: string, src : string
+                          sorting: string, onlywatched: boolean,
+                          watchlist: boolean, rewatch: boolean
                          ):
 Promise<Movie[]> {
   return fetch(
@@ -500,7 +504,8 @@ Promise<Movie[]> {
     .then((res) => res.json())
     .then((master) => filterMovies(master, title, year, date,
                                    rating, runtime, tags, director, writer,
-                                   actor, genre, sorting, src))
+                                   actor, genre, sorting,
+                                   onlywatched, watchlist, rewatch))
     .then((movies) => {
       // let res = Array.from(tmp);
       return Promise.all(movies.map((movie) => {

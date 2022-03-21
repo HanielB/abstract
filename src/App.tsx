@@ -6,11 +6,15 @@ import { Movie, getFavorites } from "./services/movies.service";
 import { MoviesContext } from "./services/context";
 
 function App() {
+
   useEffect(() => {
-    // discoverMovies()
-    getFavorites()
-      .then(setMovies)
-      .catch((_) => setMovies([]));
+    fetch(`favorites.json`,
+          { method: 'get',
+            headers: {
+              'content-type': 'text/csv;charset=UTF-8',
+            }})
+      .then((res) => res.json())
+      .then((loadedMovies) => setMovies(loadedMovies));
   }, []);
 
   const [movies, setMovies] = useState<Movie[]>([]);

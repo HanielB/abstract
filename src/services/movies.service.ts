@@ -1,57 +1,6 @@
 const movieApiBaseUrl = "https://api.themoviedb.org/3";
 const posterBaseUrl = "https://image.tmdb.org/t/p/w300";
 
-export function getFavorites(): Promise<Movie[]> {
-  // My favorites: MOMMY, THE END OF EVANGELION, 2001, HOTARU NO HAKA
-  return fetch(`favorites.json`,
-               { method: 'get',
-                 headers: {
-                   'content-type': 'text/csv;charset=UTF-8',
-                 }})
-    .then((res) => res.json())
-    .then((response) =>
-      response.items.map((movie) =>
-        {
-          const {
-            watched,
-            title,
-            year,
-            runtime,
-            rating,
-            tags,
-            lbFilm,
-            lbDiary,
-            id,
-            poster,
-            backdrop,
-            directors
-          } = movie;
-
-          var returnMovie : Movie = {
-            id,
-            year,
-            title,
-            watched,
-            rating,
-            runtime,
-            tags,
-            picture: poster? `${posterBaseUrl}${poster}` : undefined,
-            lbDiaryLink: lbDiary,
-            lbFilmLink: lbFilm,
-            directors
-          };
-          return returnMovie;
-        }
-      ));
-
-  ///////to get from IDs and TMDB, could do:
-  //
-  // let res = ["265177", "18491", "62", "12477"];
-  // return Promise.all(
-  //   res.map((movieId) => getMovie(movieId).then((out) => out[0]))
-  // );
-}
-
 export function getMovie(id: any): Promise<Movie[]> {
   return fetch(
     `${movieApiBaseUrl}/movie/${id}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`

@@ -34,6 +34,17 @@ export const Catalog = () => {
       });
   }
 
+  const getTag = (tag: string) => {
+    setLoading(true);
+    getMovies("", "", "", "", "", tag,
+              "", "", "", "",
+              "watched", false, false, true)
+      .then((movies) => {
+        setLoading(false);
+        updateMovies(movies);
+      });
+  }
+
   if (loading) {
     return (<div>
               <h1>LOADING</h1>
@@ -75,7 +86,8 @@ export const Catalog = () => {
               {
                 (movie.tags)?
                   movie.tags.map((tag) => (
-                    <span className="tag">
+                    <span className="tag"
+                          onClick={(e) => getTag(tag)}>
                       {tag}
                     </span>
                   )) : <span></span>

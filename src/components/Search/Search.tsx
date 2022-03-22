@@ -186,7 +186,7 @@ export const Search = () => {
           <button name="Button" className="search__button" type="button" onClick={(e) => exportToJsonFile()}>Download</button>
           <label className="search__button">
             <input type="file" onChange={(e) => handleUpload(e)}/>
-            LOAD
+            UPLOAD
           </label>
         </div>
       </form>

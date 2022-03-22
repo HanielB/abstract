@@ -8,7 +8,8 @@ import { getMovies } from "../../services/movies.service";
 
 
 export const Catalog = () => {
-  const { movies, loading, setLoading, updateMovies } = useContext(MoviesContext);
+  const { master, movies, loading,
+          setLoading, updateMovies } = useContext(MoviesContext);
 
   const getId = (id: number, watched?: string) => {
     if (!watched)
@@ -25,7 +26,7 @@ export const Catalog = () => {
 
   const getDirected = (director: string) => {
     setLoading(true);
-    getMovies("", "", "", "", "", "",
+    getMovies(master, "", "", "", "", "", "",
               director, "", "", "",
               "year", true, true, true)
       .then((movies) => {
@@ -36,7 +37,7 @@ export const Catalog = () => {
 
   const getTag = (tag: string) => {
     setLoading(true);
-    getMovies("", "", "", "", "", tag,
+    getMovies(master, "", "", "", "", "", tag,
               "", "", "", "",
               "watched", false, false, true)
       .then((movies) => {

@@ -440,7 +440,8 @@ Promise<Movie[]> {
 }
 
 
-export function getMovies(title: string, year: string, date: string,
+export function getMovies(master: Object[],
+                          title: string, year: string, date: string,
                           rating: string, runtime: string, tags : string,
                           director: string,
                           writer: string, actor: string, genre: string,
@@ -448,17 +449,11 @@ export function getMovies(title: string, year: string, date: string,
                           watchlist: boolean, rewatch: boolean
                          ):
 Promise<Movie[]> {
-  return fetch(
-    `master.json`,
-    { method: 'get',
-      headers: {
-        'content-type': 'text/csv;charset=UTF-8',
-      }})
-    .then((res) => res.json())
-    .then((master) => filterMovies(master, title, year, date,
-                                   rating, runtime, tags, director, writer,
-                                   actor, genre, sorting,
-                                   onlywatched, watchlist, rewatch))
+  // TODO probably don't need promises anymore here
+  return filterMovies(master, title, year, date,
+                      rating, runtime, tags, director, writer,
+                      actor, genre, sorting,
+                      onlywatched, watchlist, rewatch)
     .then((movies) => {
       // let res = Array.from(tmp);
       return Promise.all(movies.map((movie) => {

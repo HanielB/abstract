@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import "./Search.css";
 import { getMovie, loadMovies, getMovies } from "../../services/movies.service";
 import { MoviesContext } from "../../services/context";
-import { Movie, getFavorites } from "../../services/movies.service";
+import { Movie } from "../../services/movies.service";
 
 export const Search = () => {
   const [title, setTitle] = useState("");
@@ -17,7 +17,7 @@ export const Search = () => {
   const [genre, setGenre] = useState("");
   const [sorting, setSorting] = useState("");
   const [file, setFile] = useState("");
-  const {movies, updateMovies, setLoading} = useContext(MoviesContext);
+  const {master, movies, updateMovies, setLoading} = useContext(MoviesContext);
 
   const exportToJsonFile = () => {
     let dataStr = JSON.stringify(movies);
@@ -63,7 +63,7 @@ export const Search = () => {
     const onlywatched = onlywatchedCheck? onlywatchedCheck.checked : false;
     const watchlist = watchlistCheck? watchlistCheck.checked : false;
     const rewatch = norewatchCheck? !norewatchCheck.checked : true;
-    getMovies(title, year, date, rating, runtime, tags,
+    getMovies(master, title, year, date, rating, runtime, tags,
               director, writer, actor, genre,
               sorting ? sorting : "watched", onlywatched, watchlist, rewatch)
       .then((movies) => {

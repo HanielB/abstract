@@ -360,7 +360,7 @@ Promise<Movie[]> {
   console.log("ratings:", ratings)
   console.log("dates:", dates.map((date) => date.toString()))
 
-  master.movies.map((movie) => {
+  master.movies?.map((movie) => {
     movies = movies.concat(filterMovie(movie, titleRegex, years, dates,
                                        ratings, runtimes, tagsRegexes, directorRegex,
                                        writerRegex, actorRegex, genreRegex,

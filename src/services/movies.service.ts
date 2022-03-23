@@ -1,6 +1,17 @@
 const movieApiBaseUrl = "https://api.themoviedb.org/3";
 const posterBaseUrl = "https://image.tmdb.org/t/p/w300";
 
+// icons:
+//  - netflix: https://a.ltrbxd.com/sm/upload/za/bp/jc/zn/netflix-small.png
+//   - prime: https://images.justwatch.com/icon/52449861/s100
+//   - star+: https://images.justwatch.com/icon/250272035/s100
+//   - criterion: https://a.ltrbxd.com/sm/upload/j6/4v/o4/ru/criterionchannel-small.png?k=d168bd1a60
+//   - gplay: https://a.ltrbxd.com/sm/upload/o0/8s/mp/ej/google-small.png?k=c07a6d2d92
+//   - hbo: https://images.justwatch.com/icon/182948653/s100
+//   - mubi: https://a.ltrbxd.com/sm/upload/0t/1m/aa/u9/mubi.png?k=371edba60c
+//   - disney+: https://images.justwatch.com/icon/147638351/s100
+//   - globo: https://images.justwatch.com/icon/136871678/s100
+
 export function getMovie(id: any): Promise<Movie[]> {
   return fetch(
     `${movieApiBaseUrl}/movie/${id}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
@@ -41,6 +52,51 @@ function getPicture (movie : Movie) : Promise<Movie> {
     return newMovie;
   });
 }
+
+function getAvailable (movie : Movie) : Promise<Movie> {
+  const dataToSend = JSON.stringify({"query": "Matrix"});
+
+  return fetch("https://apis.justwatch.com/content/titles/en_AU/popular", {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: dataToSend
+  }).then((resp) => {
+    // return fetch("https://api.themoviedb.org/3/movie/62?api_key=ff95187858254f0132358f557f352e99&language=en-US").then((resp) => {
+    if (resp.status === 200) {
+      return resp.json();
+    }
+    return Promise.reject("server");
+  })
+    .then(dataJson => {
+      console.log("weee", dataJson);
+      var hasProvider = false;
+      dataJson.items.map((result) => {
+        if ('scoring' in result)
+        {
+          result.scoring.map((score) => {
+            if (score.provider_type === "tmdb:id" && score.value === 603)
+            {
+              console.log("Found The Matrix")
+              result.offers.map((offer) => {
+                if (offer.package_short_name == "nfx")
+                {
+                  console.log("Available on Netflix");
+                }
+              })
+            }
+          })
+        }
+      })
+      return movie;
+    })
+    .catch(err => {
+      if (err === "server") return movie;
+      console.log(err)
+      return movie;
+    })
+}
+
+
 
 export function loadMovies(): Promise<Movie[]> {
   return fetch(
@@ -459,7 +515,7 @@ Promise<Movie[]> {
       return Promise.all(movies.map((movie) => {
         if (movie.picture)
         {
-          return movie;
+          return getAvailable(movie);
         }
         return getPicture(movie);
       }))

@@ -168,7 +168,7 @@ export const Search = () => {
             <legend>Display</legend>
             <div>
               <input type="checkbox" id="onlywatched" name="display" value="onlywatched"/>
-              <label htmlFor="onlywatched">Only watched</label>
+              <label htmlFor="onlywatched">Singleton</label>
             </div>
             <div>
               <input type="checkbox" id="watchlist" name="display" value="watchlist"/>

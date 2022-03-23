@@ -306,7 +306,7 @@ Promise<Movie[]> {
        rating.split("..").map((rating) => rating != "" ? Number(rating) : 10))
   if (ratings.length === 1)
   {
-    ratings.push(ratings[0])
+    ratings.push(ratings[0] + 0.9)
   }
   var dates : Date[] = [];
   if (date != "" )

@@ -87,13 +87,15 @@
   - State "TODO"       from              [2022-03-05 Sat 21:56] \\
     So that I can choose how many to show per page line basically
   :END:
-* TODO Create permalinks for results
+* DONE Create permalinks for results
+  CLOSED: [2022-03-22 Tue 22:56]
   :NOTES:
   - Note taken on [2022-03-08 Tue 01:09] \\
     May help:
     https://stackoverflow.com/questions/7558709/simple-javascript-search-url-for-string-do-something
   :END:
   :STATES:
+  - State "DONE"       from "TODO"       [2022-03-22 Tue 22:56]
   - State "TODO"       from              [2022-03-05 Sat 21:57] \\
     So that I can more easily share
   :END:
@@ -106,8 +108,10 @@
   - State "TODO"       from              [2022-03-06 Sun 18:43] \\
     When I get a result and I search again, I start from existing list. To restart I have to refresh
   :END:
-* TODO Filter by first watch
+* DONE Filter by first watch
+  CLOSED: [2022-03-22 Tue 22:55]
   :STATES:
+  - State "DONE"       from "TODO"       [2022-03-22 Tue 22:55]
   - State "TODO"       from              [2022-03-06 Sun 18:55]
   :END:
 * DONE Filter unrated
@@ -121,12 +125,16 @@
   - State "TODO"       from              [2022-03-08 Tue 01:05] \\
     With like a menu that opens up options, not showing them all all the time
   :END:
-* TODO When clicking on director's name, get me all movies watched by director
+* DONE When clicking on director's name, get me all movies watched by director
+  CLOSED: [2022-03-22 Tue 22:55]
   :STATES:
+  - State "DONE"       from "TODO"       [2022-03-22 Tue 22:55]
   - State "TODO"       from              [2022-03-08 Tue 01:09]
   :END:
-* TODO Export/import json
+* DONE Export/import json
+  CLOSED: [2022-03-22 Tue 22:55]
   :STATES:
+  - State "DONE"       from "TODO"       [2022-03-22 Tue 22:55]
   - State "TODO"       from              [2022-03-08 Tue 01:10] \\
     This would be a simpler way to better gen lists. I do a search, export a json, edit it, and upload json which will have whatever order I want
   :END:

@@ -90,7 +90,7 @@ export const Search = () => {
               type="text"
               name="date"
               className="search__input"
-              placeholder="Date ... "
+              placeholder="Watched Date ... "
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />

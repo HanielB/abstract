@@ -364,8 +364,8 @@ Promise<Movie[]> {
   {
     ratings.push(ratings[0] + 0.9)
   }
-  var dates : Date[] = [];
-  if (date != "" )
+  var dates : Date[] = date === "-1"? [new Date(1900), new Date(1900)]: [];
+  if (date != "" && dates != [])
   {
     const split = date.split("..")
     // first four digits are year
@@ -515,7 +515,8 @@ Promise<Movie[]> {
       return Promise.all(movies.map((movie) => {
         if (movie.picture)
         {
-          return getAvailable(movie);
+          // return getAvailable(movie);
+          return movie;
         }
         return getPicture(movie);
       }))

@@ -76,21 +76,21 @@ async function getAvailable (movie : Movie) : Promise<Movie> {
   const brRequest = await fetch("https://apis.justwatch.com/content/titles/pt_BR/popular", {
     method: "post",
     mode: 'cors',
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json"},
     body: dataToSendBR
   });
   const usRequest = await fetch("https://apis.justwatch.com/content/titles/en_US/popular", {
     method: "post",
     mode: 'cors',
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json"},
     body: dataToSendUS
   });
 
+  console.log("status of br request:", brRequest.status);
   if (brRequest.status === 200)
   {
     const dataJson = await brRequest.json();
       dataJson.items.map((result) => {
-        // console.log("result", result);
         var foundProvs : string[] = [];
         if ('scoring' in result)
         {

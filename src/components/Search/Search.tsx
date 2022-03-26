@@ -60,12 +60,14 @@ export const Search = () => {
     const watchlistCheck =
           document.getElementById("watchlist") as HTMLInputElement
     const norewatchCheck = document.getElementById("norewatch") as HTMLInputElement
+    const availableCheck = document.getElementById("available") as HTMLInputElement
     const onlywatched = onlywatchedCheck? onlywatchedCheck.checked : false;
     const watchlist = watchlistCheck? watchlistCheck.checked : false;
     const rewatch = norewatchCheck? !norewatchCheck.checked : true;
+    const available = availableCheck? availableCheck.checked : false;
     getMovies(master, title, year, date, rating, runtime, tags,
               director, writer, actor, genre,
-              sorting ? sorting : "watched", onlywatched, watchlist, rewatch)
+              sorting ? sorting : "watched", onlywatched, watchlist, rewatch, available)
       .then((movies) => {
         console.log("Got back " + movies.length + " movie items");
         setLoading(false);
@@ -166,6 +168,7 @@ export const Search = () => {
         <div className="form_sort">
           <fieldset>
             <legend>Display</legend>
+            <div className="form_radio">
             <div>
               <input type="checkbox" id="onlywatched" name="display" value="onlywatched"/>
               <label htmlFor="onlywatched">Singleton</label>
@@ -174,10 +177,17 @@ export const Search = () => {
               <input type="checkbox" id="watchlist" name="display" value="watchlist"/>
               <label htmlFor="watchlist">Watchlist</label>
             </div>
+              </div>
+            <div className="form_radio">
             <div>
               <input type="checkbox" id="norewatch" name="display" value="norewatch"/>
-              <label htmlFor="rewatch">No Rewatches</label>
+              <label htmlFor="rewatch">No Rewatch</label>
             </div>
+            <div>
+              <input type="checkbox" id="available" name="display" value="available"/>
+              <label htmlFor="available">Available</label>
+            </div>
+</div>
           </fieldset>
         </div>
 

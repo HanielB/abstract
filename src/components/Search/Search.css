@@ -89,6 +89,7 @@ input[type="file"] {
     .form_radio {
         display: flex;
         flex-flow: row;
+        justify-content: space-between;
     }
 
     .form_buttons {

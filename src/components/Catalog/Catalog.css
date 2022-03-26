@@ -113,6 +113,18 @@ a:active {
         width: 170px;
         height: 25px;
     }
+
+    .provider {
+        display: flex;
+        flex: 2 1 0;
+        /* flex-flow: column nowrap; */
+        overflow: hidden;
+        /* overflow-y: hidden; */
+        position: relative;
+        /* justify-content: flex-end; */
+        width: 25px;
+        height: 25px;
+    }
 }
 
 /* For Tablets */
@@ -180,10 +192,11 @@ a:active {
 
     .runtime {
         /* font-weight: bold; */
-        padding: 5px 10px;
+        padding: 2px 8px;
         background-color: #343533;
         color: #f5cc5b;
         border-radius: 10px;
+        font-size: .85rem;
     }
 
     .runtimeRewatch {
@@ -191,9 +204,20 @@ a:active {
         flex-flow: row;
         column-gap: 1.8rem;
         width: 170px;
-        height: 30px;
+        height: 22px;
     }
 
+    .provider {
+        display: flex;
+        flex: 2 1 0;
+        /* flex-flow: column nowrap; */
+        overflow: hidden;
+        /* overflow-y: hidden; */
+        position: relative;
+        /* justify-content: flex-end; */
+        width: 30px;
+        height: 30px;
+    }
 }
 
 .catalog__item__info {
@@ -239,4 +263,12 @@ a:active {
     /* overflow-y: hidden; */
     position: relative;
     justify-content: flex-end;
+}
+
+.available {
+    display: flex;
+    flex-flow: row;
+    column-gap: .8rem;
+    /* width: 170px; */
+    /* height: 25px; */
 }

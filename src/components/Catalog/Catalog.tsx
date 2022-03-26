@@ -28,7 +28,7 @@ export const Catalog = () => {
     setLoading(true);
     getMovies(master, "", "", "", "", "", "",
               director, "", "", "",
-              "year", true, true, true)
+              "year", true, true, true, true)
       .then((movies) => {
         setLoading(false);
         updateMovies(movies);
@@ -39,11 +39,22 @@ export const Catalog = () => {
     setLoading(true);
     getMovies(master, "", "", "", "", "", tag,
               "", "", "", "",
-              "watched", false, false, true)
+              "watched", false, false, true, true)
       .then((movies) => {
         setLoading(false);
         updateMovies(movies);
       });
+  }
+
+  const getIcon = (prov : string) => {
+    if (prov == "nfx") return "https://a.ltrbxd.com/sm/upload/za/bp/jc/zn/netflix-small.png";
+    if (prov == "prv") return "https://images.justwatch.com/icon/52449861/s100"
+    if (prov == "hbm") return "https://images.justwatch.com/icon/182948653/s100"
+    if (prov == "gop") return "https://images.justwatch.com/icon/136871678/s100"
+    if (prov == "mbi") return "https://a.ltrbxd.com/sm/upload/0t/1m/aa/u9/mubi.png?k=371edba60c"
+    if (prov == "ply") return "https://a.ltrbxd.com/sm/upload/o0/8s/mp/ej/google-small.png?k=c07a6d2d92"
+    if (prov == "dnp") return "https://images.justwatch.com/icon/147638351/s100"
+    return "https://images.justwatch.com/icon/250272035/s100"
   }
 
   if (loading) {
@@ -105,6 +116,18 @@ export const Catalog = () => {
                   )) : <span></span>
               }
             </div>
+            <div className="available">
+              {
+                (movie.available)?
+                  movie.available.map((prov) => (
+                  <span>
+                    <img className="provider" src={getIcon(prov)}
+                    />
+                  </span>
+                  ))
+                : <span></span>
+              }
+          </div>
             <div className="runtimeRewatch">
               <span className="runtime">
                 {movie.runtime}min

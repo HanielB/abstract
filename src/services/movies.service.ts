@@ -53,10 +53,19 @@ function getPicture (movie : Movie) : Promise<Movie> {
   });
 }
 
-function getAvailable (movie : Movie) : Promise<Movie> {
-  const dataToSend = JSON.stringify({"query": "Matrix"});
+async function getAvailable (movie : Movie) : Promise<Movie> {
+  const brProviders = ["nfx", "prv", "hbm", "gop", "mbi", "ply", "dnp", "srp"]
+  // const usProviders = ["crc"]
+  const dataToSend = JSON.stringify({
+    "query": movie.title,
+    "release_year_from": movie.year? Number(movie.year) : 2050,
+    "release_year_until": movie.year? Number(movie.year) + 2 : 2050,
+    "content_types": ["movie"],
+    // "providers": usProviders
+    "providers": brProviders
+  });
 
-  return fetch("https://apis.justwatch.com/content/titles/en_AU/popular", {
+  return fetch("https://apis.justwatch.com/content/titles/pt_BR/popular", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: dataToSend
@@ -68,23 +77,33 @@ function getAvailable (movie : Movie) : Promise<Movie> {
     return Promise.reject("server");
   })
     .then(dataJson => {
-      console.log("weee", dataJson);
+      // console.log("weee", dataJson);
       var hasProvider = false;
       dataJson.items.map((result) => {
+        // console.log("result", result);
+        var foundProvs : string[] = [];
         if ('scoring' in result)
         {
+          // console.log("result has scoring");
           result.scoring.map((score) => {
-            if (score.provider_type === "tmdb:id" && score.value === 603)
+            if (score.provider_type === "tmdb:id" && score.value === movie.id)
             {
-              console.log("Found The Matrix")
+              // console.log("Found", movie.title)
               result.offers.map((offer) => {
-                if (offer.package_short_name == "nfx")
+                // if (usProviders.includes(offer.package_short_name))
+                if (brProviders.includes(offer.package_short_name)
+                    && !foundProvs.includes(offer.package_short_name))
                 {
-                  console.log("Available on Netflix");
+                  // console.log("Available on",  offer.package_short_name);
+                  foundProvs.push(offer.package_short_name);
                 }
               })
             }
           })
+          if (foundProvs.length > 0)
+          {
+            movie.available = foundProvs;
+          }
         }
       })
       return movie;
@@ -492,6 +511,7 @@ Promise<Movie[]> {
       return movie2.runtime - movie1.runtime
     })
   }
+  // movies =
   return Promise.all(movies).then((movies) => movies);
 }
 
@@ -502,9 +522,10 @@ export function getMovies(master: Object[],
                           director: string,
                           writer: string, actor: string, genre: string,
                           sorting: string, onlywatched: boolean,
-                          watchlist: boolean, rewatch: boolean
+                          watchlist: boolean, rewatch: boolean, available: boolean
                          ):
 Promise<Movie[]> {
+  console.log("available?", available)
   // TODO probably don't need promises anymore here
   return filterMovies(master, title, year, date,
                       rating, runtime, tags, director, writer,
@@ -515,7 +536,8 @@ Promise<Movie[]> {
       return Promise.all(movies.map((movie) => {
         if (movie.picture)
         {
-          // return getAvailable(movie);
+          if (available)
+            return getAvailable(movie);
           return movie;
         }
         return getPicture(movie);
@@ -539,4 +561,5 @@ export interface Movie {
   directors?: string[];
   rewatch?: boolean;
   watchlist?: boolean;
+  available?: string[];
 }

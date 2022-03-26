@@ -55,30 +55,38 @@ function getPicture (movie : Movie) : Promise<Movie> {
 
 async function getAvailable (movie : Movie) : Promise<Movie> {
   const brProviders = ["nfx", "prv", "hbm", "gop", "mbi", "ply", "dnp", "srp"]
-  // const usProviders = ["crc"]
-  const dataToSend = JSON.stringify({
+  const usProviders = ["crc"]
+  const dataToSendBR = JSON.stringify({
     "query": movie.title,
     "release_year_from": movie.year? Number(movie.year) : 2050,
     "release_year_until": movie.year? Number(movie.year) + 2 : 2050,
     "content_types": ["movie"],
-    // "providers": usProviders
     "providers": brProviders
   });
+  const dataToSendUS = JSON.stringify({
+    "query": movie.title,
+    "release_year_from": movie.year? Number(movie.year) : 2050,
+    "release_year_until": movie.year? Number(movie.year) + 2 : 2050,
+    "content_types": ["movie"],
+    "providers": usProviders
+  });
 
-  return fetch("https://apis.justwatch.com/content/titles/pt_BR/popular", {
+  movie.available = [];
+
+  const brRequest = await fetch("https://apis.justwatch.com/content/titles/pt_BR/popular", {
     method: "post",
     headers: { "Content-Type": "application/json" },
-    body: dataToSend
-  }).then((resp) => {
-    // return fetch("https://api.themoviedb.org/3/movie/62?api_key=ff95187858254f0132358f557f352e99&language=en-US").then((resp) => {
-    if (resp.status === 200) {
-      return resp.json();
-    }
-    return Promise.reject("server");
-  })
-    .then(dataJson => {
-      // console.log("weee", dataJson);
-      var hasProvider = false;
+    body: dataToSendBR
+  });
+  const usRequest = await fetch("https://apis.justwatch.com/content/titles/en_US/popular", {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: dataToSendUS
+  });
+
+  if (brRequest.status === 200)
+  {
+    const dataJson = await brRequest.json();
       dataJson.items.map((result) => {
         // console.log("result", result);
         var foundProvs : string[] = [];
@@ -102,17 +110,52 @@ async function getAvailable (movie : Movie) : Promise<Movie> {
           })
           if (foundProvs.length > 0)
           {
-            movie.available = foundProvs;
+            foundProvs.map((entry) => {
+              if (movie.available) movie.available.push(entry)
+            });
           }
         }
       })
-      return movie;
-    })
-    .catch(err => {
-      if (err === "server") return movie;
-      console.log(err)
-      return movie;
-    })
+  }
+  if (usRequest.status === 200)
+  {
+    const dataJson = await usRequest.json();
+      dataJson.items.map((result) => {
+        // console.log("result", result);
+        var foundProvs : string[] = [];
+        if ('scoring' in result)
+        {
+          // console.log("result has scoring");
+          result.scoring.map((score) => {
+            if (score.provider_type === "tmdb:id" && score.value === movie.id)
+            {
+              // console.log("Found", movie.title)
+              result.offers.map((offer) => {
+                // if (usProviders.includes(offer.package_short_name))
+                if (usProviders.includes(offer.package_short_name)
+                    && !foundProvs.includes(offer.package_short_name))
+                {
+                  // console.log("Available on",  offer.package_short_name);
+                  foundProvs.push(offer.package_short_name);
+                }
+              })
+            }
+          })
+          if (foundProvs.length > 0)
+          {
+            foundProvs.map((entry) => {
+              if (movie.available) movie.available.push(entry)
+            });
+          }
+        }
+      })
+  }
+
+  if (movie.available.length === 0)
+  {
+    movie.available = undefined;
+  }
+  return movie;
 }
 
 

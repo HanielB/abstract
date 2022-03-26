@@ -54,6 +54,7 @@ export const Catalog = () => {
     if (prov == "mbi") return "https://a.ltrbxd.com/sm/upload/0t/1m/aa/u9/mubi.png?k=371edba60c"
     if (prov == "ply") return "https://a.ltrbxd.com/sm/upload/o0/8s/mp/ej/google-small.png?k=c07a6d2d92"
     if (prov == "dnp") return "https://images.justwatch.com/icon/147638351/s100"
+    if (prov == "crc") return "https://a.ltrbxd.com/sm/upload/j6/4v/o4/ru/criterionchannel-small.png?k=d168bd1a60"
     return "https://images.justwatch.com/icon/250272035/s100"
   }
 

@@ -47,15 +47,16 @@ export const Catalog = () => {
   }
 
   const getIcon = (prov : string) => {
-    if (prov == "nfx") return "https://a.ltrbxd.com/sm/upload/za/bp/jc/zn/netflix-small.png";
-    if (prov == "prv") return "https://images.justwatch.com/icon/52449861/s100"
-    if (prov == "hbm") return "https://images.justwatch.com/icon/182948653/s100"
-    if (prov == "gop") return "https://images.justwatch.com/icon/136871678/s100"
-    if (prov == "mbi") return "https://a.ltrbxd.com/sm/upload/0t/1m/aa/u9/mubi.png?k=371edba60c"
-    if (prov == "ply") return "https://a.ltrbxd.com/sm/upload/o0/8s/mp/ej/google-small.png?k=c07a6d2d92"
-    if (prov == "dnp") return "https://images.justwatch.com/icon/147638351/s100"
-    if (prov == "crc") return "https://a.ltrbxd.com/sm/upload/j6/4v/o4/ru/criterionchannel-small.png?k=d168bd1a60"
-    return "https://images.justwatch.com/icon/250272035/s100"
+    if (prov == "Netflix") return "https://a.ltrbxd.com/sm/upload/za/bp/jc/zn/netflix-small.png";
+    if (prov == "Amazon Prime Video") return "https://images.justwatch.com/icon/52449861/s100"
+    if (prov == "HBO Max") return "https://images.justwatch.com/icon/182948653/s100"
+    if (prov == "Globo Play") return "https://images.justwatch.com/icon/136871678/s100"
+    if (prov == "Mubi") return "https://a.ltrbxd.com/sm/upload/0t/1m/aa/u9/mubi.png?k=371edba60c"
+    if (prov == "Google Play Movies") return "https://a.ltrbxd.com/sm/upload/o0/8s/mp/ej/google-small.png?k=c07a6d2d92"
+    if (prov == "Disney Plus") return "https://images.justwatch.com/icon/147638351/s100"
+    if (prov == "Criterion Channel") return "https://a.ltrbxd.com/sm/upload/j6/4v/o4/ru/criterionchannel-small.png?k=d168bd1a60"
+    if (prov == "Star Plus") return "https://images.justwatch.com/icon/250272035/s100"
+    return imgPlaceholder;
   }
 
   if (loading) {

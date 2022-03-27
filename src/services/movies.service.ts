@@ -53,114 +53,94 @@ function getPicture (movie : Movie) : Promise<Movie> {
   });
 }
 
-async function getAvailable (movie : Movie) : Promise<Movie> {
-  const brProviders = ["nfx", "prv", "hbm", "gop", "mbi", "ply", "dnp", "srp"]
-  const usProviders = ["crc"]
-  const dataToSendBR = JSON.stringify({
-    "query": movie.title,
-    "release_year_from": movie.year? Number(movie.year) : 2050,
-    "release_year_until": movie.year? Number(movie.year) + 2 : 2050,
-    "content_types": ["movie"],
-    "providers": brProviders
-  });
-  const dataToSendUS = JSON.stringify({
-    "query": movie.title,
-    "release_year_from": movie.year? Number(movie.year) : 2050,
-    "release_year_until": movie.year? Number(movie.year) + 2 : 2050,
-    "content_types": ["movie"],
-    "providers": usProviders
-  });
-
-  movie.available = [];
-
-  const brRequest = await fetch("https://apis.justwatch.com/content/titles/pt_BR/popular", {
-    method: "post",
-    mode: 'cors',
-    headers: { "Content-Type": "application/json"},
-    body: dataToSendBR
-  });
-  const usRequest = await fetch("https://apis.justwatch.com/content/titles/en_US/popular", {
-    method: "post",
-    mode: 'cors',
-    headers: { "Content-Type": "application/json"},
-    body: dataToSendUS
-  });
-
-  console.log("status of br request:", brRequest.status);
-  if (brRequest.status === 200)
+function addAvailable(providers: string[], candidateProvider : string, movie: Movie) : Movie {
+  console.log("Testing with", candidateProvider)
+  if (!providers.includes(candidateProvider))
   {
-    const dataJson = await brRequest.json();
-      dataJson.items.map((result) => {
-        var foundProvs : string[] = [];
-        if ('scoring' in result)
-        {
-          // console.log("result has scoring");
-          result.scoring.map((score) => {
-            if (score.provider_type === "tmdb:id" && score.value === movie.id)
-            {
-              // console.log("Found", movie.title)
-              result.offers.map((offer) => {
-                // if (usProviders.includes(offer.package_short_name))
-                if (brProviders.includes(offer.package_short_name)
-                    && !foundProvs.includes(offer.package_short_name))
-                {
-                  // console.log("Available on",  offer.package_short_name);
-                  foundProvs.push(offer.package_short_name);
-                }
-              })
-            }
-          })
-          if (foundProvs.length > 0)
-          {
-            foundProvs.map((entry) => {
-              if (movie.available) movie.available.push(entry)
-            });
-          }
-        }
-      })
+    return movie;
   }
-  if (usRequest.status === 200)
+  if (!movie.available)
   {
-    const dataJson = await usRequest.json();
-      dataJson.items.map((result) => {
-        // console.log("result", result);
-        var foundProvs : string[] = [];
-        if ('scoring' in result)
-        {
-          // console.log("result has scoring");
-          result.scoring.map((score) => {
-            if (score.provider_type === "tmdb:id" && score.value === movie.id)
-            {
-              // console.log("Found", movie.title)
-              result.offers.map((offer) => {
-                // if (usProviders.includes(offer.package_short_name))
-                if (usProviders.includes(offer.package_short_name)
-                    && !foundProvs.includes(offer.package_short_name))
-                {
-                  // console.log("Available on",  offer.package_short_name);
-                  foundProvs.push(offer.package_short_name);
-                }
-              })
-            }
-          })
-          if (foundProvs.length > 0)
-          {
-            foundProvs.map((entry) => {
-              if (movie.available) movie.available.push(entry)
-            });
-          }
-        }
-      })
+    console.log("Added", candidateProvider)
+    movie.available = [candidateProvider];
+    return movie;
   }
-
-  if (movie.available.length === 0)
+  if (!movie.available.includes(candidateProvider))
   {
-    movie.available = undefined;
+    console.log("Added", candidateProvider)
+    movie.available.push(candidateProvider);
   }
   return movie;
 }
 
+async function getAvailable (movie : Movie) : Promise<Movie> {
+  // guard for movies without tmdb id
+  if (movie.id < 0)
+  {
+    return movie;
+  }
+  const brProviders = ["Netflix", "Amazon Prime Video", "HBO Max", "Google Play Movies", "Mubi", "Globo Play", "Disney Plus", "Star Plus"]
+  const usProviders = ["Criterion Channel"]
 
+  // console.log(`${movieApiBaseUrl}/movie/${movie.id}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`)
+  const tmdbRequest = await fetch(`${movieApiBaseUrl}/movie/${movie.id}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`);
+  console.log("status of br request:", tmdbRequest.status);
+  if (tmdbRequest.status != 200)
+  {
+    return movie;
+  }
+  movie.available = [];
+  const dataJson = await tmdbRequest.json();
+  if ("BR" in dataJson.results)
+  {
+    if ("buy" in dataJson.results["BR"])
+    {
+      dataJson.results["BR"].buy.map((entry) => {
+        movie = addAvailable(brProviders, entry.provider_name, movie);
+      })
+    }
+    if ("rent" in dataJson.results["BR"])
+    {
+      dataJson.results["BR"].rent.map((entry) => {
+        movie = addAvailable(brProviders, entry.provider_name, movie);
+      })
+    }
+    if ("flatrate" in dataJson.results["BR"])
+    {
+      console.log("got here")
+      dataJson.results["BR"].flatrate.map((entry) => {
+        movie = addAvailable(brProviders, entry.provider_name, movie);
+      })
+    }
+  }
+  if ("US" in dataJson.results)
+  {
+    if ("buy" in dataJson.results["US"])
+    {
+      dataJson.results["US"].buy.map((entry) => {
+        movie = addAvailable(usProviders, entry.provider_name, movie);
+      })
+    }
+    if ("rent" in dataJson.results["US"])
+    {
+      dataJson.results["US"].rent.map((entry) => {
+        movie = addAvailable(usProviders, entry.provider_name, movie);
+      })
+    }
+    if ("flatrate" in dataJson.results["US"])
+    {
+      dataJson.results["US"].flatrate.map((entry) => {
+        movie = addAvailable(usProviders, entry.provider_name, movie);
+      })
+    }
+  }
+  if (movie.available.length === 0)
+  {
+    movie.available = undefined;
+  }
+  console.log("Available:", movie.available)
+  return movie;
+}
 
 export function loadMovies(): Promise<Movie[]> {
   return fetch(

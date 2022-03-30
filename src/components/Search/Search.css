@@ -81,7 +81,7 @@ input[type="file"] {
         font-size: 1rem;
         color: white;
         outline: none;
-        width: 104px;
+        width: 99px;
     }
 
     .search__inputLong {
@@ -103,7 +103,7 @@ input[type="file"] {
         font-size: 1rem;
         color: white;
         outline: none;
-        width: 101px;
+        width: 87px;
     }
 
     .search__inputShorter {

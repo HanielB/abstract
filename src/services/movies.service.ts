@@ -229,7 +229,7 @@ function filterDiary(movie : any, date: Date[], rating: number[],
 
 function filterStatic(movie : any, title : RegExp, year: number[],
                       runtime: number[], director: RegExp, writer : RegExp,
-                      actor: RegExp, genre: RegExp)
+                      actor: RegExp, genre: RegExp, country: RegExp, studio: RegExp)
 : Boolean
 {
   if (!title.test(movie.title)
@@ -241,6 +241,10 @@ function filterStatic(movie : any, title : RegExp, year: number[],
           && !movie.actors.some((actorInfo) => actor.test(actorInfo.name)))
       || (movie.genres.length > 0
           && !movie.genres.some((genreName) => genre.test(genreName)))
+      || (movie.countries.length > 0
+          && !movie.countries.some((countryName) => country.test(countryName)))
+      || (movie.studios.length > 0
+          && !movie.studios.some((studioName) => studio.test(studioName)))
      )
   {
     return false;
@@ -259,13 +263,13 @@ function filterStatic(movie : any, title : RegExp, year: number[],
 function filterMovie(movie : any, title: RegExp, year: number[], date: Date[],
                      rating: number[], runtime: number[], tags : RegExp[],
                      director: RegExp, writer : RegExp, actor: RegExp,
-                     genre: RegExp, onlywatched: boolean,
-                     watchlist: boolean, rewatch: boolean):
+                     genre: RegExp, country: RegExp, studio: RegExp,
+                     onlywatched: boolean, watchlist: boolean, rewatch: boolean):
 Movie[] {
   var results : Movie[] = [];
   if ((!watchlist && movie.status === 0)
       || !filterStatic(movie, title, year, runtime,
-                       director, writer, actor, genre))
+                       director, writer, actor, genre, country, studio))
   {
     return [];
   }
@@ -362,10 +366,10 @@ Movie[] {
 }
 
 function filterMovies(master : any, title: string, year: string, date: string,
-                         rating: string, runtime: string, tags : string,
+                      rating: string, runtime: string, tags : string,
                       director: string, writer : string, actor: string,
-                      genre: string, sorting: string,
-                      onlywatched: boolean,
+                      genre: string, country: string, studio: string,
+                      sorting: string, onlywatched: boolean,
                       watchlist: boolean, rewatch: boolean):
 Promise<Movie[]> {
   var movies : Movie[] = [];
@@ -375,6 +379,8 @@ Promise<Movie[]> {
   const writerRegex = new RegExp(writer != "" ? writer : /.*/, 'i');
   const actorRegex = new RegExp(actor != "" ? actor : /.*/, 'i');
   const genreRegex = new RegExp(genre != "" ? genre : /.*/, 'i');
+  const countryRegex = new RegExp(country != "" ? country : /.*/, 'i');
+  const studioRegex = new RegExp(studio != "" ? studio : /.*/, 'i');
 
   // tags are a vector of regexes
   var tagsRegexes : RegExp[] = [];
@@ -467,6 +473,7 @@ Promise<Movie[]> {
     movies = movies.concat(filterMovie(movie, titleRegex, years, dates,
                                        ratings, runtimes, tagsRegexes, directorRegex,
                                        writerRegex, actorRegex, genreRegex,
+                                       countryRegex, studioRegex,
                                        onlywatched, watchlist, rewatch));
   });
   // TODO sorting
@@ -549,6 +556,7 @@ export function getMovies(master: Object[],
                           rating: string, runtime: string, tags : string,
                           director: string,
                           writer: string, actor: string, genre: string,
+                          country: string, studio: string,
                           sorting: string, onlywatched: boolean,
                           watchlist: boolean, rewatch: boolean, available: boolean
                          ):
@@ -557,7 +565,7 @@ Promise<Movie[]> {
   // TODO probably don't need promises anymore here
   return filterMovies(master, title, year, date,
                       rating, runtime, tags, director, writer,
-                      actor, genre, sorting,
+                      actor, genre, country, studio, sorting,
                       onlywatched, watchlist, rewatch)
     .then((movies) => {
       // let res = Array.from(tmp);

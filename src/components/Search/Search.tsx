@@ -15,6 +15,8 @@ export const Search = () => {
   const [writer, setWriter] = useState("");
   const [actor, setActor] = useState("");
   const [genre, setGenre] = useState("");
+  const [studio, setStudio] = useState("");
+  const [country, setCountry] = useState("");
   const [sorting, setSorting] = useState("");
   const [file, setFile] = useState("");
   const {master, movies, updateMovies, setLoading} = useContext(MoviesContext);
@@ -66,7 +68,7 @@ export const Search = () => {
     const rewatch = norewatchCheck? !norewatchCheck.checked : true;
     const available = availableCheck? availableCheck.checked : false;
     getMovies(master, title, year, date, rating, runtime, tags,
-              director, writer, actor, genre,
+              director, writer, actor, genre, country, studio,
               sorting ? sorting : "watched", onlywatched, watchlist, rewatch, available)
       .then((movies) => {
         console.log("Got back " + movies.length + " movie items");
@@ -90,29 +92,11 @@ export const Search = () => {
             />
             <input
               type="text"
-              name="date"
-              className="search__input"
-              placeholder="Watched Date ... "
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </div>
-          <div>
-            <input
-              type="text"
               name="year"
               className="search__inputShort"
               placeholder="Year ... "
               value={year}
               onChange={(e) => setYear(e.target.value)}
-            />
-            <input
-              type="text"
-              name="rating"
-              className="search__inputShort"
-              placeholder="Rating ... "
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
             />
             <input
               type="text"
@@ -126,12 +110,30 @@ export const Search = () => {
           <div>
             <input
               type="text"
+              name="date"
+              className="search__input"
+              placeholder="Watched Date ... "
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+            <input
+              type="text"
+              name="rating"
+              className="search__inputShort"
+              placeholder="Rating ... "
+              value={rating}
+              onChange={(e) => setRating(e.target.value)}
+            />
+            <input
+              type="text"
               name="tags"
               className="search__input"
               placeholder="Tags ... "
               value={tags}
               onChange={(e) => setTags(e.target.value)}
             />
+          </div>
+          <div>
             <input
               type="text"
               name="director"
@@ -139,6 +141,48 @@ export const Search = () => {
               placeholder="Director ... "
               value={director}
               onChange={(e) => setDirector(e.target.value)}
+            />
+            <input
+              type="text"
+              name="genre"
+              className="search__input"
+              placeholder="Genre"
+              value={genre}
+              onChange={(e) => setGenre(e.target.value)}
+            />
+            <input
+              type="text"
+              name="country"
+              className="search__input"
+              placeholder="Country"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              name="writer"
+              className="search__input"
+              placeholder="Writer ... "
+              value={writer}
+              onChange={(e) => setWriter(e.target.value)}
+            />
+            <input
+              type="text"
+              name="actor"
+              className="search__input"
+              placeholder="Actor"
+              value={actor}
+              onChange={(e) => setActor(e.target.value)}
+            />
+            <input
+              type="text"
+              name="studio"
+              className="search__input"
+              placeholder="Studio"
+              value={studio}
+              onChange={(e) => setStudio(e.target.value)}
             />
           </div>
         </div>

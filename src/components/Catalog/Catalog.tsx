@@ -28,7 +28,7 @@ export const Catalog = () => {
   const getDirected = (director: string) => {
     setLoading(true);
     getMovies(master, "", "", "", "", "", "",
-              director, "", "", "",
+              director, "", "", "", "", "",
               "year", true, true, true, true)
       .then((movies) => {
         setLoading(false);
@@ -39,7 +39,7 @@ export const Catalog = () => {
   const getTag = (tag: string) => {
     setLoading(true);
     getMovies(master, "", "", "", "", "", tag,
-              "", "", "", "",
+              "", "", "", "", "", "",
               "watched", false, false, true, true)
       .then((movies) => {
         setLoading(false);

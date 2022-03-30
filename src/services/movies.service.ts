@@ -89,7 +89,6 @@ async function getAvailable (movie : Movie) : Promise<Movie> {
   {
     return movie;
   }
-  movie.available = [];
   const dataJson = await tmdbRequest.json();
   if ("BR" in dataJson.results)
   {
@@ -134,7 +133,7 @@ async function getAvailable (movie : Movie) : Promise<Movie> {
       })
     }
   }
-  if (movie.available.length === 0)
+  if (movie.available && movie.available.length === 0)
   {
     movie.available = undefined;
   }
@@ -282,6 +281,7 @@ Movie[] {
         picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
         lbFilmLink: movie.lbURL,
         directors : movie.directors,
+        available : movie.available,
         watchlist : true
       }
     ];
@@ -314,7 +314,8 @@ Movie[] {
       picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
       lbDiaryLink: lbDiaryLink,
       lbFilmLink: movie.lbURL,
-      directors : movie.directors
+      directors : movie.directors,
+      available : movie.available,
     });
   }
   else if (movie.diary.length == 0)
@@ -331,7 +332,8 @@ Movie[] {
       picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
       lbDiaryLink: "",
       lbFilmLink: movie.lbURL,
-      directors : movie.directors
+      directors : movie.directors,
+      available : movie.available
     });
   }
   else
@@ -351,7 +353,8 @@ Movie[] {
         lbDiaryLink: entry.entryURL,
         lbFilmLink: movie.lbURL,
         directors : movie.directors,
-        rewatch : entry.rewatch
+        rewatch : entry.rewatch,
+        available : movie.available
       })
     });
   }
@@ -563,6 +566,8 @@ Promise<Movie[]> {
         {
           if (available)
             return getAvailable(movie);
+          if (movie.available)
+            movie.available = undefined;
           return movie;
         }
         return getPicture(movie);

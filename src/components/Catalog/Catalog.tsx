@@ -3,6 +3,7 @@ import "./Catalog.css";
 import imgPlaceholder from "./movie_placeholder.png";
 import rewatchImg from "./two-circular-arrows.png";
 import watchlistImg from "./not-watched.png";
+import downloadImg from "./download.png";
 import { MoviesContext } from "../../services/context";
 import { getMovies } from "../../services/movies.service";
 
@@ -56,6 +57,7 @@ export const Catalog = () => {
     if (prov == "Disney Plus") return "https://images.justwatch.com/icon/147638351/s100"
     if (prov == "Criterion Channel") return "https://a.ltrbxd.com/sm/upload/j6/4v/o4/ru/criterionchannel-small.png?k=d168bd1a60"
     if (prov == "Star Plus") return "https://images.justwatch.com/icon/250272035/s100"
+    if (prov == "local") return downloadImg;
     return imgPlaceholder;
   }
 

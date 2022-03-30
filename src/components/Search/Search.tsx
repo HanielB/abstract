@@ -85,8 +85,8 @@ export const Search = () => {
             <input
               type="text"
               name="movie"
-              className="search__input"
-              placeholder="Title ... "
+              className="search__inputLong"
+              placeholder="Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
@@ -94,15 +94,15 @@ export const Search = () => {
               type="text"
               name="year"
               className="search__inputShort"
-              placeholder="Year ... "
+              placeholder="Year"
               value={year}
               onChange={(e) => setYear(e.target.value)}
             />
             <input
               type="text"
               name="runtime"
-              className="search__inputShort"
-              placeholder="Runtime ... "
+              className="search__inputShorter"
+              placeholder="Runtime"
               value={runtime}
               onChange={(e) => setRuntime(e.target.value)}
             />
@@ -111,24 +111,24 @@ export const Search = () => {
             <input
               type="text"
               name="date"
-              className="search__input"
-              placeholder="Watched Date ... "
+              className="search__inputShort"
+              placeholder="Watched"
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
             <input
               type="text"
               name="rating"
-              className="search__inputShort"
-              placeholder="Rating ... "
+              className="search__inputShorter"
+              placeholder="Rating"
               value={rating}
               onChange={(e) => setRating(e.target.value)}
             />
             <input
               type="text"
               name="tags"
-              className="search__input"
-              placeholder="Tags ... "
+              className="search__inputLong"
+              placeholder="Tags"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
             />
@@ -138,7 +138,7 @@ export const Search = () => {
               type="text"
               name="director"
               className="search__input"
-              placeholder="Director ... "
+              placeholder="Director"
               value={director}
               onChange={(e) => setDirector(e.target.value)}
             />
@@ -164,7 +164,7 @@ export const Search = () => {
               type="text"
               name="writer"
               className="search__input"
-              placeholder="Writer ... "
+              placeholder="Writer"
               value={writer}
               onChange={(e) => setWriter(e.target.value)}
             />

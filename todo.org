@@ -55,8 +55,10 @@
   - State "DONE"       from "TODO"       [2022-01-11 Tue 00:26]
   - State "TODO"       from              [2022-01-10 Mon 23:25]
   :END:
-* TODO Integrate JW
+* DONE Integrate JW
+  CLOSED: [2022-03-26 Sat 22:43]
   :STATES:
+  - State "DONE"       from "TODO"       [2022-03-26 Sat 22:43]
   - State "TODO"       from              [2022-01-10 Mon 00:02]
   :END:
 * TODO Deal with many director-titles

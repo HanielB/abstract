@@ -527,7 +527,7 @@ Promise<Movie[]> {
       }
       if (!movie2.ratingNum)
       {
-        return 0;
+        return -1;
       }
       return movie2.ratingNum - movie1.ratingNum
     })

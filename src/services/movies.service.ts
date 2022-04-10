@@ -233,18 +233,24 @@ function filterStatic(movie : any, title : RegExp, year: number[],
 : Boolean
 {
   if (!title.test(movie.title)
-      || (movie.directors.length > 0
-          && !movie.directors.some((dirName) => director.test(dirName)))
-      || (movie.writers.length > 0
-          && !movie.writers.some((writerInfo) => writer.test(writerInfo.name)))
-      || (movie.actors.length > 0
-          && !movie.actors.some((actorInfo) => actor.test(actorInfo.name)))
-      || (movie.genres.length > 0
-          && !movie.genres.some((genreName) => genre.test(genreName)))
-      || (movie.countries.length > 0
-          && !movie.countries.some((countryName) => country.test(countryName)))
-      || (movie.studios.length > 0
-          && !movie.studios.some((studioName) => studio.test(studioName)))
+      || (director != new RegExp(/.*/, 'i') &&
+          (movie.directors.length === 0
+           || !movie.directors.some((dirName) => director.test(dirName))))
+      || (writer  != new RegExp(/.*/, 'i') &&
+          (movie.writers.length === 0
+           || !movie.writers.some((writerInfo) => writer.test(writerInfo.name))))
+      || (actor != new RegExp(/.*/, 'i')
+          && (movie.actors.length === 0
+              || !movie.actors.some((actorInfo) => actor.test(actorInfo.name))))
+      || (genre != new RegExp(/.*/, 'i') &&
+          (movie.genres.length === 0
+           || !movie.genres.some((genreName) => genre.test(genreName))))
+      || (country != new RegExp(/.*/, 'i') &&
+          (movie.countries.length === 0
+           || !movie.countries.some((countryName) => country.test(countryName))))
+      || (studio != new RegExp(/.*/, 'i') &&
+          (movie.studios.length === 0
+           || !movie.studios.some((studioName) => studio.test(studioName))))
      )
   {
     return false;

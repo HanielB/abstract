@@ -67,6 +67,7 @@ export const Search = () => {
     const watchlist = watchlistCheck? watchlistCheck.checked : false;
     const rewatch = norewatchCheck? !norewatchCheck.checked : true;
     const available = availableCheck? availableCheck.checked : false;
+
     getMovies(master, title, year, date, rating, runtime, tags,
               director, writer, actor, genre, country, studio,
               sorting ? sorting : "watched", onlywatched, watchlist, rewatch, available)
@@ -191,7 +192,7 @@ export const Search = () => {
             <legend>Sorting</legend>
             <div className="form_radio">
               <div className="form_radio_label">
-                <input type="radio" id="watched" name="sorting" value="watched" checked={true} onChange={(e) => setSorting(e.target.value)}/>
+                <input type="radio" id="watched" name="sorting" value="watched" onChange={(e) => setSorting(e.target.value)}/>
                 <label htmlFor="watched">Watched</label>
               </div>
               <div className="form_radio_label">

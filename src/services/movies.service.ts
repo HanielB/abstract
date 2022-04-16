@@ -215,7 +215,7 @@ function filterDiary(movie : any, date: Date[], rating: number[],
   if (rating.length > 0
       && ((rating[0] === -1 && movie.ratingNum > 0)
           || (rating[0] != -1
-              && (movie.ratingNum < rating[0] || movie.ratingNum > rating[1]))))
+              && (movie.ratingNum <= rating[0] || movie.ratingNum > rating[1]))))
   {
     return false;
   }
@@ -251,7 +251,7 @@ function filterStatic(movie : any, title : RegExp, year: number[],
       || (studio != new RegExp(/.*/, 'i') &&
           (movie.studios.length === 0
            || !movie.studios.some((studioName) => studio.test(studioName))))
-     )
+      )
   {
     return false;
   }
@@ -287,7 +287,7 @@ Movie[] {
         year : movie.year,
         title : movie.title,
         runtime : movie.runtime,
-        ratingNum: 0,
+        ratingNum: -1,
         picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
         lbFilmLink: movie.lbURL,
         directors : movie.directors,
@@ -336,7 +336,7 @@ Movie[] {
       title : movie.title,
       watched : "",
       rating : "",
-      ratingNum : 0,
+      ratingNum : -1,
       runtime : movie.runtime,
       tags : [],
       picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
@@ -422,6 +422,10 @@ Promise<Movie[]> {
   if (ratings.length === 1)
   {
     ratings.push(ratings[0] + 0.9)
+  }
+  else
+  {
+    ratings[1] = ratings[1] + 0.9;
   }
   var dates : Date[] = date === "-1"? [new Date(1900), new Date(1900)]: [];
   if (date != "" && dates != [])

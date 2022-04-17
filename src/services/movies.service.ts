@@ -227,31 +227,36 @@ function filterDiary(movie : any, date: Date[], rating: number[],
   return true;
 }
 
+function isRegexAll(regex: RegExp)
+{
+  return regex.toString() === (new RegExp(/.*/, 'i')).toString();
+}
+
 function filterStatic(movie : any, title : RegExp, year: number[],
                       runtime: number[], director: RegExp, writer : RegExp,
                       actor: RegExp, genre: RegExp, country: RegExp, studio: RegExp)
 : Boolean
 {
   if (!title.test(movie.title)
-      || (director != new RegExp(/.*/, 'i') &&
+      || (!isRegexAll(director) &&
           (movie.directors.length === 0
            || !movie.directors.some((dirName) => director.test(dirName))))
-      || (writer  != new RegExp(/.*/, 'i') &&
+      || (!isRegexAll(writer) &&
           (movie.writers.length === 0
            || !movie.writers.some((writerInfo) => writer.test(writerInfo.name))))
-      || (actor != new RegExp(/.*/, 'i')
-          && (movie.actors.length === 0
-              || !movie.actors.some((actorInfo) => actor.test(actorInfo.name))))
-      || (genre != new RegExp(/.*/, 'i') &&
+      || (!isRegexAll(actor) &&
+          (movie.actors.length === 0
+           || !movie.actors.some((actorInfo) => actor.test(actorInfo.name))))
+      || (!isRegexAll(genre) &&
           (movie.genres.length === 0
            || !movie.genres.some((genreName) => genre.test(genreName))))
-      || (country != new RegExp(/.*/, 'i') &&
+      || (!isRegexAll(country) &&
           (movie.countries.length === 0
            || !movie.countries.some((countryName) => country.test(countryName))))
-      || (studio != new RegExp(/.*/, 'i') &&
+      || (!isRegexAll(studio) &&
           (movie.studios.length === 0
            || !movie.studios.some((studioName) => studio.test(studioName))))
-      )
+     )
   {
     return false;
   }

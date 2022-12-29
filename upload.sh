@@ -2,5 +2,5 @@
 
 npm run build &> /dev/null
 cd build
-scp -rp . dcc-login:~/public_html/filminhos/ &> /dev/null
-cd -
+rsync --recursive --times --compress --delete --progress . hostinger:~/public_html/filminhos/ &> /dev/null
+cd - &> /dev/null

@@ -49,9 +49,10 @@ function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [master, setMaster] = useState<Object[]>([]);
+  const [selected, setSelected] = useState<number[]>([]);
 
   return (
-      <MoviesContext.Provider value={{master, movies, updateMovies: setMovies, loading, setLoading: setLoading }}>
+      <MoviesContext.Provider value={{master, movies, selected, updateMovies: setMovies, loading, setLoading: setLoading, setSelected: setSelected }}>
       <div className="App">
         <Header></Header>
         <Catalog></Catalog>

@@ -12,17 +12,8 @@ export const Catalog = () => {
   const { master, movies, loading,
           setLoading, updateMovies } = useContext(MoviesContext);
 
-  const getId = (id: number, watched?: string) => {
-    if (!watched)
-    {
-      return id;
-    }
-    const split = watched.split("-")
-    const yearMovie = Number(split[0])
-    const monthMovie = Number(split[1])
-    const dayMovie = Number(split[2])
-
-    return id + yearMovie + monthMovie + dayMovie;
+  const handleCardClick = (key: Number) => {
+    console.log("Control clicked on card " + key)
   }
 
   const getDirected = (director: string) => {
@@ -48,16 +39,16 @@ export const Catalog = () => {
   }
 
   const getIcon = (prov : string) => {
-    if (prov == "Netflix") return "https://a.ltrbxd.com/sm/upload/za/bp/jc/zn/netflix-small.png";
-    if (prov == "Amazon Prime Video") return "https://images.justwatch.com/icon/52449861/s100"
-    if (prov == "HBO Max") return "https://images.justwatch.com/icon/182948653/s100"
-    if (prov == "Globo Play") return "https://images.justwatch.com/icon/136871678/s100"
-    if (prov == "Mubi") return "https://a.ltrbxd.com/sm/upload/0t/1m/aa/u9/mubi.png?k=371edba60c"
-    if (prov == "Google Play Movies") return "https://a.ltrbxd.com/sm/upload/o0/8s/mp/ej/google-small.png?k=c07a6d2d92"
-    if (prov == "Disney Plus") return "https://images.justwatch.com/icon/147638351/s100"
-    if (prov == "Criterion Channel") return "https://a.ltrbxd.com/sm/upload/j6/4v/o4/ru/criterionchannel-small.png?k=d168bd1a60"
-    if (prov == "Star Plus") return "https://images.justwatch.com/icon/250272035/s100"
-    if (prov == "local") return downloadImg;
+    if (prov === "Netflix") return "https://a.ltrbxd.com/sm/upload/za/bp/jc/zn/netflix-small.png";
+    if (prov === "Amazon Prime Video") return "https://images.justwatch.com/icon/52449861/s100"
+    if (prov === "HBO Max") return "https://images.justwatch.com/icon/182948653/s100"
+    if (prov === "Globo Play") return "https://images.justwatch.com/icon/136871678/s100"
+    if (prov === "Mubi") return "https://a.ltrbxd.com/sm/upload/0t/1m/aa/u9/mubi.png?k=371edba60c"
+    if (prov === "Google Play Movies") return "https://a.ltrbxd.com/sm/upload/o0/8s/mp/ej/google-small.png?k=c07a6d2d92"
+    if (prov === "Disney Plus") return "https://images.justwatch.com/icon/147638351/s100"
+    if (prov === "Criterion Channel") return "https://a.ltrbxd.com/sm/upload/j6/4v/o4/ru/criterionchannel-small.png?k=d168bd1a60"
+    if (prov === "Star Plus") return "https://images.justwatch.com/icon/250272035/s100"
+    if (prov === "local") return downloadImg;
     return imgPlaceholder;
   }
 
@@ -69,7 +60,7 @@ export const Catalog = () => {
   return (
     <div className="catalogContainer">
       {movies.map((movie) => (
-        <div className="catalog__item" key={getId(movie.id, movie.watched)}>
+        <div className="catalog__item" key={movie.id} onClick={(e) => {if (e.ctrlKey) handleCardClick(movie.id);}}>
           <div className="catalog__item__img">
               <img src={movie.picture || imgPlaceholder} alt={movie.title}
               />

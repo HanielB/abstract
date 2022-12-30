@@ -38,6 +38,7 @@ a:active {
     .catalog__item {
         display: flex;
         flex-flow: row nowrap;
+        border-color: red;
         /* width: 22%; */
         width: 380px;
         position: relative;
@@ -133,6 +134,17 @@ a:active {
     .catalog__item {
         display: flex;
         flex-flow: row nowrap;
+        /* width: 22%; */
+        width: 460px;
+        position: relative;
+        transition: all ease-in-out 0.3s;
+        cursor: pointer;
+    }
+
+    .catalog__item__selected {
+        display: flex;
+        flex-flow: row nowrap;
+        border:1px solid red;
         /* width: 22%; */
         width: 460px;
         position: relative;

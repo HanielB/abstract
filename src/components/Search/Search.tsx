@@ -50,7 +50,7 @@ export const Search = () => {
         }
         fr.readAsText(files[0]);
     }
-  };
+  }
 
   const handleOnSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -70,7 +70,8 @@ export const Search = () => {
 
     getMovies(master, title, year, date, rating, runtime, tags,
               director, writer, actor, genre, country, studio,
-              sorting ? sorting : "watched", onlywatched, watchlist, rewatch, available)
+              sorting ? sorting : "watched", onlywatched,
+              watchlist, rewatch, available)
       .then((movies) => {
         console.log("Got back " + movies.length + " movie items");
         setLoading(false);

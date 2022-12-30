@@ -23,6 +23,20 @@ export function getMovie(id: any): Promise<Movie[]> {
     });
 }
 
+export function getId(id: number, watched?: string) : number {
+  if (!watched)
+  {
+    return id;
+  }
+  const split = watched.split("-")
+  const yearMovie = Number(split[0])
+  const monthMovie = Number(split[1])
+  const dayMovie = Number(split[2])
+
+  return id + yearMovie + monthMovie + dayMovie;
+}
+
+
 function mapResult(res: any): Movie[] {
     const {
       id,
@@ -35,6 +49,7 @@ function mapResult(res: any): Movie[] {
 
     return [{
       id,
+      tmdbId : id,
       year : new Date(release_date).getFullYear().toString(),
       title,
       rating: undefined,
@@ -46,7 +61,7 @@ function mapResult(res: any): Movie[] {
 }
 
 function getPicture (movie : Movie) : Promise<Movie> {
-  return getMovie(movie.id).then((movies) => {
+  return getMovie(movie.tmdbId).then((movies) => {
     var newMovie = movie;
     newMovie.picture = movies[0].picture;
     return newMovie;
@@ -75,17 +90,17 @@ function addAvailable(providers: string[], candidateProvider : string, movie: Mo
 
 async function getAvailable (movie : Movie) : Promise<Movie> {
   // guard for movies without tmdb id
-  if (movie.id < 0)
+  if (movie.tmdbId < 0)
   {
     return movie;
   }
   const brProviders = ["Netflix", "Amazon Prime Video", "HBO Max", "Google Play Movies", "Mubi", "Globo Play", "Disney Plus", "Star Plus"]
   const usProviders = ["Criterion Channel"]
 
-  // console.log(`${movieApiBaseUrl}/movie/${movie.id}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`)
-  const tmdbRequest = await fetch(`${movieApiBaseUrl}/movie/${movie.id}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`);
+  // console.log(`${movieApiBaseUrl}/movie/${movie.tmdbId}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`)
+  const tmdbRequest = await fetch(`${movieApiBaseUrl}/movie/${movie.tmdbId}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`);
   console.log("status of br request:", tmdbRequest.status);
-  if (tmdbRequest.status != 200)
+  if (tmdbRequest.status !== 200)
   {
     return movie;
   }
@@ -175,6 +190,7 @@ function mapLoaded(res: any[]): Movie[] {
 
     return {
       id,
+      tmdbId : id,
       year,
       title,
       watched,
@@ -214,7 +230,7 @@ function filterDiary(movie : any, date: Date[], rating: number[],
   }
   if (rating.length > 0
       && ((rating[0] === -1 && movie.ratingNum > 0)
-          || (rating[0] != -1
+          || (rating[0] !== -1
               && (movie.ratingNum <= rating[0] || movie.ratingNum > rating[1]))))
   {
     return false;
@@ -260,11 +276,11 @@ function filterStatic(movie : any, title : RegExp, year: number[],
   {
     return false;
   }
-  if (year.length > 0 && movie.year < year[0] || movie.year > year[1])
+  if (year.length > 0 && (movie.year < year[0] || movie.year > year[1]))
   {
     return false;
   }
-  if (runtime.length > 0 && movie.runtime < runtime[0] || movie.runtime > runtime[1])
+  if (runtime.length > 0 && (movie.runtime < runtime[0] || movie.runtime > runtime[1]))
   {
     return false;
   }
@@ -289,6 +305,7 @@ Movie[] {
     return [
       {
         id : movie.tmdbId,
+        tmdbId : movie.tmdbId,
         year : movie.year,
         title : movie.title,
         runtime : movie.runtime,
@@ -318,7 +335,8 @@ Movie[] {
       lbDiaryLink = movie.diary[movie.diary.length - 1].entryURL;
     }
     results.push({
-      id : movie.tmdbId,
+      id : getId(movie.tmdbId, watchedInfo),
+      tmdbId : movie.tmdbId,
       year : movie.year,
       title : movie.title,
       watched : watchedInfo,
@@ -333,10 +351,11 @@ Movie[] {
       available : movie.available,
     });
   }
-  else if (movie.diary.length == 0)
+  else if (movie.diary.length === 0)
   {
     results.push({
       id : movie.tmdbId,
+      tmdbId : movie.tmdbId,
       year : movie.year,
       title : movie.title,
       watched : "",
@@ -356,7 +375,8 @@ Movie[] {
     // for each diary entry, create a new movie if it fits criteria
     movie.diary.map((entry) => {
       results.push({
-        id : movie.tmdbId,
+        id : getId(movie.tmdbId, entry.date),
+        tmdbId : movie.tmdbId,
         year : movie.year,
         title : movie.title,
         watched : entry.date,
@@ -385,17 +405,17 @@ function filterMovies(master : any, title: string, year: string, date: string,
 Promise<Movie[]> {
   var movies : Movie[] = [];
   // create regex ignoring case
-  const titleRegex = new RegExp(title != "" ? title : /.*/, 'i');
-  const directorRegex = new RegExp(director != "" ? director : /.*/, 'i');
-  const writerRegex = new RegExp(writer != "" ? writer : /.*/, 'i');
-  const actorRegex = new RegExp(actor != "" ? actor : /.*/, 'i');
-  const genreRegex = new RegExp(genre != "" ? genre : /.*/, 'i');
-  const countryRegex = new RegExp(country != "" ? country : /.*/, 'i');
-  const studioRegex = new RegExp(studio != "" ? studio : /.*/, 'i');
+  const titleRegex = new RegExp(title !== "" ? title : /.*/, 'i');
+  const directorRegex = new RegExp(director !== "" ? director : /.*/, 'i');
+  const writerRegex = new RegExp(writer !== "" ? writer : /.*/, 'i');
+  const actorRegex = new RegExp(actor !== "" ? actor : /.*/, 'i');
+  const genreRegex = new RegExp(genre !== "" ? genre : /.*/, 'i');
+  const countryRegex = new RegExp(country !== "" ? country : /.*/, 'i');
+  const studioRegex = new RegExp(studio !== "" ? studio : /.*/, 'i');
 
   // tags are a vector of regexes
   var tagsRegexes : RegExp[] = [];
-  if (tags != "")
+  if (tags !== "")
   {
     const allTags = tags.split(";");
     for (let i = 0; i < allTags.length; i++)
@@ -408,14 +428,14 @@ Promise<Movie[]> {
   // bound as y1, otherwise it's y2 if given, otherwise it's current
   // year
   var years : number[] = year === "" ? [] : year.split("..").map(
-    (year) => Number(year != "" ? year : new Date().getFullYear()))
+    (year) => Number(year !== "" ? year : new Date().getFullYear()))
   if (years.length === 1)
   {
     years.push(years[0])
   }
 
   var runtimes : number[] = runtime === "" ? [] : runtime.split("..").map(
-    (runtime) => runtime != "" ? Number(runtime) : 10000)
+    (runtime) => runtime !== "" ? Number(runtime) : 10000)
   if (runtimes.length === 1)
   {
     runtimes.push(runtimes[0])
@@ -423,7 +443,7 @@ Promise<Movie[]> {
 
   var ratings : number[] = rating === "" ? [] :
       (rating === "-1" ? [-1,-1] :
-       rating.split("..").map((rating) => rating != "" ? Number(rating) : 10))
+       rating.split("..").map((rating) => rating !== "" ? Number(rating) : 10))
   if (ratings.length === 1)
   {
     ratings.push(ratings[0] + 0.9)
@@ -433,7 +453,7 @@ Promise<Movie[]> {
     ratings[1] = ratings[1] + 0.9;
   }
   var dates : Date[] = date === "-1"? [new Date(1900), new Date(1900)]: [];
-  if (date != "" && dates != [])
+  if (date !== "" && dates !== [])
   {
     const split = date.split("..")
     // first four digits are year
@@ -493,7 +513,7 @@ Promise<Movie[]> {
   });
   // TODO sorting
   console.log("sorting:", sorting)
-  if (sorting == "watched")
+  if (sorting === "watched")
   {
     movies.sort((movie1, movie2) => {
       if (!movie1.watched || movie1.watched.length === 0)
@@ -519,7 +539,7 @@ Promise<Movie[]> {
       return date2 > date1 ? 1 : -1;
     })
   }
-  else if (sorting == "year")
+  else if (sorting === "year")
   {
     movies.sort((movie1, movie2) => {
       if (!movie1.year)
@@ -533,7 +553,7 @@ Promise<Movie[]> {
       return Number(movie2.year) - Number(movie1.year)
     })
   }
-  else if (sorting == "rating")
+  else if (sorting === "rating")
   {
     movies.sort((movie1, movie2) => {
       if (!movie1.ratingNum)
@@ -547,7 +567,7 @@ Promise<Movie[]> {
       return movie2.ratingNum - movie1.ratingNum
     })
   }
-  else if (sorting == "runtime")
+  else if (sorting === "runtime")
   {
     movies.sort((movie1, movie2) => {
       if (!movie1.runtime)
@@ -601,6 +621,7 @@ Promise<Movie[]> {
 
 export interface Movie {
   id: number;
+  tmdbId: number;
   watched?: string
   year?: string;
   title: string;

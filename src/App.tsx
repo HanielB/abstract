@@ -27,7 +27,6 @@ function App() {
       .then((loadedMovies) => setMovies(loadedMovies));
   }, []);
 
-  // let obj =
   useEffect(() => {
     const src = url.searchParams.get("src");
     var init = "master.json";
@@ -57,7 +56,10 @@ function App() {
   };
 
   return (
-      <MoviesContext.Provider value={{master, movies, selected, updateMovies: setMovies, loading, setLoading: setLoading, setSelected: setSelected }}>
+    <MoviesContext.Provider value={
+                              {master, movies, selected, updateMovies: setMovies,
+                               loading, setLoading: setLoading,
+                               setSelected: setSelected }}>
       <div className="App">
         <Header></Header>
         <Catalog></Catalog>

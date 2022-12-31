@@ -46,8 +46,8 @@ function App() {
       .then((loadedSrc) => setMaster(loadedSrc));
   }, []);
 
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [movies, _setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState(false);
   const [master, setMaster] = useState<Object[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
 

@@ -51,6 +51,11 @@ function App() {
   const [master, setMaster] = useState<Object[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
 
+  const setMovies = (movies) => {
+    _setMovies([]);
+    _setMovies(movies);
+  };
+
   return (
       <MoviesContext.Provider value={{master, movies, selected, updateMovies: setMovies, loading, setLoading: setLoading, setSelected: setSelected }}>
       <div className="App">

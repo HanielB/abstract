@@ -1,19 +1,49 @@
-import React, { useContext } from "react";
+import React, { useContext, useReducer } from "react";
 import "./Catalog.css";
 import imgPlaceholder from "./movie_placeholder.png";
 import rewatchImg from "./two-circular-arrows.png";
 import watchlistImg from "./not-watched.png";
 import downloadImg from "./download.png";
 import { MoviesContext } from "../../services/context";
-import { getMovies } from "../../services/movies.service";
+import { Movie, getMovies } from "../../services/movies.service";
 
 
 export const Catalog = () => {
-  const { master, movies, loading,
-          setLoading, updateMovies } = useContext(MoviesContext);
+  const { master, movies, loading, selected,
+          setLoading, updateMovies, setSelected } = useContext(MoviesContext);
+  const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const handleCardClick = (key: Number) => {
-    console.log("Control clicked on card " + key)
+  // remove all selected cards
+  const handleRemoval = () => {
+    if (selected.length === 0)
+      return;
+    var newMovies : Movie[] = [];
+    movies.map((movie) => {
+      if (!selected.includes(movie.id))
+      {
+        newMovies.push(movie);
+      }
+    });
+    setSelected([]);
+    updateMovies(newMovies);
+  }
+
+  const handleCardClick = (id: number) => {
+    if (selected.find(e => e === id))
+    {
+      setSelected(selected.filter(e => e !== id));
+      return;
+    }
+    selected.push(id);
+    forceUpdate();
+  }
+
+  const inSelected = (id : number) => {
+    if (selected.find(e => e === id))
+    {
+      return true;
+    }
+    return false;
   }
 
   const getDirected = (director: string) => {
@@ -58,9 +88,19 @@ export const Catalog = () => {
             </div>);
   }
   return (
-    <div className="catalogContainer">
+    <div className="catalogContainer" id="catalog">
       {movies.map((movie) => (
-        <div className="catalog__item" key={movie.id} onClick={(e) => {if (e.ctrlKey) handleCardClick(movie.id);}}>
+        <div className={"catalog__item" + (inSelected(movie.id) ? "__selected" : "")}
+             tabIndex={0}
+             key={movie.id}
+             onClick={(e) => {if (e.ctrlKey) handleCardClick(movie.id);}}
+             onKeyDown={(e) => {
+               // if backspace or delete is pressed
+               if (e.keyCode === 8 || e.keyCode === 46) {
+                 handleRemoval();
+               }
+               }}
+        >
           <div className="catalog__item__img">
               <img src={movie.picture || imgPlaceholder} alt={movie.title}
               />

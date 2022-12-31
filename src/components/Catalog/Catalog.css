@@ -38,7 +38,18 @@ a:active {
     .catalog__item {
         display: flex;
         flex-flow: row nowrap;
-        border-color: red;
+        border: 2px solid transparent;
+        /* width: 22%; */
+        width: 380px;
+        position: relative;
+        transition: all ease-in-out 0.3s;
+        cursor: pointer;
+    }
+
+    .catalog__item__selected {
+        display: flex;
+        flex-flow: row nowrap;
+        border: 2px solid red;
         /* width: 22%; */
         width: 380px;
         position: relative;
@@ -134,6 +145,7 @@ a:active {
     .catalog__item {
         display: flex;
         flex-flow: row nowrap;
+        border: 3px solid transparent;
         /* width: 22%; */
         width: 460px;
         position: relative;
@@ -144,7 +156,7 @@ a:active {
     .catalog__item__selected {
         display: flex;
         flex-flow: row nowrap;
-        border:1px solid red;
+        border: 3px solid red;
         /* width: 22%; */
         width: 460px;
         position: relative;

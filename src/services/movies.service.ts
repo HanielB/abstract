@@ -69,7 +69,6 @@ function getPicture (movie : Movie) : Promise<Movie> {
 }
 
 function addAvailable(providers: string[], candidateProvider : string, movie: Movie) : Movie {
-  console.log("Testing with", candidateProvider)
   if (!providers.includes(candidateProvider))
   {
     return movie;

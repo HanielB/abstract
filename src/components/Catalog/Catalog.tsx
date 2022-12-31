@@ -28,6 +28,46 @@ export const Catalog = () => {
     updateMovies(newMovies);
   }
 
+  // move given card "move" positions
+  const handleMove = (id: number, move: number) => {
+    var foundIndex = -1;
+    var newIndex = -1;
+    for (let i = 0; i < movies.length; i++)
+    {
+      if (movies[i].id === id)
+      {
+        foundIndex = i;
+        newIndex = Math.min(Math.max(0, i + move), movies.length);
+      }
+    }
+    var newMovies : Movie[] = [];
+    // going left
+    if (move < 0)
+    {
+      // get movies up to new index
+      newMovies = movies.slice(0, newIndex);
+      // put at new index
+      newMovies.push(movies[foundIndex]);
+      // put everybody between that index and the original index of the moved guy
+      newMovies.push(...movies.slice(newIndex, foundIndex));
+      // put everybody after original index
+      newMovies.push(...movies.slice(foundIndex + 1))
+    }
+    // going right
+    else
+    {
+      // get movies up to original index
+      newMovies = movies.slice(0, foundIndex);
+      // get everybody after original index and up to new index (inclusive)
+      newMovies.push(...movies.slice(foundIndex + 1, newIndex + 1));
+      // put at new index
+      newMovies.push(movies[foundIndex]);
+      // put everybody after new index
+      newMovies.push(...movies.slice(newIndex + 1))
+    }
+    updateMovies(newMovies);
+  }
+
   const handleCardClick = (id: number) => {
     if (selected.find(e => e === id))
     {
@@ -98,6 +138,23 @@ export const Catalog = () => {
                // if backspace or delete is pressed
                if (e.keyCode === 8 || e.keyCode === 46) {
                  handleRemoval();
+               }
+               // left arrow  37, up arrow  38, right arrow 39, down arrow  40
+               else if (e.keyCode === 37)
+               {
+                 handleMove(movie.id, -1);
+               }
+               else if (e.keyCode === 38)
+               {
+                 handleMove(movie.id, -4);
+               }
+               else if (e.keyCode === 39)
+               {
+                 handleMove(movie.id, 1);
+               }
+               else if (e.keyCode === 40)
+               {
+                 handleMove(movie.id, 4);
                }
                }}
         >

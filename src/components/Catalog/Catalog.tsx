@@ -68,9 +68,10 @@ export const Catalog = () => {
     updateMovies(newMovies);
   }
 
-  const handleCardClick = (id: number) => {
-    if (selected.find(e => e === id))
+  const handleCardCtrlClick = (id: number) => {
+    if (selected.includes(id))
     {
+      // make selected as old one minus the given id
       setSelected(selected.filter(e => e !== id));
       return;
     }
@@ -78,12 +79,33 @@ export const Catalog = () => {
     forceUpdate();
   }
 
-  const inSelected = (id : number) => {
-    if (selected.find(e => e === id))
+  const handleCardShiftClick = (id: number) => {
+    var foundIndex = -1;
+    var firstIndex = -1;
+    for (let i = 0; i < movies.length; i++)
     {
-      return true;
+      if (firstIndex === -1 && selected.includes(movies[i].id))
+      {
+        firstIndex = i;
+        continue;
+      }
+      if (movies[i].id === id)
+        foundIndex = i;
     }
-    return false;
+    // if only selecting, set this guy as selected, in case it is not
+    if (firstIndex === -1)
+    {
+      if (!selected.includes(id))
+      {
+        selected.push(id);
+        forceUpdate();
+      }
+      return;
+    }
+    // select everybody from first index to found index
+    selected.push(...movies.slice(firstIndex + 1,
+                                  foundIndex + 1).map((movie) => movie.id));
+    forceUpdate();
   }
 
   const getDirected = (director: string) => {
@@ -130,10 +152,15 @@ export const Catalog = () => {
   return (
     <div className="catalogContainer" id="catalog">
       {movies.map((movie) => (
-        <div className={"catalog__item" + (inSelected(movie.id) ? "__selected" : "")}
+        <div className={"catalog__item" + (selected.includes(movie.id) ? "__selected" : "")}
              tabIndex={0}
              key={movie.id}
-             onClick={(e) => {if (e.ctrlKey) handleCardClick(movie.id);}}
+             onClick={(e) => {
+               if (e.ctrlKey)
+                 handleCardCtrlClick(movie.id);
+               else if (e.shiftKey)
+                 handleCardShiftClick(movie.id);
+             }}
              onKeyDown={(e) => {
                // if backspace or delete is pressed
                if (e.keyCode === 8 || e.keyCode === 46) {

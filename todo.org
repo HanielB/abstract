@@ -87,8 +87,10 @@
     I think so
   - State "TODO"       from              [2022-01-15 Sat 11:02]
   :END:
-* TODO Allow rearranging boxes with results
+* DONE Allow rearranging boxes with results
+  CLOSED: [2022-12-31 Sat 01:42]
   :STATES:
+  - State "DONE"       from "TODO"       [2022-12-31 Sat 01:42]
   - State "TODO"       from              [2022-03-05 Sat 21:56] \\
     So that I can more easily "build" lists
   :END:

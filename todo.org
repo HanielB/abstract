@@ -1,12 +1,40 @@
 #+STARTUP:hideblocks fninline fold
 
-* TODO Put query in url so I can go back
+* HOLD [#A] Save new list from website
+  :STATES:
+  - State "HOLD"       from "TODO"       [2022-12-31 Sat 16:54] \\
+    To do this I'll use the MySQL remote stuff and see what I can do. It'll be necessary to create SQL commands as requests to both insert into the BD and also to select from it.
+  - State "TODO"       from              [2022-12-29 Thu 00:21]
+  :END:
+* TODO [#B] Put query in url so I can go back
   :STATES:
   - State "TODO"       from              [2022-12-29 Thu 15:11]
   :END:
-* TODO Save new list from website
+* TODO [#B] Show total somehow
   :STATES:
-  - State "TODO"       from              [2022-12-29 Thu 00:21]
+  - State "TODO"       from              [2022-03-05 Sat 21:57]
+  :END:
+* TODO [#C] Show results in different ways
+  :STATES:
+  - State "TODO"       from              [2021-12-25 Sat 23:34] \\
+    Default can be as is, with movie cards, or could be like LB list of diary
+    entries. In this case I'd have the movie card and the info like when
+    watched, rating, tags, LB link
+  :END:
+* TODO [#C] Deal with many director-titles
+  :STATES:
+  - State "TODO"       from              [2022-01-15 Sat 11:01] \\
+    Like Paris Je t'aime. If too big it'll force increasing the card size.
+  :END:
+* TODO [#C] Interface for changing box size
+  :STATES:
+  - State "TODO"       from              [2022-03-05 Sat 21:56] \\
+    So that I can choose how many to show per page line basically
+  :END:
+* TODO [#C] Select multiple option better
+  :STATES:
+  - State "TODO"       from              [2022-03-08 Tue 01:05] \\
+    With like a menu that opens up options, not showing them all all the time
   :END:
 * DONE Read muiltiple info
   CLOSED: [2022-01-10 Mon 00:02]
@@ -22,13 +50,6 @@
   - State "TODO"       from              [2021-12-25 Sat 23:33] \\
     Be able to get the list of ids when searching for watched/watchlist movies and the list of diary entries with their extra info when searching for diary entries
   :END:
-* TODO Show results in different ways
-  :STATES:
-  - State "TODO"       from              [2021-12-25 Sat 23:34] \\
-    Default can be as is, with movie cards, or could be like LB list of diary
-    entries. In this case I'd have the movie card and the info like when
-    watched, rating, tags, LB link
-  :END:
 * DONE Get movie rating
   CLOSED: [2022-01-10 Mon 00:02]
   :STATES:
@@ -42,13 +63,6 @@
   - State "DONE"       from "TODO"       [2022-01-10 Mon 00:02]
   - State "TODO"       from              [2021-12-25 Sat 23:36] \\
     This would be a simple way of making things modular. If process gives me an array of json, I can modularly handle searches from TMDB and queries into my database
-  :END:
-* CANCELLED Fix "unrated"
-  CLOSED: [2022-03-08 Tue 01:02]
-  :STATES:
-  - State "CANCELLED"  from "TODO"       [2022-03-08 Tue 01:02]
-  - State "TODO"       from              [2022-01-07 Fri 23:16] \\
-    Not working
   :END:
 * DONE Check watchlist / watched
   CLOSED: [2022-01-10 Mon 00:28]
@@ -68,11 +82,6 @@
   :STATES:
   - State "DONE"       from "TODO"       [2022-03-26 Sat 22:43]
   - State "TODO"       from              [2022-01-10 Mon 00:02]
-  :END:
-* TODO Deal with many director-titles
-  :STATES:
-  - State "TODO"       from              [2022-01-15 Sat 11:01] \\
-    Like Paris Je t'aime. If too big it'll force increasing the card size.
   :END:
 * DONE Don't underline links
   CLOSED: [2022-03-06 Sun 22:19]
@@ -94,11 +103,6 @@
   - State "TODO"       from              [2022-03-05 Sat 21:56] \\
     So that I can more easily "build" lists
   :END:
-* TODO Interface for changing box size
-  :STATES:
-  - State "TODO"       from              [2022-03-05 Sat 21:56] \\
-    So that I can choose how many to show per page line basically
-  :END:
 * DONE Create permalinks for results
   CLOSED: [2022-03-22 Tue 22:56]
   :NOTES:
@@ -111,12 +115,11 @@
   - State "TODO"       from              [2022-03-05 Sat 21:57] \\
     So that I can more easily share
   :END:
-* TODO Show total somehow
+* DONE Allow further restricting
+  CLOSED: [2022-12-31 Sat 11:44]
   :STATES:
-  - State "TODO"       from              [2022-03-05 Sat 21:57]
-  :END:
-* TODO Allow further restricting
-  :STATES:
+  - State "DONE"       from "TODO"       [2022-12-31 Sat 11:44] \\
+    This is the default. Maybe it was not working because of the funky update
   - State "TODO"       from              [2022-03-06 Sun 18:43] \\
     When I get a result and I search again, I start from existing list. To restart I have to refresh
   :END:
@@ -132,11 +135,6 @@
   - State "DONE"       from "TODO"       [2022-03-08 Tue 01:02]
   - State "TODO"       from              [2022-03-06 Sun 18:55]
   :END:
-* TODO Select multiple option better
-  :STATES:
-  - State "TODO"       from              [2022-03-08 Tue 01:05] \\
-    With like a menu that opens up options, not showing them all all the time
-  :END:
 * DONE When clicking on director's name, get me all movies watched by director
   CLOSED: [2022-03-22 Tue 22:55]
   :STATES:
@@ -149,4 +147,11 @@
   - State "DONE"       from "TODO"       [2022-03-22 Tue 22:55]
   - State "TODO"       from              [2022-03-08 Tue 01:10] \\
     This would be a simpler way to better gen lists. I do a search, export a json, edit it, and upload json which will have whatever order I want
+  :END:
+* CANCELLED Fix "unrated"
+  CLOSED: [2022-03-08 Tue 01:02]
+  :STATES:
+  - State "CANCELLED"  from "TODO"       [2022-03-08 Tue 01:02]
+  - State "TODO"       from              [2022-01-07 Fri 23:16] \\
+    Not working
   :END:

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Header } from "./components/Header/Header";
+import { Search } from "./components/Search/Search";
 import { Catalog } from "./components/Catalog/Catalog";
 import { Movie } from "./services/movies.service";
 import { MoviesContext } from "./services/context";
@@ -61,7 +61,14 @@ function App() {
                                loading, setLoading: setLoading,
                                setSelected: setSelected }}>
       <div className="App">
-        <Header></Header>
+        <div className="header">
+          <h1 className="header__title">Abstract</h1>
+          <div className="header__search">
+          {
+            (!url.searchParams.get("list")) ? <Search></Search> : <span></span>
+          }
+          </div>
+        </div>
         <Catalog></Catalog>
       </div>
     </MoviesContext.Provider>

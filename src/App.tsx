@@ -15,8 +15,8 @@ function App() {
     console.log("Init is", init)
     if (list)
     {
-      console.log("Set init to", list)
-      init = list;
+      init = list + ".json";
+      console.log("Set init to", init)
     }
     fetch(init,
           { method: 'get',

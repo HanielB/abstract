@@ -1,5 +1,10 @@
 #+STARTUP:hideblocks fninline fold
 
+* TODO Allow keep current selection and just add to it
+  :STATES:
+  - State "TODO"       from              [2023-01-01 Sun 12:41] \\
+    will facilitate building lists
+  :END:
 * HOLD [#A] Save new list from website
   :STATES:
   - State "HOLD"       from "TODO"       [2022-12-31 Sat 16:54] \\

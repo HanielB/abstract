@@ -19,10 +19,13 @@ export const Search = () => {
   const [country, setCountry] = useState("");
   const [sorting, setSorting] = useState("");
   const [file, setFile] = useState("");
-  const {master, movies, updateMovies, setLoading} = useContext(MoviesContext);
+  const {master, movies, updateMovies, setLoading, setListName} = useContext(MoviesContext);
 
   const exportToJsonFile = () => {
-    let dataStr = JSON.stringify(movies);
+    var exportOjb = {"title": "", "movies": movies}
+    let title = prompt("Please enter list name", "");
+    exportOjb.title = title? title : "";
+    let dataStr = JSON.stringify(exportOjb);
     let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
 
     let exportFileDefaultName = 'data.json';
@@ -45,8 +48,9 @@ export const Search = () => {
             console.log("File is null");
             return;
           }
-          var loadedMovies = JSON.parse(fr.result as string);
-          updateMovies(loadedMovies);
+          var loadedList = JSON.parse(fr.result as string);
+          setListName(loadedList.title);
+          updateMovies(loadedList.movies);
         }
         fr.readAsText(files[0]);
     }

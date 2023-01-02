@@ -7,6 +7,7 @@ export const MoviesContext = React.createContext<{
   selected: number[];
   updateMovies: Function;
   loading : boolean;
+  listName : string;
   setLoading : Function;
   setSelected : Function;
 }>({
@@ -15,6 +16,7 @@ export const MoviesContext = React.createContext<{
   selected: [],
   updateMovies: Function,
   loading : false,
+  listName : "",
   setLoading : Function,
   setSelected : Function
 });

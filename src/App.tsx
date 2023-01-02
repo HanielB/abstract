@@ -24,7 +24,10 @@ function App() {
               'content-type': 'text/csv;charset=UTF-8',
             }})
       .then((res) => res.json())
-      .then((loadedMovies) => setMovies(loadedMovies));
+      .then((res) => {
+        setListName(res.title)
+        setMovies(res.movies);
+      });
   }, []);
 
   useEffect(() => {
@@ -49,6 +52,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [master, setMaster] = useState<Object[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
+  const [listName, setListName] = useState("");
 
   const setMovies = (movies) => {
     _setMovies([]);
@@ -58,11 +62,13 @@ function App() {
   return (
     <MoviesContext.Provider value={
                               {master, movies, selected, updateMovies: setMovies,
-                               loading, setLoading: setLoading,
+                               loading, listName, setLoading: setLoading,
                                setSelected: setSelected }}>
       <div className="App">
         <div className="header">
-          <h1 className="header__title">Abstract</h1>
+          <h1 className="header__title">
+            {listName !== ""? listName : "Abstract"}
+          </h1>
           <div className="header__search">
           {
             (!url.searchParams.get("list")) ? <Search></Search> : <span></span>

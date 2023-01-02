@@ -63,7 +63,7 @@ function App() {
     <MoviesContext.Provider value={
                               {master, movies, selected, updateMovies: setMovies,
                                loading, listName, setLoading: setLoading,
-                               setSelected: setSelected }}>
+                               setSelected: setSelected, setListName: setListName }}>
       <div className="App">
         <div className="header">
           <h1 className="header__title">
@@ -71,7 +71,7 @@ function App() {
           </h1>
           <div className="header__search">
           {
-            (!url.searchParams.get("list")) ? <Search></Search> : <span></span>
+            listName === "" ? <Search></Search> : <span></span>
           }
           </div>
         </div>

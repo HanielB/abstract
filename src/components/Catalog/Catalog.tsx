@@ -10,7 +10,7 @@ import { Movie, getMovies } from "../../services/movies.service";
 
 export const Catalog = () => {
   const { master, movies, loading, selected,
-          setLoading, updateMovies, setSelected } = useContext(MoviesContext);
+          setLoading, updateMovies, setSelected, setListName } = useContext(MoviesContext);
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
 
   // remove all selected cards
@@ -121,6 +121,7 @@ export const Catalog = () => {
 
   const getTag = (tag: string) => {
     setLoading(true);
+    setListName("");
     getMovies(master, "", "", "", "", "", tag,
               "", "", "", "", "", "",
               "watched", false, false, true, true)

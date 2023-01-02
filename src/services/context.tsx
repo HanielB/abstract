@@ -10,6 +10,7 @@ export const MoviesContext = React.createContext<{
   listName : string;
   setLoading : Function;
   setSelected : Function;
+  setListName : Function;
 }>({
   master: [],
   movies: [],
@@ -18,5 +19,6 @@ export const MoviesContext = React.createContext<{
   loading : false,
   listName : "",
   setLoading : Function,
-  setSelected : Function
+  setSelected : Function,
+  setListName : Function
 });

@@ -5,13 +5,16 @@
   - State "TODO"       from              [2023-01-01 Sun 12:41] \\
     will facilitate building lists
   :END:
-* HOLD [#A] Save new list from website
+* CANCELLED [#A] Save new list from website
+  CLOSED: [2023-01-03 Tue 01:38]
   :STATES:
+  - State "CANCELLED"  from "HOLD"       [2023-01-03 Tue 01:38] \\
+    With my hosting plan this would only work via ssh. And this is quite fragile. So meh.
   - State "HOLD"       from "TODO"       [2022-12-31 Sat 16:54] \\
     To do this I'll use the MySQL remote stuff and see what I can do. It'll be necessary to create SQL commands as requests to both insert into the BD and also to select from it.
   - State "TODO"       from              [2022-12-29 Thu 00:21]
   :END:
-* TODO [#B] Put query in url so I can go back
+* TODO [#A] Put query in url so I can go back
   :STATES:
   - State "TODO"       from              [2022-12-29 Thu 15:11]
   :END:

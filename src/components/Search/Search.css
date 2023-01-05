@@ -56,11 +56,6 @@ input[type="file"] {
     flex-flow: column;
 }
 
-.form_buttons {
-    display: flex;
-    flex-flow: column;
-}
-
 /* for phone */
 @media screen and (max-width: 540px) {
     .form_radio {
@@ -128,6 +123,7 @@ input[type="file"] {
 
     .form_buttons {
         display: flex;
+        row-gap: 1.5rem;
         flex-flow: column;
     }
 

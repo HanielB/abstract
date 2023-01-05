@@ -1,6 +1,10 @@
 #!/bin/bash
 
-npm run build &> /dev/null
+if [ "$1" != "--no-build" ]; then
+    echo "Building..."
+    npm run build &> /dev/null
+fi
 cd build
+echo "Uploading..."
 rsync --exclude='.git/' --recursive --times --compress --delete --progress . hostinger:~/public_html/filminhos/ &> /dev/null
 cd - &> /dev/null

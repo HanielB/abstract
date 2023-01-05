@@ -18,6 +18,7 @@ export const Search = () => {
   const [studio, setStudio] = useState("");
   const [country, setCountry] = useState("");
   const [sorting, setSorting] = useState("");
+  const [rewatch, setRewatch] = useState("");
   const [file, setFile] = useState("");
   const {master, movies, updateMovies, setLoading, setListName} = useContext(MoviesContext);
 
@@ -65,11 +66,9 @@ export const Search = () => {
           document.getElementById("onlywatched") as HTMLInputElement
     const watchlistCheck =
           document.getElementById("watchlist") as HTMLInputElement
-    const norewatchCheck = document.getElementById("norewatch") as HTMLInputElement
     const availableCheck = document.getElementById("available") as HTMLInputElement
     const onlywatched = onlywatchedCheck? onlywatchedCheck.checked : false;
     const watchlist = watchlistCheck? watchlistCheck.checked : false;
-    const rewatch = norewatchCheck? !norewatchCheck.checked : true;
     const available = availableCheck? availableCheck.checked : false;
 
     getMovies(master, title, year, date, rating, runtime, tags,
@@ -192,28 +191,26 @@ export const Search = () => {
             />
           </div>
         </div>
-        <div className="form_sort">
-          <fieldset>
-            <legend>Sorting</legend>
-            <div className="form_radio">
-              <div className="form_radio_label">
-                <input type="radio" id="watched" name="sorting" value="watched" onChange={(e) => setSorting(e.target.value)}/>
-                <label htmlFor="watched">Watched</label>
-              </div>
-              <div className="form_radio_label">
-              <input type="radio" id="year" name="sorting" value="year" onChange={(e) => setSorting(e.target.value)}/>
-              <label htmlFor="year">Year</label>
+        <div className="form_buttons">
+        <div className="dropdowns">
+          <div className="dropdown">
+            <button className="search__input">Sorting</button>
+            <div className="dropdown-content">
+              <a onClick={(e) => setSorting("watched")}>Watched</a>
+              <a onClick={(e) => setSorting("year")}>Year</a>
+              <a onClick={(e) => setSorting("rating")}>Rating</a>
+              <a onClick={(e) => setSorting("runtime")}>Runtime</a>
+              <a onClick={(e) => setSorting("views")}>Views</a>
             </div>
+          </div>
+          <div className="dropdown">
+            <button className="search__input">Rewatch</button>
+            <div className="dropdown-content">
+              <a onClick={(e) => setRewatch("yes")}>Yes</a>
+              <a onClick={(e) => setRewatch("no")}>No</a>
+              <a onClick={(e) => setRewatch("only")}>Only</a>
             </div>
-            <div className="form_radio_label">
-              <input type="radio" id="rating" name="sorting" value="rating" onChange={(e) => setSorting(e.target.value)}/>
-              <label htmlFor="rating">Rating</label>
-            </div>
-            <div className="form_radio_label">
-              <input type="radio" id="runtime" name="sorting" value="runtime" onChange={(e) => setSorting(e.target.value)}/>
-              <label htmlFor="runtime">Runtime</label>
-            </div>
-          </fieldset>
+          </div>
         </div>
         <div className="form_sort">
           <fieldset>
@@ -230,17 +227,13 @@ export const Search = () => {
               </div>
             <div className="form_radio">
             <div>
-              <input type="checkbox" id="norewatch" name="display" value="norewatch"/>
-              <label htmlFor="rewatch">No Rewatch</label>
-            </div>
-            <div>
               <input type="checkbox" id="available" name="display" value="available"/>
               <label htmlFor="available">Available</label>
             </div>
-</div>
+            </div>
           </fieldset>
         </div>
-
+</div>
         <div className="form_buttons">
           <button name="Button" className="search__button" type="submit">Search</button>
           <button name="Button" className="search__button" type="button" onClick={(e) => exportToJsonFile()}>Download</button>

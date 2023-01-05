@@ -203,10 +203,11 @@ function mapLoaded(res: any[]): Movie[] {
 }
 
 function filterDiary(movie : any, date: Date[], rating: number[],
-                     tags : RegExp[], rewatch: boolean)
+                     tags : RegExp[], rewatch: string)
 : Boolean
 {
-  if (!rewatch && movie.rewatch)
+  if ((rewatch === "no" && movie.rewatch) ||
+      (rewatch === "only" && !movie.rewatch))
   {
     return false;
   }
@@ -290,7 +291,7 @@ function filterMovie(movie : any, title: RegExp, year: number[], date: Date[],
                      rating: number[], runtime: number[], tags : RegExp[],
                      director: RegExp, writer : RegExp, actor: RegExp,
                      genre: RegExp, country: RegExp, studio: RegExp,
-                     onlywatched: boolean, watchlist: boolean, rewatch: boolean):
+                     onlywatched: boolean, watchlist: boolean, rewatch: string):
 Movie[] {
   var results : Movie[] = [];
   if ((!watchlist && movie.status === 0)
@@ -400,7 +401,7 @@ function filterMovies(master : any, title: string, year: string, date: string,
                       director: string, writer : string, actor: string,
                       genre: string, country: string, studio: string,
                       sorting: string, onlywatched: boolean,
-                      watchlist: boolean, rewatch: boolean):
+                      watchlist: boolean, rewatch: string):
 Promise<Movie[]> {
   var movies : Movie[] = [];
   // create regex ignoring case
@@ -592,7 +593,7 @@ export function getMovies(master: Object[],
                           writer: string, actor: string, genre: string,
                           country: string, studio: string,
                           sorting: string, onlywatched: boolean,
-                          watchlist: boolean, rewatch: boolean, available: boolean
+                          watchlist: boolean, rewatch: string, available: boolean
                          ):
 Promise<Movie[]> {
   console.log("available?", available)

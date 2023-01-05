@@ -112,7 +112,7 @@ export const Catalog = () => {
     setLoading(true);
     getMovies(master, "", "", "", "", "", "",
               director, "", "", "", "", "",
-              "year", true, true, true, true)
+              "year", true, true, "", true)
       .then((movies) => {
         setLoading(false);
         updateMovies(movies);
@@ -124,7 +124,7 @@ export const Catalog = () => {
     setListName("");
     getMovies(master, "", "", "", "", "", tag,
               "", "", "", "", "", "",
-              "watched", false, false, true, true)
+              "watched", false, false, "", true)
       .then((movies) => {
         setLoading(false);
         updateMovies(movies);

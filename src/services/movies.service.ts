@@ -430,6 +430,8 @@ Promise<Movie[]> {
     }
   }
 
+  if (year.startsWith(".."))
+    year = "1900" + year
   // year is "y1[..][y2]". If there isn't ".." then we will set upper
   // bound as y1, otherwise it's y2 if given, otherwise it's current
   // year
@@ -440,6 +442,8 @@ Promise<Movie[]> {
     years.push(years[0])
   }
 
+  if (runtime.startsWith(".."))
+    runtime = "0" + runtime
   var runtimes : number[] = runtime === "" ? [] : runtime.split("..").map(
     (runtime) => runtime !== "" ? Number(runtime) : 10000)
   if (runtimes.length === 1)
@@ -447,6 +451,8 @@ Promise<Movie[]> {
     runtimes.push(runtimes[0])
   }
 
+  if (rating.startsWith(".."))
+    rating = "0" + rating
   var ratings : number[] = rating === "" ? [] :
       (rating === "-1" ? [-1,-1] :
        rating.split("..").map((rating) => rating !== "" ? Number(rating) : 10))
@@ -458,6 +464,9 @@ Promise<Movie[]> {
   {
     ratings[1] = ratings[1] + 0.9;
   }
+
+  if (date.startsWith(".."))
+    date = "1900" + date
   var dates : Date[] = date === "-1"? [new Date(1900), new Date(1900)]: [];
   if (date !== "" && dates !== [])
   {

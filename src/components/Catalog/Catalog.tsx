@@ -1,6 +1,7 @@
 import React, { useContext, useReducer } from "react";
 import "./Catalog.css";
 import imgPlaceholder from "./movie_placeholder.png";
+import viewsImg from "./watched.png";
 import rewatchImg from "./two-circular-arrows.png";
 import watchlistImg from "./not-watched.png";
 import downloadImg from "./download.png";
@@ -253,7 +254,15 @@ export const Catalog = () => {
                 {movie.runtime}min
               </span>
               {
-                (movie.rewatch)?
+                (movie.views && (movie.views > 1 || movie.previousView))?
+                  <span className="views">
+                    <img src={viewsImg} className="watchedImg"
+                    />
+                    <span className="floatingNumber">
+                      {movie.views}{movie.previousView? "+" : ""}
+                    </span>
+                  </span>
+                : (movie.rewatch)?
                   <span className="rewatch">
                     <img src={rewatchImg}
                     />

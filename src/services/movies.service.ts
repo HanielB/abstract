@@ -326,12 +326,16 @@ Movie[] {
     var ratingNum = 0;
     var lbDiaryLink = "";
     var views = movie.diary.length;
+    var previousView = false;
     if (movie.diary.length > 0)
     {
       watchedInfo = movie.diary[movie.diary.length - 1].date;
       ratingInfo = movie.diary[movie.diary.length - 1].rating.str;
       ratingNum = movie.diary[movie.diary.length - 1].rating.num;
       lbDiaryLink = movie.diary[movie.diary.length - 1].entryURL;
+      // if first diary entry is a rewatch, then this movie has
+      // previous views
+      previousView = movie.diary[0].rewatch;
     }
     results.push({
       id : getId(movie.tmdbId, watchedInfo),
@@ -349,6 +353,8 @@ Movie[] {
       lbFilmLink: movie.lbURL,
       directors : movie.directors,
       available : movie.available,
+      views : views,
+      previousView : previousView,
     });
   }
   else if (movie.diary.length === 0)
@@ -635,4 +641,6 @@ export interface Movie {
   rewatch?: boolean;
   watchlist?: boolean;
   available?: string[];
+  views?: number;
+  previousView?: boolean;
 }

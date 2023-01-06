@@ -325,13 +325,12 @@ Movie[] {
     var ratingInfo = "";
     var ratingNum = 0;
     var lbDiaryLink = "";
-    var tagsInfo : string[] = [];
+    var views = movie.diary.length;
     if (movie.diary.length > 0)
     {
       watchedInfo = movie.diary[movie.diary.length - 1].date;
       ratingInfo = movie.diary[movie.diary.length - 1].rating.str;
       ratingNum = movie.diary[movie.diary.length - 1].rating.num;
-      tagsInfo = movie.diary[movie.diary.length - 1].tags;
       lbDiaryLink = movie.diary[movie.diary.length - 1].entryURL;
     }
     results.push({
@@ -343,7 +342,8 @@ Movie[] {
       rating : ratingInfo,
       ratingNum : ratingNum,
       runtime : movie.runtime,
-      tags : tagsInfo,
+      // no tags when singleton
+      tags : [],
       picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
       lbDiaryLink: lbDiaryLink,
       lbFilmLink: movie.lbURL,
@@ -596,7 +596,6 @@ export function getMovies(master: Object[],
                           watchlist: boolean, rewatch: string, available: boolean
                          ):
 Promise<Movie[]> {
-  console.log("available?", available)
   // TODO probably don't need promises anymore here
   return filterMovies(master, title, year, date,
                       rating, runtime, tags, director, writer,

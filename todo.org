@@ -39,8 +39,10 @@
   - State "TODO"       from              [2022-03-05 Sat 21:56] \\
     So that I can choose how many to show per page line basically
   :END:
-* TODO [#C] Select multiple option better
+* DONE [#C] Select multiple option better
+  CLOSED: [2023-01-05 Thu 18:35]
   :STATES:
+  - State "DONE"       from "TODO"       [2023-01-05 Thu 18:35]
   - State "TODO"       from              [2022-03-08 Tue 01:05] \\
     With like a menu that opens up options, not showing them all all the time
   :END:

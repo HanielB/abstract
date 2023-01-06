@@ -59,9 +59,7 @@ export const Search = () => {
 
   const handleOnSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Handling search");
     setLoading(true);
-    console.log("Sorting value: " + sorting);
     const onlywatchedCheck =
           document.getElementById("onlywatched") as HTMLInputElement
     const watchlistCheck =
@@ -200,7 +198,16 @@ export const Search = () => {
               <a onClick={(e) => setSorting("year")}>Year</a>
               <a onClick={(e) => setSorting("rating")}>Rating</a>
               <a onClick={(e) => setSorting("runtime")}>Runtime</a>
-              <a onClick={(e) => setSorting("views")}>Views</a>
+              <a onClick={(e) => {
+                   // also forces "singleton" to be true
+                   setSorting("views");
+                   var onlywatchedCheck =
+                       document.getElementById("onlywatched") as HTMLInputElement
+                   if (onlywatchedCheck)
+                   {
+                     onlywatchedCheck.checked = true;
+                   }
+                 }}>Views</a>
             </div>
           </div>
           <div className="dropdown">

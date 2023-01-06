@@ -517,8 +517,7 @@ Promise<Movie[]> {
                                        countryRegex, studioRegex,
                                        onlywatched, watchlist, rewatch));
   });
-  // TODO sorting
-  console.log("sorting:", sorting)
+  // >0: a after b; < 0: a before b; === 0: keep order
   if (sorting === "watched")
   {
     movies.sort((movie1, movie2) => {
@@ -585,6 +584,26 @@ Promise<Movie[]> {
         return 0;
       }
       return movie2.runtime - movie1.runtime
+    })
+  }
+  else if (sorting == "views")
+  {
+    movies.sort((movie1, movie2) => {
+      var a = movie1.views;
+      var b = movie2.views;
+      if (movie1.previousView && a)
+        a = a + 1
+      if (movie2.previousView && b)
+        b = b + 1
+      if (!a)
+      {
+        return 1;
+      }
+      if (!b)
+      {
+        return 0;
+      }
+      return b - a;
     })
   }
   // movies =

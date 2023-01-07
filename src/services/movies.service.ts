@@ -202,41 +202,48 @@ function mapLoaded(res: any[]): Movie[] {
   });
 }
 
-function filterDiary(movie : any, date: Date[], rating: number[],
-                     tags : RegExp[], rewatch: string)
-: Boolean
+function getMovieDate(dateStr : string) : Date
 {
-  if ((rewatch === "no" && movie.rewatch) ||
-      (rewatch === "only" && !movie.rewatch))
+  const split = dateStr.split("-")
+  const yearMovie = Number(split[0])
+  const monthMovie = Number(split[1])-1
+  const dayMovie = Number(split[2])
+  const hourMovie = split.length > 3? Number(split[3]) : 0;
+  return new Date(yearMovie, monthMovie, dayMovie, hourMovie);
+}
+
+function filterDiary(watchedDate : string, movieRating : number,
+                     movieTags : string[], movieRewatched : boolean,
+                     date: Date[], rating: number[],
+                     tags : RegExp[], rewatch: string)
+: boolean
+{
+  if ((rewatch === "no" && movieRewatched) ||
+      (rewatch === "only" && !movieRewatched))
   {
     return false;
   }
   if (date.length > 0)
   {
-    if (movie.watched === "")
+    if (watchedDate === "")
     {
       return false;
     }
-    const split = movie.watched.split("-")
-    const yearMovie = Number(split[0])
-    const monthMovie = Number(split[1])-1
-    const dayMovie = Number(split[2])
-    const hourMovie = split.length > 3? Number(split[3]) : 0;
-    const movieDate = new Date(yearMovie, monthMovie, dayMovie, hourMovie)
+    const movieDate = getMovieDate(watchedDate);
     if (movieDate < date[0] || movieDate > date[1])
     {
       return false;
     }
   }
   if (rating.length > 0
-      && ((rating[0] === -1 && movie.ratingNum > 0)
+      && ((rating[0] === -1 && movieRating > 0)
           || (rating[0] !== -1
-              && (movie.ratingNum < rating[0] || movie.ratingNum > rating[1]))))
+              && (movieRating < rating[0] || movieRating > rating[1]))))
   {
     return false;
   }
   if (tags.length > 0
-      && !tags.every((tagRegex) => movie.tags.some((tag) => tagRegex.test(tag))))
+      && !tags.every((tagRegex) => movieTags.some((tag) => tagRegex.test(tag))))
   {
     return false;
   }
@@ -251,7 +258,7 @@ function isRegexAll(regex: RegExp)
 function filterStatic(movie : any, title : RegExp, year: number[],
                       runtime: number[], director: RegExp, writer : RegExp,
                       actor: RegExp, genre: RegExp, country: RegExp, studio: RegExp)
-: Boolean
+: boolean
 {
   if (!title.test(movie.title)
       || (!isRegexAll(director) &&
@@ -325,17 +332,28 @@ Movie[] {
     var ratingInfo = "";
     var ratingNum = 0;
     var lbDiaryLink = "";
-    var views = movie.diary.length;
+    var views = 0;
     var previousView = false;
     if (movie.diary.length > 0)
     {
-      watchedInfo = movie.diary[movie.diary.length - 1].date;
-      ratingInfo = movie.diary[movie.diary.length - 1].rating.str;
-      ratingNum = movie.diary[movie.diary.length - 1].rating.num;
-      lbDiaryLink = movie.diary[movie.diary.length - 1].entryURL;
-      // if first diary entry is a rewatch, then this movie has
-      // previous views
-      previousView = movie.diary[0].rewatch;
+      // filter out diary entries that are incompatible
+      var entries : any[] = movie.diary.filter((entry) =>
+        filterDiary(entry.date, entry.rating.num, entry.tags, entry.rewatch,
+                    date, rating, tags, rewatch));
+      views = entries.length;
+      if (entries.length > 0)
+      {
+        watchedInfo = entries[entries.length - 1].date;
+        ratingInfo = entries[entries.length - 1].rating.str;
+        ratingNum = entries[entries.length - 1].rating.num;
+        lbDiaryLink = entries[entries.length - 1].entryURL;
+        // We only care about previous views when we are *not*
+        // filtering by diary info, i.e., if date, rating and tags are
+        // default values. In such a case, if first diary entry is a
+        // rewatch, then this movie has previous views
+        previousView = entries[0].rewatch &&
+          date.length === 0 && rating.length === 0 && tags.length === 0;
+      }
     }
     results.push({
       id : getId(movie.tmdbId, watchedInfo),
@@ -399,7 +417,12 @@ Movie[] {
       })
     });
   }
-  return results.filter((result) => filterDiary(result, date, rating, tags, rewatch));
+  return results.filter((result) =>
+    filterDiary(result.watched ? result.watched : "",
+                result.ratingNum ? result.ratingNum : -1,
+                result.tags ? result.tags : [],
+                result.rewatch ? result.rewatch : false,
+                date, rating, tags, rewatch));
 }
 
 function filterMovies(master : any, title: string, year: string, date: string,
@@ -460,15 +483,15 @@ Promise<Movie[]> {
   {
     ratings.push(ratings[0] + 0.9)
   }
-  else
+  else if (ratings.length > 0)
   {
     ratings[1] = ratings[1] + 0.9;
   }
 
   if (date.startsWith(".."))
     date = "1900" + date
-  var dates : Date[] = date === "-1"? [new Date(1900), new Date(1900)]: [];
-  if (date !== "" && dates !== [])
+  var dates : Date[] = date === "-1" ? [new Date(1900), new Date(1900)]: [];
+  if (date !== "" && dates.length === 0)
   {
     const split = date.split("..")
     // first four digits are year
@@ -589,7 +612,7 @@ Promise<Movie[]> {
         return 1;
       }
       if (!movie2.runtime)
-      {
+       {
         return 0;
       }
       return movie2.runtime - movie1.runtime
@@ -601,22 +624,21 @@ Promise<Movie[]> {
       var a = movie1.views;
       var b = movie2.views;
       if (movie1.previousView && a)
-        a = a + 1
+        a = a + 1;
       if (movie2.previousView && b)
-        b = b + 1
+        b = b + 1;
       if (!a)
       {
         return 1;
       }
       if (!b)
       {
-        return 0;
+        return -1;
       }
       return b - a;
     })
   }
-  // movies =
-  return Promise.all(movies).then((movies) => movies);
+   return Promise.all(movies).then((movies) => movies);
 }
 
 

@@ -8,5 +8,7 @@ else
 fi
 cd build
 echo "Uploading..."
-rsync --exclude='.git/' --recursive --times --compress --delete --progress . hostinger:~/public_html/filminhos/ &> /dev/null
+rsync --exclude='.git/' --recursive --times --compress --progress . hostinger:~/public_html/filminhos/ &> /dev/null
 cd - &> /dev/null
+echo "Uploading lists..."
+rsync --exclude='.git/' --recursive --times --compress --progress lists hostinger:~/public_html/filminhos/ &> /dev/null

@@ -15,7 +15,7 @@ function App() {
     console.log("Init is", init)
     if (list)
     {
-      init = list + ".json";
+      init = "./lists/" + list + ".json";
       console.log("Set init to", init)
     }
     fetch(init,
@@ -33,7 +33,6 @@ function App() {
   useEffect(() => {
     const src = url.searchParams.get("src");
     var init = "master.json";
-    console.log("Src is", init)
     if (src)
     {
       console.log("Set src to", src)

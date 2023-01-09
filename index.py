@@ -383,7 +383,9 @@ def process_dir(top_dir, opts):
             print('ERROR accessing file name:', e, entry)
             continue
 
-        entry_path = str(entry.name)
+        entry_name = str(entry.name).split(".json")[0]
+
+        entry_path = "https://hanielbarbosa.com/filminhos/?list=" + entry_name
 
         if entry.is_dir() and not entry.is_symlink():
             entry_type = 'folder'
@@ -406,9 +408,9 @@ def process_dir(top_dir, opts):
         <tr class="file">
             <td></td>
             <td>
-                <a href="{quote(entry_path)}">
+                <a href="{entry_path}">
                     <svg width="1.5em" height="1em" version="1.1" viewBox="0 0 265 323"><use xlink:href="#{entry_type}"></use></svg>
-                    <span class="name">{entry.name}</span>
+                    <span class="name">{entry_name}</span>
                 </a>
             </td>
             <td data-order="{size_bytes}">{size_pretty}</td>

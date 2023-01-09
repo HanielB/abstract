@@ -693,4 +693,6 @@ export interface Movie {
   available?: string[];
   views?: number;
   previousView?: boolean;
+  collectionId?: number;
+  collectionName?: string
 }

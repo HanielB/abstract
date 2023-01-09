@@ -219,28 +219,32 @@ export const Search = () => {
             </div>
           </div>
         </div>
-        <div className="form_sort">
-          <fieldset>
-            <legend>Display</legend>
-            <div className="form_radio">
-            <div>
-              <input type="checkbox" id="onlywatched" name="display" value="onlywatched"/>
-              <label htmlFor="onlywatched">Singleton</label>
-            </div>
-            <div>
-              <input type="checkbox" id="watchlist" name="display" value="watchlist"/>
-              <label htmlFor="watchlist">Watchlist</label>
-            </div>
+          <div className="form_sort">
+            <fieldset>
+              <legend>Display</legend>
+              <div className="form_radio">
+                <div>
+                  <input type="checkbox" id="onlywatched" name="display" value="onlywatched"/>
+                  <label htmlFor="onlywatched">Singleton</label>
+                </div>
+                <div>
+                  <input type="checkbox" id="watchlist" name="display" value="watchlist"/>
+                  <label htmlFor="watchlist">Watchlist</label>
+                </div>
               </div>
-            <div className="form_radio">
-            <div>
-              <input type="checkbox" id="available" name="display" value="available"/>
-              <label htmlFor="available">Available</label>
-            </div>
-            </div>
-          </fieldset>
+              <div className="form_radio">
+                <div>
+                  <input type="checkbox" id="available" name="display" value="available"/>
+                  <label htmlFor="available">Available</label>
+                </div>
+                <div>
+                  <input type="checkbox" id="collection" name="display" value="collection"/>
+                  <label htmlFor="collection">Collection</label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
         </div>
-</div>
         <div className="form_buttons">
           <button name="Button" className="search__button" type="submit">Search</button>
           <button name="Button" className="search__button" type="button" onClick={(e) => exportToJsonFile()}>Download</button>

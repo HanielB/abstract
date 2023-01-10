@@ -134,15 +134,16 @@ export const Catalog = () => {
   }
 
   const getCollection = (collectionId?: number) => {
-    // setLoading(true);
-    // setListName("");
-    // getMovies(master, "", "", "", "", "", tag,
-    //           "", "", "", "", "", "",
-    //           "watched", false, false, "", true, collectionId)
-    //   .then((movies) => {
-    //     setLoading(false);
-    //     updateMovies(movies);
-    //   });
+    setLoading(true);
+    setListName("");
+    console.log("Get films with cId ", collectionId)
+    getMovies(master, "", "", "", "", "", "",
+              "", "", "", "", "", "",
+              "year", true, true, "", true, collectionId)
+      .then((movies) => {
+        setLoading(false);
+        updateMovies(movies);
+      });
   }
 
   const getIcon = (prov : string) => {
@@ -234,7 +235,8 @@ export const Catalog = () => {
             <div className="tags">
               {
                 (collection && movie.collectionName)?
-                  <span className="collection">
+                  <span className="collection"
+                        onClick={(e) => getCollection(movie.collectionId)}>
                     {movie.collectionName}
                   </span>
                  : (movie.tags)?

@@ -257,9 +257,14 @@ function isRegexAll(regex: RegExp)
 
 function filterStatic(movie : any, title : RegExp, year: number[],
                       runtime: number[], director: RegExp, writer : RegExp,
-                      actor: RegExp, genre: RegExp, country: RegExp, studio: RegExp)
+                      actor: RegExp, genre: RegExp, country: RegExp, studio: RegExp,
+                      collection = -1)
 : boolean
 {
+  if (collection !== -1 && movie.collection.id !== collection)
+  {
+    return false;
+  }
   if (!title.test(movie.title)
       || (!isRegexAll(director) &&
           (movie.directors.length === 0
@@ -304,7 +309,8 @@ Movie[] {
   var results : Movie[] = [];
   if ((!watchlist && movie.status === 0)
       || !filterStatic(movie, title, year, runtime,
-                       director, writer, actor, genre, country, studio))
+                       director, writer, actor, genre, country, studio,
+                       collection))
   {
     return [];
   }
@@ -383,8 +389,6 @@ Movie[] {
       collectionName :
         movie.collection.name !== "" ? movie.collection.name : undefined,
     });
-    if (movie.collection.id !== -1)
-      console.log("Film ", movie.title, " has collection ", results[results.length-1].collectionId, " ", results[results.length-1].collectionName)
   }
   else if (movie.diary.length === 0)
   {

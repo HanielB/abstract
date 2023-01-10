@@ -244,6 +244,15 @@ a:active {
     }
 }
 
+.collection {
+    /* word-break: break-all; */
+    background-color: navy;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: .8rem;
+}
+
 .catalog__item__info {
     display: flex;
     flex: 2 1 0;

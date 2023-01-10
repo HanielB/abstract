@@ -298,7 +298,8 @@ function filterMovie(movie : any, title: RegExp, year: number[], date: Date[],
                      rating: number[], runtime: number[], tags : RegExp[],
                      director: RegExp, writer : RegExp, actor: RegExp,
                      genre: RegExp, country: RegExp, studio: RegExp,
-                     onlywatched: boolean, watchlist: boolean, rewatch: string):
+                     onlywatched: boolean, watchlist: boolean, rewatch: string,
+                     collection = -1):
 Movie[] {
   var results : Movie[] = [];
   if ((!watchlist && movie.status === 0)
@@ -321,7 +322,11 @@ Movie[] {
         lbFilmLink: movie.lbURL,
         directors : movie.directors,
         available : movie.available,
-        watchlist : true
+        watchlist : true,
+        collectionId :
+          movie.collection.id !== -1 ? movie.collection.id : undefined,
+        collectionName :
+          movie.collection.name !== "" ? movie.collection.name : undefined,
       }
     ];
   }
@@ -373,7 +378,13 @@ Movie[] {
       available : movie.available,
       views : views,
       previousView : previousView,
+      collectionId :
+        movie.collection.id !== -1 ? movie.collection.id : undefined,
+      collectionName :
+        movie.collection.name !== "" ? movie.collection.name : undefined,
     });
+    if (movie.collection.id !== -1)
+      console.log("Film ", movie.title, " has collection ", results[results.length-1].collectionId, " ", results[results.length-1].collectionName)
   }
   else if (movie.diary.length === 0)
   {
@@ -430,7 +441,7 @@ function filterMovies(master : any, title: string, year: string, date: string,
                       director: string, writer : string, actor: string,
                       genre: string, country: string, studio: string,
                       sorting: string, onlywatched: boolean,
-                      watchlist: boolean, rewatch: string):
+                      watchlist: boolean, rewatch: string, collection = -1):
 Promise<Movie[]> {
   var movies : Movie[] = [];
   // create regex ignoring case
@@ -547,7 +558,7 @@ Promise<Movie[]> {
                                        ratings, runtimes, tagsRegexes, directorRegex,
                                        writerRegex, actorRegex, genreRegex,
                                        countryRegex, studioRegex,
-                                       onlywatched, watchlist, rewatch));
+                                       onlywatched, watchlist, rewatch, collection));
   });
   // >0: a after b; < 0: a before b; === 0: keep order
   if (sorting === "watched")
@@ -649,14 +660,15 @@ export function getMovies(master: Object[],
                           writer: string, actor: string, genre: string,
                           country: string, studio: string,
                           sorting: string, onlywatched: boolean,
-                          watchlist: boolean, rewatch: string, available: boolean
+                          watchlist: boolean, rewatch: string,
+                          available: boolean, collection = -1
                          ):
 Promise<Movie[]> {
   // TODO probably don't need promises anymore here
   return filterMovies(master, title, year, date,
                       rating, runtime, tags, director, writer,
                       actor, genre, country, studio, sorting,
-                      onlywatched, watchlist, rewatch)
+                      onlywatched, watchlist, rewatch, collection)
     .then((movies) => {
       // let res = Array.from(tmp);
       return Promise.all(movies.map((movie) => {

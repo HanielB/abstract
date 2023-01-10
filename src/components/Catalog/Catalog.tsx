@@ -11,7 +11,8 @@ import { Movie, getMovies } from "../../services/movies.service";
 
 export const Catalog = () => {
   const { master, movies, loading, selected,
-          setLoading, updateMovies, setSelected, setListName } = useContext(MoviesContext);
+          setLoading, updateMovies, setSelected, setListName } =
+        useContext(MoviesContext);
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
 
   // remove all selected cards
@@ -132,6 +133,18 @@ export const Catalog = () => {
       });
   }
 
+  const getCollection = (collectionId?: number) => {
+    // setLoading(true);
+    // setListName("");
+    // getMovies(master, "", "", "", "", "", tag,
+    //           "", "", "", "", "", "",
+    //           "watched", false, false, "", true, collectionId)
+    //   .then((movies) => {
+    //     setLoading(false);
+    //     updateMovies(movies);
+    //   });
+  }
+
   const getIcon = (prov : string) => {
     if (prov === "Netflix") return "https://a.ltrbxd.com/sm/upload/za/bp/jc/zn/netflix-small.png";
     if (prov === "Amazon Prime Video") return "https://images.justwatch.com/icon/52449861/s100"
@@ -217,13 +230,18 @@ export const Catalog = () => {
             </div>
             <div className="tags">
               {
-                (movie.tags)?
+                (movie.collectionName)?
+                  <span className="collection">
+                    {movie.collectionName}
+                  </span>
+                 : (movie.tags)?
                   movie.tags.map((tag) => (
                     <span className="tag"
                           onClick={(e) => getTag(tag)}>
                       {tag}
                     </span>
-                  )) : <span></span>
+                  ))
+                : <span></span>
               }
             </div>
             <div className="directors">

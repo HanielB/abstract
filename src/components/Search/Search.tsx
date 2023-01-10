@@ -234,10 +234,6 @@ export const Search = () => {
               </div>
               <div className="form_radio">
                 <div>
-                  <input type="checkbox" id="collection" name="display" value="collection"/>
-                  <label htmlFor="collection">Collection</label>
-                </div>
-                <div>
                   <input type="checkbox" id="available" name="display" value="available"/>
                   <label htmlFor="available">Available</label>
                 </div>

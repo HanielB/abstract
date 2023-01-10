@@ -164,6 +164,9 @@ export const Catalog = () => {
               <h1>LOADING</h1>
             </div>);
   }
+  const collectionCheck = document.getElementById("collection") as HTMLInputElement
+  const collection = collectionCheck? collectionCheck.checked : false;
+
   return (
     <div className="catalogContainer" id="catalog">
       {movies.map((movie) => (
@@ -230,7 +233,7 @@ export const Catalog = () => {
             </div>
             <div className="tags">
               {
-                (movie.collectionName)?
+                (collection && movie.collectionName)?
                   <span className="collection">
                     {movie.collectionName}
                   </span>

@@ -570,7 +570,7 @@ Promise<Movie[]> {
       }
       if (!movie2.watched || movie2.watched.length === 0)
       {
-        return 0;
+        return -1;
       }
       const split1 = movie1.watched.split("-");
       const split2 = movie2.watched.split("-");

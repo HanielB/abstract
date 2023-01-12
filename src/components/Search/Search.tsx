@@ -65,9 +65,20 @@ export const Search = () => {
     const watchlistCheck =
           document.getElementById("watchlist") as HTMLInputElement
     const availableCheck = document.getElementById("available") as HTMLInputElement
-    const onlywatched = onlywatchedCheck? onlywatchedCheck.checked : false;
+    var onlywatched = onlywatchedCheck? onlywatchedCheck.checked : false;
     const watchlist = watchlistCheck? watchlistCheck.checked : false;
     const available = availableCheck? availableCheck.checked : false;
+
+    if (title.includes(";"))
+    {
+      // force ticks to be true when we are collection searching
+      var collectionCheck = document.getElementById("collection") as HTMLInputElement
+      if (collectionCheck)
+        collectionCheck.checked = true;
+      if (onlywatchedCheck)
+        onlywatchedCheck.checked = true;
+      onlywatched = true;
+    }
 
     getMovies(master, title, year, date, rating, runtime, tags,
               director, writer, actor, genre, country, studio,

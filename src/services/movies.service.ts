@@ -258,7 +258,7 @@ function isRegexAll(regex: RegExp)
 function filterStatic(movie : any, title : RegExp, year: number[],
                       runtime: number[], director: RegExp, writer : RegExp,
                       actor: RegExp, genre: RegExp, country: RegExp, studio: RegExp,
-                      collection = -1)
+                      collection = -1, collectionName : RegExp)
 : boolean
 {
   if (collection !== -1 && movie.collection.id !== collection)
@@ -296,6 +296,11 @@ function filterStatic(movie : any, title : RegExp, year: number[],
   {
     return false;
   }
+  if (!isRegexAll(collectionName) &&
+      (!movie.collection.name || !collectionName.test(movie.collection.name)))
+  {
+    return false;
+  }
   return true;
 }
 
@@ -304,13 +309,13 @@ function filterMovie(movie : any, title: RegExp, year: number[], date: Date[],
                      director: RegExp, writer : RegExp, actor: RegExp,
                      genre: RegExp, country: RegExp, studio: RegExp,
                      onlywatched: boolean, watchlist: boolean, rewatch: string,
-                     collection = -1):
+                     collection = -1, collectionName : RegExp):
 Movie[] {
   var results : Movie[] = [];
   if ((!watchlist && movie.status === 0)
       || !filterStatic(movie, title, year, runtime,
                        director, writer, actor, genre, country, studio,
-                       collection))
+                       collection, collectionName))
   {
     return [];
   }
@@ -449,13 +454,27 @@ function filterMovies(master : any, title: string, year: string, date: string,
 Promise<Movie[]> {
   var movies : Movie[] = [];
   // create regex ignoring case
-  const titleRegex = new RegExp(title !== "" ? title : /.*/, 'i');
   const directorRegex = new RegExp(director !== "" ? director : /.*/, 'i');
   const writerRegex = new RegExp(writer !== "" ? writer : /.*/, 'i');
   const actorRegex = new RegExp(actor !== "" ? actor : /.*/, 'i');
   const genreRegex = new RegExp(genre !== "" ? genre : /.*/, 'i');
   const countryRegex = new RegExp(country !== "" ? country : /.*/, 'i');
   const studioRegex = new RegExp(studio !== "" ? studio : /.*/, 'i');
+
+  // title may contain collection info
+  var titleRegex : RegExp;
+  var collectionRegex : RegExp;
+  if (title.includes(";"))
+  {
+    var titleSplit = title.split(";");
+    titleRegex = new RegExp(titleSplit[0] !== "" ? titleSplit[0] : /.*/, 'i');
+    collectionRegex = new RegExp(titleSplit[1] !== "" ? titleSplit[1] : /.*/, 'i');
+  }
+  else
+  {
+    titleRegex = new RegExp(title !== "" ? title : /.*/, 'i');
+    collectionRegex = new RegExp(/.*/, 'i');
+  }
 
   // tags are a vector of regexes
   var tagsRegexes : RegExp[] = [];
@@ -562,7 +581,8 @@ Promise<Movie[]> {
                                        ratings, runtimes, tagsRegexes, directorRegex,
                                        writerRegex, actorRegex, genreRegex,
                                        countryRegex, studioRegex,
-                                       onlywatched, watchlist, rewatch, collection));
+                                       onlywatched, watchlist, rewatch,
+                                       collection, collectionRegex));
   });
   // >0: a after b; < 0: a before b; === 0: keep order
   if (sorting === "watched")

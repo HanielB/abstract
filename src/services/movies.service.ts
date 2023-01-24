@@ -37,6 +37,16 @@ export function getId(id: number, watched?: string) : number {
 }
 
 
+export function convertMovie(movie: any): Movie {
+  // movie is already in the internal format
+  if (!movie.hasOwnProperty('status'))
+  {
+    return movie;
+  }
+  // convert
+  return populateMovie(movie, [], [], [], "yes");
+}
+
 function mapResult(res: any): Movie[] {
     const {
       id,
@@ -316,6 +326,61 @@ function filterStatic(movie : any, title : RegExp, year: number[],
   return true;
 }
 
+function populateMovie(movie : any, date: Date[], rating: number[],
+                       tags : RegExp[], rewatch: string)
+: Movie {
+  var watchedInfo = "";
+  var ratingInfo = "";
+  var ratingNum = 0;
+  var lbDiaryLink = "";
+  var views = 0;
+  var previousView = false;
+  if (movie.diary.length > 0)
+  {
+    // filter out diary entries that are incompatible
+    var entries : any[] = movie.diary.filter((entry) =>
+      filterDiary(entry.date, entry.rating.num, entry.tags, entry.rewatch,
+                  date, rating, tags, rewatch));
+    views = entries.length;
+    if (entries.length > 0)
+    {
+      watchedInfo = entries[entries.length - 1].date;
+      ratingInfo = entries[entries.length - 1].rating.str;
+      ratingNum = entries[entries.length - 1].rating.num;
+      lbDiaryLink = entries[entries.length - 1].entryURL;
+      // We only care about previous views when we are *not*
+      // filtering by diary info, i.e., if date, rating and tags are
+      // default values. In such a case, if first diary entry is a
+      // rewatch, then this movie has previous views
+      previousView = entries[0].rewatch &&
+        date.length === 0 && rating.length === 0 && tags.length === 0;
+    }
+  }
+  return {
+    id : getId(movie.tmdbId, watchedInfo),
+    tmdbId : movie.tmdbId,
+    year : movie.year,
+    title : movie.title,
+    watched : watchedInfo,
+    rating : ratingInfo,
+    ratingNum : ratingNum,
+    runtime : movie.runtime,
+    // no tags when singleton
+    tags : [],
+    picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
+    lbDiaryLink: lbDiaryLink,
+    lbFilmLink: movie.lbURL,
+    directors : movie.directors,
+    available : movie.available,
+    views : views,
+    previousView : previousView,
+    collectionId :
+    movie.collection.id !== -1 ? movie.collection.id : undefined,
+    collectionName :
+    movie.collection.name !== "" ? movie.collection.name : undefined,
+  }
+}
+
 function filterMovie(movie : any, title: RegExp, year: number[], date: Date[],
                      rating: number[], runtime: number[], tags : RegExp[],
                      director: RegExp, writer : RegExp, actor: RegExp,
@@ -356,56 +421,7 @@ Movie[] {
   // get latest diary entry to have the rating and watched date, if any
   if (onlywatched)
   {
-    var watchedInfo = "";
-    var ratingInfo = "";
-    var ratingNum = 0;
-    var lbDiaryLink = "";
-    var views = 0;
-    var previousView = false;
-    if (movie.diary.length > 0)
-    {
-      // filter out diary entries that are incompatible
-      var entries : any[] = movie.diary.filter((entry) =>
-        filterDiary(entry.date, entry.rating.num, entry.tags, entry.rewatch,
-                    date, rating, tags, rewatch));
-      views = entries.length;
-      if (entries.length > 0)
-      {
-        watchedInfo = entries[entries.length - 1].date;
-        ratingInfo = entries[entries.length - 1].rating.str;
-        ratingNum = entries[entries.length - 1].rating.num;
-        lbDiaryLink = entries[entries.length - 1].entryURL;
-        // We only care about previous views when we are *not*
-        // filtering by diary info, i.e., if date, rating and tags are
-        // default values. In such a case, if first diary entry is a
-        // rewatch, then this movie has previous views
-        previousView = entries[0].rewatch &&
-          date.length === 0 && rating.length === 0 && tags.length === 0;
-      }
-    }
-    results.push({
-      id : getId(movie.tmdbId, watchedInfo),
-      tmdbId : movie.tmdbId,
-      year : movie.year,
-      title : movie.title,
-      watched : watchedInfo,
-      rating : ratingInfo,
-      ratingNum : ratingNum,
-      runtime : movie.runtime,
-      // no tags when singleton
-      tags : [],
-      picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
-      lbDiaryLink: lbDiaryLink,
-      lbFilmLink: movie.lbURL,
-      directors : movie.directors,
-      available : movie.available,
-      views : views,
-      previousView : previousView,
-      collectionId :
-        movie.collection.id !== -1 ? movie.collection.id : undefined,
-      collectionName :
-        movie.collection.name !== "" ? movie.collection.name : undefined,
-    });
+    results.push(populateMovie(movie, date, rating, tags, rewatch));
   }
   else if (movie.diary.length === 0)
   {

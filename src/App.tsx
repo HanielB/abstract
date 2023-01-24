@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Search } from "./components/Search/Search";
 import { Catalog } from "./components/Catalog/Catalog";
-import { Movie } from "./services/movies.service";
+import { Movie, convertMovie } from "./services/movies.service";
 import { MoviesContext } from "./services/context";
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
       .then((res) => res.json())
       .then((res) => {
         setListName(res.title)
-        setMovies(res.movies);
+        setMovies(res.movies.map((movie) => convertMovie(movie)));
       });
   }, []);
 

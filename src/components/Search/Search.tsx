@@ -22,6 +22,14 @@ export const Search = () => {
   const [file, setFile] = useState("");
   const {master, movies, updateMovies, setLoading, setListName} = useContext(MoviesContext);
 
+  // have providers on by default
+  var inputs = document.getElementsByTagName('input');
+  for (var i = 0; i < inputs.length; i++)  {
+    if (inputs[i].type == 'checkbox' && inputs[i].id.startsWith("prov"))   {
+      inputs[i].checked = true;
+    }
+  }
+
   const exportToJsonFile = () => {
     var exportOjb = {"title": "", "movies": movies}
     let title = prompt("Please enter list name", "");
@@ -227,6 +235,21 @@ export const Search = () => {
               <a onClick={(e) => setRewatch("yes")}>Yes</a>
               <a onClick={(e) => setRewatch("no")}>No</a>
               <a onClick={(e) => setRewatch("only")}>Only</a>
+            </div>
+          </div>
+          <div className="dropdown">
+            <button className="search__input">Available</button>
+            <div className="dropdown-content">
+              <ul className="items">
+                <li><input type="checkbox" id="prov-crc" name="display" value="prov-crc"/>Criterion </li>
+                <li><input type="checkbox" id="prov-mbi" name="display" value="prov-mbi"/>Mubi</li>
+                <li><input type="checkbox" id="prov-nfx" name="display" value="prov-nfx"/>Netflix</li>
+                <li><input type="checkbox" id="prov-prv" name="display" value="prov-prv"/>Prime </li>
+                <li><input type="checkbox" id="prov-hbm" name="display" value="prov-hbm"/>HBO </li>
+                <li><input type="checkbox" id="prov-srp" name="display" value="prov-srp"/>Star+ </li>
+                <li><input type="checkbox" id="prov-dnp" name="display" value="prov-dnp"/>Disney+ </li>
+                <li><input type="checkbox" id="prov-gop" name="display" value="prov-gop"/>Globo</li>
+              </ul>
             </div>
           </div>
         </div>

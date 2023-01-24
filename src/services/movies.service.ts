@@ -87,7 +87,7 @@ function addAvailable(providers: string[], candidateProvider : string, movie: Mo
   return movie;
 }
 
-async function getAvailable (movie : Movie) : Promise<Movie> {
+async function getAvailable(movie : Movie) : Promise<Movie> {
   // guard for movies without tmdb id
   if (movie.tmdbId < 0)
   {
@@ -95,6 +95,18 @@ async function getAvailable (movie : Movie) : Promise<Movie> {
   }
   const brProviders = ["Netflix", "Amazon Prime Video", "HBO Max", "Google Play Movies", "Mubi", "Globo Play", "Disney Plus", "Star Plus"]
   const usProviders = ["Criterion Channel"]
+
+  const provMap = {
+    "crc" : "Criterion Channel",
+    "nfx" : "Netflix",
+    "prv" : "Amazon Prime Video",
+    "hbm" : "HBO Max",
+    "gop" : "Globo Play Movies",
+    "mbi" : "Mubi",
+    "ply" : "Google Play",
+    "dnp" : "Disney Plus",
+    "srp" : "Star Plus"
+  }
 
   // console.log(`${movieApiBaseUrl}/movie/${movie.tmdbId}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`)
   const tmdbRequest = await fetch(`${movieApiBaseUrl}/movie/${movie.tmdbId}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`);

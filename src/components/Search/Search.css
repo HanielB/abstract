@@ -209,6 +209,26 @@ input[type="file"] {
   display: block;
 }
 
+.items {
+  padding: 2px 2px;
+  margin: 1px;
+  border: 1px solid #ccc;
+  border-top: none;
+  position: relative;
+}
+
+.items li {
+  list-style: none;
+}
+
+/* .dropdown-content.visible .anchor { */
+/*   color: #0094ff; */
+/* } */
+
+/* .dropdown-content.visible .items { */
+/*   display: block; */
+/* } */
+
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {background-color: #ddd;}
 

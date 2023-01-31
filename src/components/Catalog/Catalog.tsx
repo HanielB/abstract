@@ -114,7 +114,7 @@ export const Catalog = () => {
     setLoading(true);
     getMovies(master, "", "", "", "", "", "",
               director, "", "", "", "", "",
-              "year", true, true, "", true)
+              "year", true, true, "", "yes")
       .then((movies) => {
         setLoading(false);
         updateMovies(movies);
@@ -126,7 +126,7 @@ export const Catalog = () => {
     setListName("");
     getMovies(master, "", "", "", "", "", tag,
               "", "", "", "", "", "",
-              "watched", false, false, "", true)
+              "watched", false, false, "", "yes")
       .then((movies) => {
         setLoading(false);
         updateMovies(movies);
@@ -139,7 +139,7 @@ export const Catalog = () => {
     console.log("Get films with cId ", collectionId)
     getMovies(master, "", "", "", "", "", "",
               "", "", "", "", "", "",
-              "year", true, true, "", true, collectionId)
+              "year", true, true, "", "yes", [], collectionId)
       .then((movies) => {
         setLoading(false);
         updateMovies(movies);

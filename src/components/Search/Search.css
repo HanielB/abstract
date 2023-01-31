@@ -58,14 +58,15 @@ input[type="file"] {
 
 /* for phone */
 @media screen and (max-width: 540px) {
-    .form_radio {
+
+    .form_buttons_search {
         display: flex;
-        flex-flow: column;
+        flex-flow: row;
     }
 
     .form_buttons {
         display: flex;
-        flex-flow: row;
+        flex-flow: column;
     }
 
     .search__input {
@@ -113,12 +114,19 @@ input[type="file"] {
     }
 }
 
+.form_radio {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}
+
+
 /* For non-phone */
 @media screen and (min-width: 540px) {
-    .form_radio {
+
+    .form_buttons_search {
         display: flex;
-        flex-flow: row;
-        justify-content: space-between;
+        flex-flow: column;
     }
 
     .form_buttons {

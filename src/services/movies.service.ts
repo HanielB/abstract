@@ -97,30 +97,40 @@ function addAvailable(providers: string[], candidateProvider : string, movie: Mo
   return movie;
 }
 
-async function getAvailable(movie : Movie) : Promise<Movie> {
+async function getAvailable(movie : Movie, providers : string[]) : Promise<Movie> {
   // guard for movies without tmdb id
   if (movie.tmdbId < 0)
   {
     return movie;
   }
-  const brProviders = ["Netflix", "Amazon Prime Video", "HBO Max", "Google Play Movies", "Mubi", "Globo Play", "Disney Plus", "Star Plus"]
-  const usProviders = ["Criterion Channel"]
+  var brProviders = ["Netflix", "Amazon Prime Video", "HBO Max", "Google Play Movies", "Mubi", "Globo Play", "Disney Plus", "Star Plus"]
+  var usProviders = ["Criterion Channel"]
 
   const provMap = {
-    "crc" : "Criterion Channel",
-    "nfx" : "Netflix",
-    "prv" : "Amazon Prime Video",
-    "hbm" : "HBO Max",
-    "gop" : "Globo Play Movies",
-    "mbi" : "Mubi",
-    "ply" : "Google Play",
-    "dnp" : "Disney Plus",
-    "srp" : "Star Plus"
+    "Criterion Channel": "crc",
+    "Netflix": "nfx",
+    "Amazon Prime Video":"prv",
+    "HBO Max": "hbm",
+    "Globo Play Movies": "gop",
+    "Mubi": "mbi",
+    "Google Play": "ply",
+    "Disney Plus": "dnp",
+    "Star Plus": "srp"
   }
+  console.log("Test with ", providers);
+
+  if (providers.length > 0)
+  {
+    brProviders = brProviders.filter((provider) => providers.includes(provMap[provider]));
+    usProviders = usProviders.filter((provider) => providers.includes(provMap[provider]));
+  }
+
+  console.log("Fitered br providers ", brProviders);
+  console.log("Fitered us providers ", usProviders);
 
   // console.log(`${movieApiBaseUrl}/movie/${movie.tmdbId}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`)
   const tmdbRequest = await fetch(`${movieApiBaseUrl}/movie/${movie.tmdbId}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`);
-  console.log("status of br request:", tmdbRequest.status);
+  // console.log("status of br request:", tmdbRequest.status);
   if (tmdbRequest.status !== 200)
   {
     return movie;
@@ -142,7 +152,7 @@ async function getAvailable(movie : Movie) : Promise<Movie> {
     }
     if ("flatrate" in dataJson.results["BR"])
     {
-      console.log("got here")
+      // console.log("got here")
       dataJson.results["BR"].flatrate.map((entry) => {
         movie = addAvailable(brProviders, entry.provider_name, movie);
       })
@@ -173,7 +183,7 @@ async function getAvailable(movie : Movie) : Promise<Movie> {
   {
     movie.available = undefined;
   }
-  console.log("Available:", movie.available)
+  // console.log("Available:", movie.available)
   return movie;
 }
 
@@ -713,7 +723,8 @@ export function getMovies(master: Object[],
                           country: string, studio: string,
                           sorting: string, onlywatched: boolean,
                           watchlist: boolean, rewatch: string,
-                          available: boolean, collection = -1
+                          available: string, providers: string[] = [],
+                          collection = -1
                          ):
 Promise<Movie[]> {
   // TODO probably don't need promises anymore here
@@ -722,12 +733,17 @@ Promise<Movie[]> {
                       actor, genre, country, studio, sorting,
                       onlywatched, watchlist, rewatch, collection)
     .then((movies) => {
-      // let res = Array.from(tmp);
+      // if we are filtering by availability
+      if (available == "only")
+      {
+
+      }
+
       return Promise.all(movies.map((movie) => {
         if (movie.picture)
         {
-          if (available)
-            return getAvailable(movie);
+          if (available == "yes")
+            return getAvailable(movie, providers);
           if (movie.available)
             movie.available = undefined;
           return movie;

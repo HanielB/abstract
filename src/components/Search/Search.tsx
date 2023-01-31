@@ -19,16 +19,16 @@ export const Search = () => {
   const [country, setCountry] = useState("");
   const [sorting, setSorting] = useState("");
   const [rewatch, setRewatch] = useState("");
+  const [available, setAvailable] = useState("");
   const [file, setFile] = useState("");
   const {master, movies, updateMovies, setLoading, setListName} = useContext(MoviesContext);
 
   // have providers on by default
-  var inputs = document.getElementsByTagName('input');
-  for (var i = 0; i < inputs.length; i++)  {
-    if (inputs[i].type == 'checkbox' && inputs[i].id.startsWith("prov"))   {
-      inputs[i].checked = true;
-    }
-  }
+  // var inputs = document.getElementsByTagName('input');
+  // for (var i = 0; i < inputs.length; i++) {
+  //   if (inputs[i].type == 'checkbox' && inputs[i].id.startsWith("prov"))
+  //     inputs[i].checked = true;
+  // }
 
   const exportToJsonFile = () => {
     var exportOjb = {"title": "", "movies": movies}
@@ -72,10 +72,8 @@ export const Search = () => {
           document.getElementById("onlywatched") as HTMLInputElement
     const watchlistCheck =
           document.getElementById("watchlist") as HTMLInputElement
-    const availableCheck = document.getElementById("available") as HTMLInputElement
     var onlywatched = onlywatchedCheck? onlywatchedCheck.checked : false;
     const watchlist = watchlistCheck? watchlistCheck.checked : false;
-    const available = availableCheck? availableCheck.checked : false;
 
     if (title.includes(";"))
     {
@@ -88,10 +86,19 @@ export const Search = () => {
       onlywatched = true;
     }
 
+    var providers: string[] = [];
+    // get active providers
+    var inputs = document.getElementsByTagName('input');
+    for (var i = 0; i < inputs.length; i++) {
+      if (inputs[i].type == 'checkbox' && inputs[i].id.startsWith("prov") && inputs[i].checked)
+        providers.push(inputs[i].value);
+    }
+    console.log("Active providers ", providers);
+
     getMovies(master, title, year, date, rating, runtime, tags,
               director, writer, actor, genre, country, studio,
               sorting ? sorting : "watched", onlywatched,
-              watchlist, rewatch, available)
+              watchlist, rewatch, available, providers)
       .then((movies) => {
         console.log("Got back " + movies.length + " movie items");
         setLoading(false);
@@ -100,115 +107,115 @@ export const Search = () => {
   };
 
   return (
-    <div>
-      <form className="form" title="form" onSubmit={(e) => handleOnSubmit(e)} noValidate>
-        <div className="form_text">
-          <div>
-            <input
-              type="text"
-              name="movie"
-              className="search__inputLong"
-              placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <input
-              type="text"
-              name="year"
-              className="search__inputShort"
-              placeholder="Year"
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-            />
-            <input
-              type="text"
-              name="runtime"
-              className="search__inputShorter"
-              placeholder="Runtime"
-              value={runtime}
-              onChange={(e) => setRuntime(e.target.value)}
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              name="date"
-              className="search__inputShort"
-              placeholder="Watched"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-            <input
-              type="text"
-              name="rating"
-              className="search__inputShorter"
-              placeholder="Rating"
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
-            />
-            <input
-              type="text"
-              name="tags"
-              className="search__inputLong"
-              placeholder="Tags"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              name="director"
-              className="search__input"
-              placeholder="Director"
-              value={director}
-              onChange={(e) => setDirector(e.target.value)}
-            />
-            <input
-              type="text"
-              name="genre"
-              className="search__input"
-              placeholder="Genre"
-              value={genre}
-              onChange={(e) => setGenre(e.target.value)}
-            />
-            <input
-              type="text"
-              name="country"
-              className="search__input"
-              placeholder="Country"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              name="writer"
-              className="search__input"
-              placeholder="Writer"
-              value={writer}
-              onChange={(e) => setWriter(e.target.value)}
-            />
-            <input
-              type="text"
-              name="actor"
-              className="search__input"
-              placeholder="Actor"
-              value={actor}
-              onChange={(e) => setActor(e.target.value)}
-            />
-            <input
-              type="text"
-              name="studio"
-              className="search__input"
-              placeholder="Studio"
-              value={studio}
-              onChange={(e) => setStudio(e.target.value)}
-            />
-          </div>
+  <div>
+    <form className="form" title="form" onSubmit={(e) => handleOnSubmit(e)} noValidate>
+      <div className="form_text">
+        <div>
+          <input
+            type="text"
+            name="movie"
+            className="search__inputLong"
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <input
+            type="text"
+            name="year"
+            className="search__inputShort"
+            placeholder="Year"
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+          />
+          <input
+            type="text"
+            name="runtime"
+            className="search__inputShorter"
+            placeholder="Runtime"
+            value={runtime}
+            onChange={(e) => setRuntime(e.target.value)}
+          />
         </div>
-        <div className="form_buttons">
+        <div>
+          <input
+            type="text"
+            name="date"
+            className="search__inputShort"
+            placeholder="Watched"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+          <input
+            type="text"
+            name="rating"
+            className="search__inputShorter"
+            placeholder="Rating"
+            value={rating}
+            onChange={(e) => setRating(e.target.value)}
+          />
+          <input
+            type="text"
+            name="tags"
+            className="search__inputLong"
+            placeholder="Tags"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            name="director"
+            className="search__input"
+            placeholder="Director"
+            value={director}
+            onChange={(e) => setDirector(e.target.value)}
+          />
+          <input
+            type="text"
+            name="genre"
+            className="search__input"
+            placeholder="Genre"
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+          />
+          <input
+            type="text"
+            name="country"
+            className="search__input"
+            placeholder="Country"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            name="writer"
+            className="search__input"
+            placeholder="Writer"
+            value={writer}
+            onChange={(e) => setWriter(e.target.value)}
+          />
+          <input
+            type="text"
+            name="actor"
+            className="search__input"
+            placeholder="Actor"
+            value={actor}
+            onChange={(e) => setActor(e.target.value)}
+          />
+          <input
+            type="text"
+            name="studio"
+            className="search__input"
+            placeholder="Studio"
+            value={studio}
+            onChange={(e) => setStudio(e.target.value)}
+          />
+        </div>
+      </div>
+      <div className="form_buttons">
         <div className="dropdowns">
           <div className="dropdown">
             <button className="search__input">Sorting</button>
@@ -240,54 +247,58 @@ export const Search = () => {
           <div className="dropdown">
             <button className="search__input">Available</button>
             <div className="dropdown-content">
+              <a onClick={(e) => setAvailable("yes")}>Yes</a>
+              <a onClick={(e) => setAvailable("no")}>No</a>
+              <a onClick={(e) => setAvailable("only")}>Only</a>
+            </div>
+          </div>
+          <div className="dropdown">
+            <button className="search__input">Providers</button>
+            <div className="dropdown-content">
               <ul className="items">
-                <li><input type="checkbox" id="prov-crc" name="display" value="prov-crc"/>Criterion </li>
-                <li><input type="checkbox" id="prov-mbi" name="display" value="prov-mbi"/>Mubi</li>
-                <li><input type="checkbox" id="prov-nfx" name="display" value="prov-nfx"/>Netflix</li>
-                <li><input type="checkbox" id="prov-prv" name="display" value="prov-prv"/>Prime </li>
-                <li><input type="checkbox" id="prov-hbm" name="display" value="prov-hbm"/>HBO </li>
-                <li><input type="checkbox" id="prov-srp" name="display" value="prov-srp"/>Star+ </li>
-                <li><input type="checkbox" id="prov-dnp" name="display" value="prov-dnp"/>Disney+ </li>
-                <li><input type="checkbox" id="prov-gop" name="display" value="prov-gop"/>Globo</li>
+                <li><input type="checkbox" id="prov-crc" name="display" value="crc"/>Criterion </li>
+                <li><input type="checkbox" id="prov-mbi" name="display" value="mbi"/>Mubi</li>
+                <li><input type="checkbox" id="prov-nfx" name="display" value="nfx"/>Netflix</li>
+                <li><input type="checkbox" id="prov-prv" name="display" value="prv"/>Prime </li>
+                <li><input type="checkbox" id="prov-hbm" name="display" value="hbm"/>HBO </li>
+                <li><input type="checkbox" id="prov-srp" name="display" value="srp"/>Star+ </li>
+                <li><input type="checkbox" id="prov-dnp" name="display" value="dnp"/>Disney+ </li>
+                <li><input type="checkbox" id="prov-gop" name="display" value="gop"/>Globo</li>
               </ul>
             </div>
           </div>
         </div>
-          <div className="form_sort">
-            <fieldset>
-              <legend>Display</legend>
-              <div className="form_radio">
-                <div>
-                  <input type="checkbox" id="onlywatched" name="display" value="onlywatched"/>
-                  <label htmlFor="onlywatched">Singleton</label>
-                </div>
-                <div>
-                  <input type="checkbox" id="watchlist" name="display" value="watchlist"/>
-                  <label htmlFor="watchlist">Watchlist</label>
-                </div>
+        <div className="form_sort">
+          <fieldset>
+            <legend>Display</legend>
+            <div className="form_radio">
+              <div>
+                <input type="checkbox" id="onlywatched" name="display" value="onlywatched"/>
+                <label htmlFor="onlywatched">Singleton</label>
               </div>
-              <div className="form_radio">
-                <div>
-                  <input type="checkbox" id="available" name="display" value="available"/>
-                  <label htmlFor="available">Available</label>
-                </div>
-                <div>
-                  <input type="checkbox" id="collection" name="display" value="collection"/>
-                  <label htmlFor="collection">Collection</label>
-                </div>
+              <div>
+                <input type="checkbox" id="watchlist" name="display" value="watchlist"/>
+                <label htmlFor="watchlist">Watchlist</label>
               </div>
-            </fieldset>
-          </div>
+            </div>
+            <div className="form_radio">
+              <div>
+                <input type="checkbox" id="collection" name="display" value="collection"/>
+                <label htmlFor="collection">Collection</label>
+              </div>
+            </div>
+          </fieldset>
         </div>
-        <div className="form_buttons">
-          <button name="Button" className="search__button" type="submit">Search</button>
-          <button name="Button" className="search__button" type="button" onClick={(e) => exportToJsonFile()}>Download</button>
-          <label className="search__button">
-            <input type="file" onChange={(e) => handleUpload(e)}/>
-            UPLOAD
-          </label>
-        </div>
-      </form>
-    </div>
+      </div>
+      <div className="form_buttons_search">
+        <button name="Button" className="search__button" type="submit">Search</button>
+        <button name="Button" className="search__button" type="button" onClick={(e) => exportToJsonFile()}>Download</button>
+        <label className="search__button">
+          <input type="file" onChange={(e) => handleUpload(e)}/>
+          UPLOAD
+        </label>
+      </div>
+    </form>
+  </div>
   );
-};
+  };

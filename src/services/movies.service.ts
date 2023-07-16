@@ -79,6 +79,7 @@ function getPicture (movie : Movie) : Promise<Movie> {
 }
 
 function addAvailable(providers: string[], candidateProvider : string, movie: Movie) : Movie {
+  console.log("Test provider ", candidateProvider)
   if (!providers.includes(candidateProvider))
   {
     return movie;
@@ -99,37 +100,15 @@ function addAvailable(providers: string[], candidateProvider : string, movie: Mo
 
 async function getAvailable(movie : Movie, providers : string[]) : Promise<Movie> {
   // guard for movies without tmdb id
-  if (movie.tmdbId < 0)
+  if (movie.tmdbId < 0 || providers.length === 0)
   {
     return movie;
   }
-  var brProviders = ["Netflix", "Amazon Prime Video", "HBO Max", "Google Play Movies", "Mubi", "Globo Play", "Disney Plus", "Star Plus"]
-  var usProviders = ["Criterion Channel"]
-
-  const provMap = {
-    "Criterion Channel": "crc",
-    "Netflix": "nfx",
-    "Amazon Prime Video":"prv",
-    "HBO Max": "hbm",
-    "Globo Play Movies": "gop",
-    "Mubi": "mbi",
-    "Google Play": "ply",
-    "Disney Plus": "dnp",
-    "Star Plus": "srp"
-  }
   console.log("Test with ", providers);
-
-  if (providers.length > 0)
-  {
-    brProviders = brProviders.filter((provider) => providers.includes(provMap[provider]));
-    usProviders = usProviders.filter((provider) => providers.includes(provMap[provider]));
-  }
-
-  console.log("Fitered br providers ", brProviders);
-  console.log("Fitered us providers ", usProviders);
 
   // console.log(`${movieApiBaseUrl}/movie/${movie.tmdbId}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`)
   const tmdbRequest = await fetch(`${movieApiBaseUrl}/movie/${movie.tmdbId}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`);
+
   // console.log("status of br request:", tmdbRequest.status);
   if (tmdbRequest.status !== 200)
   {
@@ -141,20 +120,20 @@ async function getAvailable(movie : Movie, providers : string[]) : Promise<Movie
     if ("buy" in dataJson.results["BR"])
     {
       dataJson.results["BR"].buy.map((entry) => {
-        movie = addAvailable(brProviders, entry.provider_name, movie);
+        movie = addAvailable(providers, entry.provider_name, movie);
       })
     }
     if ("rent" in dataJson.results["BR"])
     {
       dataJson.results["BR"].rent.map((entry) => {
-        movie = addAvailable(brProviders, entry.provider_name, movie);
+        movie = addAvailable(providers, entry.provider_name, movie);
       })
     }
     if ("flatrate" in dataJson.results["BR"])
     {
       // console.log("got here")
       dataJson.results["BR"].flatrate.map((entry) => {
-        movie = addAvailable(brProviders, entry.provider_name, movie);
+        movie = addAvailable(providers, entry.provider_name, movie);
       })
     }
   }
@@ -163,19 +142,19 @@ async function getAvailable(movie : Movie, providers : string[]) : Promise<Movie
     if ("buy" in dataJson.results["US"])
     {
       dataJson.results["US"].buy.map((entry) => {
-        movie = addAvailable(usProviders, entry.provider_name, movie);
+        movie = addAvailable(providers, entry.provider_name, movie);
       })
     }
     if ("rent" in dataJson.results["US"])
     {
       dataJson.results["US"].rent.map((entry) => {
-        movie = addAvailable(usProviders, entry.provider_name, movie);
+        movie = addAvailable(providers, entry.provider_name, movie);
       })
     }
     if ("flatrate" in dataJson.results["US"])
     {
       dataJson.results["US"].flatrate.map((entry) => {
-        movie = addAvailable(usProviders, entry.provider_name, movie);
+        movie = addAvailable(providers, entry.provider_name, movie);
       })
     }
   }
@@ -609,10 +588,10 @@ Promise<Movie[]> {
     }
   }
 
-  console.log("years:", years)
-  console.log("runtimes:", runtimes)
-  console.log("ratings:", ratings)
-  console.log("dates:", dates.map((date) => date.toString()))
+  // console.log("years:", years)
+  // console.log("runtimes:", runtimes)
+  // console.log("ratings:", ratings)
+  // console.log("dates:", dates.map((date) => date.toString()))
 
   master.movies?.map((movie) => {
     movies = movies.concat(filterMovie(movie, titleRegex, years, dates,

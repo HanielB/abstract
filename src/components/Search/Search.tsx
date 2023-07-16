@@ -86,12 +86,22 @@ export const Search = () => {
       onlywatched = true;
     }
 
-    var providers: string[] = [];
-    // get active providers
+    var providers: string[] = ["Netflix", "Amazon Prime Video", "HBO Max", "Google Play Movies", "Mubi", "Globoplay", "Disey Plus", "Star Plus", "Criterion Channel"];
+    // remove ticked providers
     var inputs = document.getElementsByTagName('input');
     for (var i = 0; i < inputs.length; i++) {
       if (inputs[i].type == 'checkbox' && inputs[i].id.startsWith("prov") && inputs[i].checked)
-        providers.push(inputs[i].value);
+      {
+        console.log("Should remove ", inputs[i].value)
+        const index = providers.indexOf(inputs[i].value);
+        if (index > -1) { // only splice array when item is found
+          providers.splice(index, 1); // 2nd parameter means remove one item only
+        }
+        else
+        {
+          console.log("..did not remove")
+        }
+      }
     }
     console.log("Active providers ", providers);
 
@@ -256,14 +266,15 @@ export const Search = () => {
             <button className="search__input">Providers</button>
             <div className="dropdown-content">
               <ul className="items">
-                <li><input type="checkbox" id="prov-crc" name="display" value="crc"/>Criterion </li>
-                <li><input type="checkbox" id="prov-mbi" name="display" value="mbi"/>Mubi</li>
-                <li><input type="checkbox" id="prov-nfx" name="display" value="nfx"/>Netflix</li>
-                <li><input type="checkbox" id="prov-prv" name="display" value="prv"/>Prime </li>
-                <li><input type="checkbox" id="prov-hbm" name="display" value="hbm"/>HBO </li>
-                <li><input type="checkbox" id="prov-srp" name="display" value="srp"/>Star+ </li>
-                <li><input type="checkbox" id="prov-dnp" name="display" value="dnp"/>Disney+ </li>
-                <li><input type="checkbox" id="prov-gop" name="display" value="gop"/>Globo</li>
+                <li><input type="checkbox" id="prov-crc" name="display" value="Criterion Channel"/>rm Criterion </li>
+                <li><input type="checkbox" id="prov-mbi" name="display" value="Mubi"/>rm Mubi</li>
+                <li><input type="checkbox" id="prov-nfx" name="display" value="Netflix"/>rm Netflix</li>
+                <li><input type="checkbox" id="prov-prv" name="display" value="Amazon Prime Video"/>rm Prime</li>
+                <li><input type="checkbox" id="prov-hbm" name="display" value="HBO Max"/>rm HBO</li>
+                <li><input type="checkbox" id="prov-hbm" name="display" value="Google Play Movies"/>rm Google Play</li>
+                <li><input type="checkbox" id="prov-srp" name="display" value="Star Plus"/>rm Star+</li>
+                <li><input type="checkbox" id="prov-dnp" name="display" value="Disney Plus"/>rm Disney+</li>
+                <li><input type="checkbox" id="prov-gop" name="display" value="Globoplay"/>rm Globo</li>
               </ul>
             </div>
           </div>

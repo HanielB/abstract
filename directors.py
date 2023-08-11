@@ -6,7 +6,8 @@ import os
 import sys
 from pathlib import Path
 from urllib.parse import quote
-import json
+import json, unidecode
+
 from collections import OrderedDict
 
 def process_dir(top_dir):
@@ -26,120 +27,651 @@ def process_dir(top_dir):
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-    * { padding: 0; margin: 0; }
 
-    body {
-        font-family: sans-serif;
-        text-rendering: optimizespeed;
-        background-color: #ffffff;
-    }
+/* !GLOBAL ------------------------------------------------------------------------------*/
 
-    a {
-        color: #006ed3;
-        text-decoration: none;
-    }
+html {
+/*      -webkit-font-smoothing: subpixel-antialiased; */
 
-    a:hover,
-    h1 a:hover {
-        color: #319cff;
-    }
-
-    header,
-    #summary {
-        padding-left: 5%;
-        padding-right: 5%;
-    }
-
-    th:first-child,
-    td:first-child {
-        width: 5%;
-    }
-
-    th:last-child,
-    td:last-child {
-        width: 5%;
-    }
-
-    header {
-        padding-top: 25px;
-        padding-bottom: 15px;
-        background-color: #f2f2f2;
-    }
-
-    h1 {
-        font-size: 20px;
+/*
+        -webkit-text-stroke: 1px transparent;
+        text-rendering:optimizeLegibility;
+        font-style: normal;
         font-weight: normal;
-        white-space: nowrap;
-        overflow-x: hidden;
-        text-overflow: ellipsis;
-        color: #999;
-    }
+*/
+}
 
-    h1 a {
-        color: #000;
-        margin: 0 4px;
-    }
 
-    h1 a:hover {
-        text-decoration: underline;
-    }
+body {
+        background: #1f1f1f;
+        font-family: "livory", Georgia, serif;
+        color: #93aeb9;
+        text-shadow: 0 1px 0 rgba(0,0,0,0.01);
+}
 
-    h1 a:first-child {
-        margin: 0;
-    }
+a {
+    text-decoration: none;
+    color: #93aeb9
+}
 
-    main {
-        display: block;
-    }
+a:hover {
+  color: gray;
+  text-decoration: none;
+}
 
-    .meta {
-        font-size: 12px;
-        font-family: Verdana, sans-serif;
-        border-bottom: 1px solid #9C9C9C;
+h1 {
+        font-family: "omnes-pro", "Lucida Grande", Verdana, sans-serif;
+        font-weight: 600;
+        color: #8da6b0;
+
+        line-height: 100%;
+        font-size: 1.7em;
         padding-top: 10px;
-        padding-bottom: 10px;
-    }
+        padding-bottom: 20px;
 
-    .meta-item {
-        margin-right: 1em;
-    }
+        text-shadow: 0px 1px 0px rgba(0,0,0,1.0);
 
-    #filter {
-        padding: 4px;
-        border: 1px solid #CCC;
-    }
+}
 
-    table {
+h1 em {
+        font-weight: normal;
+        font-style: normal;
+}
+
+
+h2 {
+        font-family: "omnes-pro", "Lucida Grande", Verdana, sans-serif;
+        font-weight: 600;
+        color: #98b3bd;
+
+        font-size: 1.25em;
+        line-height: 115%;
+        padding-top: 10px;
+        padding-bottom: 4px;
+
+        text-shadow: 0px 1px 0px rgba(0,0,0,1.0);
+
+}
+
+h2 em {
+        font-weight: normal;
+        font-style: normal;
+        font-size: .92em;
+}
+
+
+h3 {
+        font-size: 1.1em;
+        font-weight: bold;
+        font-style: italic;
+        padding-top: 4px;
+        padding-bottom: 0px;
+}
+
+h3 em {
+        font-weight: normal;
+        font-size: .9em;
+        margin-left: 4px;
+}
+
+
+.footnote {
+        font-size: .8em;
+        letter-spacing: 1px;
+        margin-left: 3px;
+}
+
+.added {
+        color: #b47563;
+}
+
+
+#wrapper {
+        width: 86%;
+        margin: 60px auto 50px auto;
+        padding: 20px 12px 20px 12px;
+
+        overflow: auto;
+}
+
+.caption {
+        float: right;
+        font-size: .75em;
+        margin-top: -8px;
+        margin-bottom: -12px;
+        color: RGBa(147, 174, 185,0.3);
+}
+
+
+
+/* !FINE PRINT ---------------------------------------------------------------------*/
+
+.fineprint {
+        font-family: "Lucida Grande", Verdana, sans-serif;
+        font-size: 0.75em;
+}
+
+#main p.fineprint {
+        font-family: "Lucida Grande", Verdana, sans-serif;
+        font-size: 0.75em;
+}
+
+#sidebar p.fineprint {
+        font-family: "Lucida Grande", Verdana, sans-serif;
+        font-size: 0.75em;
+        line-height: 150%;
+}
+
+#main p.asterisk {
+        padding-top: 6px;
+        font-size: 0.8em;
+        line-height: 135%;
+        text-indent: -8px;
+}
+
+
+/* !HORIZONTAL RULES (see also footer) ---------------------------------------------------------------------*/
+
+hr {
         width: 100%;
-        border-collapse: collapse;
-    }
+    border: 0;
 
-    tr {
-        border-bottom: 1px dashed #dadada;
-    }
 
-    tbody tr:hover {
-        background-color: #ffffec;
-    }
+    height: 0;
+    border-bottom: 1px solid #72858d;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 
-    th,
-    td {
-        text-align: left;
-        padding: 10px 0;
-    }
+        clear: both;
 
-    th {
-        padding-top: 15px;
-        padding-bottom: 15px;
-        font-size: 16px;
+
+    padding-top: 8px;
+}
+
+
+#main hr {
+        margin-bottom: 16px;
+
+}
+
+
+
+/* !SITE HEADLINE & HERO IMAGE -----------------------------------------------------------*/
+
+/*
+.tmwvtm {
+        width: 734px;
+        height: 50px;
+        background-image: url(tmwvtm.png);
+        background-size: 100%;
+        background-repeat: no-repeat;
+}
+*/
+
+#header img {
+        margin-bottom: -4px;
+}
+
+#header img.header-b {
+        width: 250px
+        height: 35px;
+}
+
+.mainImage {
+        margin-top: 12px;
+        margin-bottom: 10px;
+        width: 100%;
+        height: 260px;
+
+        background-size: 100%;
+        background-repeat: no-repeat;
+}
+
+
+.lt-ie9 .mainImage {
+        height: 360px;
+}
+
+/* !COLOR-CODING -------------------------------------------------------------------------*/
+
+.blue {
+        color: rgba(61,116,198,1);
+/*      color: rgba(79,215,255,0.85); */
+/*      color: #71c2ff; */
+}
+
+.lt-ie9 .blue {
+        color: #48bcde;
+}
+
+.red {
+        color: rgba(255,112,80,0.75);
+}
+
+.lt-ie9 .red {
+        color: #c75c44;
+}
+
+.green {
+        color: rgba(134,186,85,0.8);
+}
+
+.lt-ie9 .green {
+        color: #85ab61;
+}
+
+.gold {
+        color: rgba(244,211,80,0.9);
+
+/*      color: rgba(238,193,79,.95); */
+}
+
+.lt-ie9 .gold {
+        color: #dfc14b;
+}
+
+.orange {
+        color: rgba(253,180,40,0.7);
+}
+
+.lt-ie9 .orange {
+        color: #bb8825;
+}
+
+.fineprint .blue, .fineprint .red, .fineprint .green, .fineprint .gold , .fineprint .orange {
+        font-weight: bold;
+}
+
+
+/* !IMAGES  ----------------------------------------------------------------------------*/
+
+
+#main h2 img {
+        width: 38px;
+        height: 18px;
+        margin-left: -4px;
+        margin-right: -4px;
+        vertical-align: -4px;
+}
+
+#main h2 img.rewatched {
+        width: 22px;
+        height: 12px;
+        vertical-align: 1px;
+        margin-left: 0px;
+        margin-right: 0px;
+}
+
+
+
+
+/* !TOP NAV BAR  ----------------------------------------------------------------------------*/
+
+#nav {
+
+}
+
+#nav ul {
+        padding-left: 0;
+        list-style: none;
+        font-family: "omnes-pro","Lucida Grande", Verdana, sans-serif;
+}
+
+#nav li {
+        float: left;
+        padding: 4px 0 4px 0;
+
+        font-weight: bold;
+        font-size: 1em;
+        text-shadow: 0px 1px 0px rgba(0,0,0,1.0);
+}
+
+#nav a {
+        color: #93aeb9;
+        text-decoration: none;
+
+        padding-right: 9px;
+        margin-right: 9px;
+
+}
+
+#nav a:hover{
+        color: #fff;
+}
+
+
+#indexLink, #pastLink, #listLink, #aboutLink, #rankLink, #capsLink, #prevLink, #navLink  {
+        border-right: 1px solid #bbb;
+}
+
+#linkLink, #nextLink, #rightcapsLink, #rightmostLink {
+        border-right: none;
+}
+
+#index #indexLink,
+#past #pastLink,
+#list #listLink,
+#about #aboutLink,
+#link #linkLink,
+#rank #rankLink,
+#caps #capsLink,
+#caps #rightcapsLink
+ {
+        font-weight: 600;
+        color: #eee;
+}
+
+/*
+#nav .nav-search-box {
+        float: right;
+        width: 35%;
+        height: 10px;
+        margin-left: -7px;
+        margin-top: -5px;
+        margin-bottom: -10px;
+}
+*/
+
+
+
+/* !MAIN  ----------------------------------------------------------------------------*/
+
+#main {
+        width: 65%;
+        margin: 0px 0px 20px 0px;
+        float: left;
+}
+
+#main.no-sidebar {
+        width: 100%;
+
+        margin: 0px 0px 0px 0px;
+        float: none;
+}
+
+#main.no-headline {
+        margin-top: 24px;
+}
+
+#main p {
+        font-size: 1em;
+        line-height: 120%;
+        margin-bottom: 10px;
+}
+
+#main ul {
+        list-style-type:disc;
+        padding-bottom: 10px;
+}
+
+#main ul.paragraph-bullets li {
+        padding-bottom: 10px;
+}
+
+
+/* !BOX LINKS for LISTS.html ----------------------------------------------------------------------------*/
+
+
+#main p.box-link {
+        font-family: "letter-gothic-std", Monaco, "Lucida Console", monospace;
+        font-size: 0.77em;
+        font-weight: bold;
+        letter-spacing: 1px;
+        line-height: 250%;
+        margin-top: 3px;
+
+}
+
+#main p.box-link a {
+        color: #93aeb9;
+        background-color: rgba(147,174,185,0.2);
+
+        border: 1px solid rgba(147,174,185,0.5);
+
+        padding: 4px 6px 3px 6px;
+        margin: 0px 2px 0px 0px;
+
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+
         white-space: nowrap;
-    }
 
-    th a {
-        color: black;
-    }
+}
 
-    .rating {
+
+.lt-ie9 #main p.box-link a {
+        color: #93aeb9;
+        background-color: #48575c;
+
+        border: 1px solid #8098a2;
+
+        padding: 2px 6px 2px 6px;
+        margin: 0px 2px 0px 0px;
+
+}
+
+.lt-ie8 #main p.box-link a {
+
+        margin: 0px 2px 0px 2px;
+
+}
+
+
+#main p.box-link a:hover {
+        color: #fff;
+        background-color: rgba(147,174,185,0.6);
+        }
+
+
+/* !SIDEBAR ----------------------------------------------------------------------------*/
+
+
+#sidebar {
+        width: 30%;
+        float: right;
+        margin-top: 58px;
+}
+
+#index #sidebar,
+#past #sidebar,
+#list #sidebar,
+#about #sidebar,
+#link #sidebar {
+                margin-top: 16px;
+}
+
+#sidebar.no-headline {
+        margin-top: 24px;
+}
+
+#sidebar.h2-headline {
+        margin-top: 39px;
+}
+
+
+#sidebar p {
+        margin-bottom: 10px;
+}
+
+
+/* !SIDEBAR NAVIGATION MENU ------------------------------------------------------------------*/
+
+
+#sidebar ul {
+        list-style: none;
+}
+
+.lt-ie8 #sidebar ul {
+        margin-top: 0px;
+}
+
+#sidebar ul.sbnav li {
+        background-color: #506066;
+
+        text-align: center;
+        font-family: "omnes-pro", "Lucida Grande", Verdana, sans-serif;
+        text-transform: uppercase;
+
+        letter-spacing: 2px;
+        line-height: 110%;
+        font-size: 0.9em;
+
+        text-shadow: 0px 1px 0px rgba(0,0,0,0.7);
+
+
+        padding: 14px 8px 14px 8px;
+        margin-bottom: 8px;
+}
+
+#sidebar ul.sbnav li.donate {
+        background-color: rgba(253,180,40,0.7);
+
+}
+
+
+.lt-ie9 #sidebar ul.sbnav li {
+        text-shadow: none;
+}
+
+.lt-ie8 #sidebar ul.sbnav li {
+        height: 18px;
+        background-color: #506066;
+        padding: 18px 8px 14px 8px;
+
+}
+
+
+#sidebar ul.sbnav li:hover {
+        background-color: #93aeb9;
+
+}
+
+/* !SEARCH ------------------------------------------------------------------*/
+
+.gsc-input {
+                color: #1f1f1f;
+                font-family: livory, Georgia, serif;
+                font-size: .7em;
+}
+
+
+.sidebar-search-box {
+        margin-top: 18px;
+        margin-left: 22px;
+/*      visibility: hidden; */
+}
+
+
+/* !ALPHABETICAL NAVIGATION MINI-NAV -------------------------------------------------------------------*/
+
+
+.nav_a-z {
+        font-family: "omnes-pro", "Lucida Grande", Verdana, sans-serif;
+        font-size: 1.15em;
+        color: rgb(142,176,190);
+        color: rgba(121,146,157,0.8);
+        line-height: 220%;
+        margin-top: 24px;
+        margin-bottom: 24px;
+}
+
+#mqdall .nav_a-z {
+        font-size: 1.15em;
+        margin-bottom: 24px;
+}
+
+#mqdall .nav_a-z a {
+        padding-left: 9px;
+        padding-right: 9px;
+
+        white-space: nowrap;
+}
+
+
+
+#mmm .nav_a-z {
+        font-family: "omnes-pro", "Lucida Grande", Verdana, sans-serif;
+        font-size: .95em;
+        color: rgb(142,176,190);
+        color: rgba(121,146,157,0.8);
+        line-height: 220%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+
+        text-indent: 0;
+        margin-left: -.94em;
+}
+
+#mmm #a-index {
+        margin-left: 0;
+}
+
+
+#mmm .nav_a-z a {
+        padding-left: 7px;
+        padding-right: 7px;
+
+        white-space: nowrap;
+}
+
+#a-index #a-index-link,
+#b-index #b-index-link,
+#c-index #c-index-link,
+#d-index #d-index-link,
+#e-index #e-index-link,
+#f-index #f-index-link,
+#g-index #g-index-link,
+#h-index #h-index-link,
+#i-index #i-index-link,
+#j-index #j-index-link,
+#k-index #k-index-link,
+#l-index #l-index-link,
+#m-index #m-index-link,
+#n-index #n-index-link,
+#o-index #o-index-link,
+#p-index #p-index-link,
+#q-index #q-index-link,
+#r-index #r-index-link,
+#s-index #s-index-link,
+#t-index #t-index-link,
+#u-index #u-index-link,
+#v-index #v-index-link,
+#w-index #w-index-link,
+#x-index #x-index-link,
+#y-index #y-index-link,
+#z-index #z-index-link {
+        font-weight: bold;
+        color: #93aeb9;
+}
+
+
+
+/* !2-COLUMNS  --------------------------------------------------------------------------------------*/
+
+#left-column {
+        width: 49%;
+        float: left;
+}
+
+#right-column {
+        width: 49%;
+        float: right;
+}
+
+/* !MASTER LIST BY DIRECTOR - mmm.html -----------------------------------------------------------------*/
+
+b {
+        font-size: 1.3em;
+}
+
+li {
+        padding-left: .94em;
+        text-indent: -.94em;
+        list-style: none;
+
+}
+
+.rating {
         font-family: "letter-gothic-std", Monaco, "Lucida Console", monospace;
         color: #dca73c;
         color: rgba(253,180,40,0.7);
@@ -148,108 +680,551 @@ def process_dir(top_dir):
         font-weight: bold;
 
         margin-left: 4px;
-    }
+}
 
-    th svg {
-        vertical-align: middle;
-    }
+.number {
+        font-family: "omnes-pro", "Lucida Grande", Verdana, sans-serif;
+        font-size: 1em;
+        letter-spacing: 2px;
+        margin-left: 2px;
+        color: rgba(147, 174, 185, 0.8);
+}
 
-    td {
-        white-space: nowrap;
-        font-size: 14px;
-    }
 
-    td:nth-child(2) {
+/* !RESPONSIVE CHANGES ------------------------------------------------------------------------------------*/
+
+/* !1400 PIXELS AND WIDER ------------------------------------------------------------------------------------*/
+
+        @media screen and (min-width: 1400px) {
+
+                #wrapper {
+                        width: 1200px;
+                }
+
+}
+
+/* !768 PIXELS AND NARROWER (iPad portrait) -----------------------------------------------------------------------*/
+
+        @media screen and (max-width: 768px) {
+
+/* !GLOBAL - Responsive Changes - 768px */
+
+#wrapper {
+        margin-top: 30px;
+}
+
+h1 {
+        font-size: 1.55em;
+}
+
+
+
+
+/* !SITE HEADLINE & HERO IMAGE - Responsive Changes - 768px */
+
+/*
+.tmwvtm {
+        width: 516px;
+        background-size: 743px;
+}
+
+*/
+
+.mainImage {
+        height: 200px;
+}
+
+        .caption {
+        visibility: hidden;
+        float:none;
+
+}
+
+
+/* !MAIN */
+
+
+#main {
+        width: 60%;
+}
+
+/* !SIDEBAR - Responsive Changes - 768px */
+
+#sidebar {
+        width: 35%;
+}
+
+#sidebar p.fineprint {
+        line-height: 170%;
+}
+
+/* !SIDEBAR NAVIGATION MENU - Responsive Changes - 768px */
+
+
+#sidebar ul.sbnav li {
+        font-size: 0.7em;
+}
+
+
+/* !SIDEBAR SEARCH - Responsive Changes - 768px */
+
+/*
+.sidebar-search-box {
+        visibility: visible;
+}
+
+#nav .nav-search-box {
+        visibility: hidden;
+}
+*/
+
+
+/* !FOOTER - Responsive Changes - 768px */
+
+hr.footer-hr {
+    padding-top: 0px;
+}
+
+
+/* !FILMS SEEN - mqd.html - Responsive Changes - 768px */
+
+
+#mqd-old #main p {
+                padding-left: 3.2em;
+                text-indent: -3.2em;
+}
+
+/* !RATINGS BY YEAR - XXXX.html - Responsive Changes - 768px */
+
+/* STANDARD RANKINGS */
+
+#rank h2 {
+        margin-top: 12px;
+}
+
+#rank #main li {
+        text-indent: -28px;
+        padding-left: 28px;
+}
+
+#rank #main li b {
+        font-size: 1em;
+}
+
+#rank #main li img {
+        width: 34px;
+        height: 16px;
+        margin-right: -3px;
+}
+
+/* TOP TEN */
+
+#rank #main #top-ten {
+        padding-right: 0px;
+}
+
+#rank #main #top-ten li b {
+        font-size: 1.25em;
+}
+
+#rank #main #top-ten li em {
+        font-size: 1em;
+}
+
+
+
+/* !REVIEWS BY TITLE - capsXX.html - Responsive Changes - 768px */
+
+
+#caps #main li {
+        line-height: 110%;
+}
+
+#caps #main li b {
+        font-size: 1em;
+
+}
+
+#caps #main li img {
+        width: 30px;
+        height: 14px;
+        margin-left: -7px;
+        vertical-align: -2px;
+}
+
+/* !100 PT SCALE - 100ptscale.html - Responsive Changes - 768px */
+
+#scale #main p {
+        margin-bottom: 10px;
+        text-indent: -3.85em;
+        padding-left: 3.85em;
+
+}
+
+#scale strong {
+        font-size: .8em;
+}
+
+
+/* !BY GRADE - bygrade.html - CURRENT YEAR ONLY - Responsive Changes - 768px */
+
+.by-grade-intro td {
+        font-size: 0.7em;
+
+}
+
+/* !OLDER MOVIES BY LETTER GRADE retrobygrade.html - Responsive Changes - 768px */
+
+
+#retrobygrade #main p {
+        font-size: 1em;
+        }
+
+#retrobygrade #main .year-director {
+        font-size: 1em;
+        }
+
+#retrobygrade #main img {
+        width: 35px;
+        height: 16px;
+        margin-left: -7px;
+        vertical-align: -4px;
+        }
+
+
+
+
+} /* End of 768px responsive changes */
+
+/* !480 PIXELS AND NARROWER (Android portrait, iPhone landscape) ---------------------------------------------------------*/
+
+        @media screen and (max-width: 480px) {
+
+/* !GLOBAL - Responsive Changes - 480px */
+
+#wrapper {
+        width: 100%;
+        margin: 0px auto 30px auto;
+        padding: 20px 0px 20px 0px;
+}
+
+h1 {
         width: 80%;
-    }
+        font-size: 1.4em;
+        margin-left: 0px;
+        padding-top: 0px;
+        padding-bottom: 14px;
 
-    td:nth-child(3) {
-        padding: 0 20px 0 20px;
-    }
+}
 
-    th:nth-child(4),
-    td:nth-child(4) {
-        text-align: right;
-    }
+h2 {
+        padding-top: 7px;
+}
 
-    td:nth-child(2) svg {
-        position: absolute;
-    }
 
-    td .name {
-        margin-left: 1.75em;
-        word-break: break-all;
-        overflow-wrap: break-word;
-        white-space: pre-wrap;
-    }
 
-    td .goup {
-        margin-left: 1.75em;
-        padding: 0;
-        word-break: break-all;
-        overflow-wrap: break-word;
-        white-space: pre-wrap;
-    }
+/* !FINE PRINT  - Responsive Changes - 480px */
 
-    .icon {
-        margin-right: 5px;
-    }
+.fineprint {
+        font-size: 0.65em;
+}
 
-    tr.clickable {
-        cursor: pointer;
-    }
-    tr.clickable a {
-        display: block;
-    }
+#main p.fineprint {
+        font-size: 0.65em;
+}
 
-    @media (max-width: 600px) {
+#sidebar p.fineprint {
+        font-size: 0.65em;
+}
 
-        * {
-            font-size: 1.06rem;
+/* !SITE HEADLINE & HERO IMAGE - Responsive Changes - 480px */
+
+/*
+.tmwvtm {
+        width: 288px;
+        height: 30px;
+        background-size: 420px;
+        margin-left: 15px;
+}
+*/
+
+#header img {
+        height: 0px;
+        visibility: hidden;
+        margin-bottom: -20px;
+}
+
+#header img:first-child {
+        width: 290px;
+        height: 29px;
+        margin-left: 15px;
+        visibility: visible;
+}
+
+
+.mainImage {
+        margin-top: 6px;
+        height: 130px;
+}
+
+
+/* !TOP NAV BAR - Responsive Changes - 480px */
+
+#nav {
+        margin-top: 4px;
+}
+
+#nav ul {
+        margin-left: 15px;
+        margin-right: 6px;
+
+}
+
+#nav li {
+        font-size: 0.83em;
+
+}
+
+#rank #nav li, #caps #nav li {
+        font-size: 0.83em;
+
+}
+
+#rank #nav a, #caps #nav a  {
+
+        padding-right: 8px;
+        margin-right: 8px;
+
+}
+
+/* !MAIN - Responsive Changes - 480px */
+
+
+#main {
+        width: 90%;
+        margin: 15px 15px 5px 15px;
+        float: none;
+}
+
+#main.no-sidebar {
+        width: 90%;
+
+        margin: 15px 15px 15px 15px;
+}
+
+#main p {
+        line-height: 130%;
+}
+
+#main p.box-link {
+        line-height: 280%;
+        font-size: 0.8em;
+        padding-right: 0px
+}
+
+#main p.box-link a {
+        margin: 0px 1px 0px 0px;
+
+}
+
+
+/* !SIDEBAR - Responsive Changes - 480px */
+
+#sidebar {
+        width: 100%;
+        padding: 10px 0 0 0;
+        float: none;
+        margin-top: 0px;
+}
+
+#sidebar p.fineprint {
+        margin: 15px 15px 15px 15px;
+}
+
+/* !SIDEBAR NAVIGATION MENU - Responsive Changes - 480px */
+
+
+#sidebar ul {
+        margin-left: -25px;
+        margin-top: 0px;
+}
+
+#sidebar ul.sbnav li {
+        font-size: 1.0em;
+        padding: 14px 10% 14px 10%;
+        margin-left: 18px;
+        margin-right: 18px;
+}
+
+
+
+/* !SIDEBAR SEARCH  - Responsive Changes - 480px */
+
+.sidebar-search-box {
+        margin-top: 20px;
+        margin-left: 16px;
+        margin-right: 18px;
+}
+
+
+/* !2-COLUMNS - Responsive Changes - 480px */
+
+#left-column {
+        width: 100%;
+        float: none;
+}
+
+#right-column {
+        width: 100%;
+        float: none;
+}
+
+
+/* !FOOTER - Responsive Changes - 480px */
+
+
+#footer p {
+        font-size: 0.7em;
+        margin-left: 15px;
+        margin-right: 15px;
+}
+
+
+/* !FILMS SEEN - mqd.html - Responsive Changes - 480px */
+
+#main p.seen {
+        padding-left: 35px;
+        text-indent: -35px;
+        line-height: 110%;
+        margin-bottom: 4px;
+}
+
+.seen b {
+        font-size: 1em;
+}
+
+.seen em {
+        font-size: 1em;
+}
+
+.seen .rating {
+        width: 34px;
+        height: 16px;
+}
+
+
+
+#mqd-old #main p {
+        font-size: .75em;
+}
+
+#mqd-old h1 {
+        padding-bottom: 7px;
+}
+
+#mqd-old #main hr {
+
+}
+
+/* !RATINGS BY YEAR - XXXX.html - Responsive Changes - 480px */
+
+/* STANDARD RANKINGS */
+
+#rank h2 {
+        font-size: 1.4em;
+        line-height: 100%;
+        padding-right: 45px;
+        padding-bottom: 16px;
+}
+
+
+#rank #main li {
+        line-height: 110%;
+        padding-bottom: 6px;
+}
+
+/* TOP TEN */
+
+#rank #main #top-ten li {
+        line-height: 120%;
+        padding-bottom: 6px;
+}
+
+/* !BY GRADE - bygrade.html - CURRENT YEAR ONLY - Responsive Changes - 480px */
+
+#bygrade h2 {
+        font-size: 1em;
         }
-        .hideable {
-            display: none;
+
+.by-grade-intro td {
+        font-size: 0.45em;
+        padding-right: 12px;
+
         }
 
-        td:nth-child(2) {
-            width: auto;
+.by-grade-film td {
+        text-align: left;
+        font-size: .6em;
+
+        padding-top: 4px;
+        padding-bottom: 2px;
+        padding-left: 6px;
+        padding-right: 4px;
         }
 
-        th:nth-child(3),
-        td:nth-child(3) {
-            padding-right: 5%;
-            text-align: right;
+.by-grade-film td .rating {
+        font-size: .5em;
+        color: rgb(253,180,40);
+        color: rgba(253,180,40,1.0);
+}
+
+
+/* !MASTER LIST BY DIRECTOR - mmm.html - Responsive Changes - 480px */
+
+#mmm b {
+        font-size: 1.1em;
+}
+
+
+
+} /* End of 480px responsive changes */
+
+/* !320 PIXELS AND NARROWER (Android portrait, iPhone portrait) ---------------------------------------------------------*/
+
+        @media screen and (max-width: 320px) {
+
+/* !SITE HEADLINE & HERO IMAGE  - Responsive Changes - 320px */
+
+
+.mainImage {
+        height: 156px;
+/*      180 px high is full 16:9 proportions */
+}
+
+
+/* !TOP NAV BAR  - Responsive Changes - 320px */
+
+#nav ul {
+        margin-left: 15px;
+        margin-right: 0px;
+}
+
+#rank #nav li, #caps #nav li {
+        font-size: 0.7em;
         }
 
-        h1 {
-            color: #000;
+#rank #nav a, #caps #nav a  {
+        padding-right: 6px;
+        margin-right: 6px;
         }
 
-        h1 a {
-            margin: 0;
-        }
+/* LISTS PAGE */
 
-        #filter {
-            max-width: 100px;
-        }
-    }
+#list #main {
+        margin-right: 0px;
+}
 
-    @media (prefers-color-scheme: dark) {
-        body {
-            color: #eee;
-            background: #121212;
-        }
-
-        header {
-            color: #eee;
-            background: #151515;
-       }
-
-        tbody tr:hover {
-            background-color: #000020;
-        }
-
-    }
+} /* End of 320px responsive changes */
     </style>
 </head>
 <body>
@@ -293,8 +1268,37 @@ def process_dir(top_dir):
     </svg>
 <header>
     <h1>All films I've watched, per director (with latest rating, if any)</h1>
+    <p>Only included directors with more than one film. Layout shamelessly copied from <a href="https://www.panix.com/~dangelo/mmm.html">Mike D'Angelo's</a>.</p>
                  </header>
                  <main>
+                    <p style="font-size:20px">
+                        <a href="#a" style="font-size:20px">A</a> &sdot;
+                        <a href="#b" style="font-size:20px">B</a> &sdot;
+                        <a href="#c" style="font-size:20px">C</a> &sdot;
+                        <a href="#d" style="font-size:20px">D</a> &sdot;
+                        <a href="#e" style="font-size:20px">E</a> &sdot;
+                        <a href="#f" style="font-size:20px">F</a> &sdot;
+                        <a href="#g" style="font-size:20px">G</a> &sdot;
+                        <a href="#h" style="font-size:20px">H</a> &sdot;
+                        <a href="#i" style="font-size:20px">I</a> &sdot;
+                        <a href="#j" style="font-size:20px">J</a> &sdot;
+                        <a href="#k" style="font-size:20px">K</a> &sdot;
+                        <a href="#l" style="font-size:20px">L</a> &sdot;
+                        <a href="#m" style="font-size:20px">M</a> &sdot;
+                        <a href="#n" style="font-size:20px">N</a> &sdot;
+                        <a href="#o" style="font-size:20px">O</a> &sdot;
+                        <a href="#p" style="font-size:20px">P</a> &sdot;
+                        <a href="#q" style="font-size:20px">Q</a> &sdot;
+                        <a href="#r" style="font-size:20px">R</a> &sdot;
+                        <a href="#s" style="font-size:20px">S</a> &sdot;
+                        <a href="#t" style="font-size:20px">T</a> &sdot;
+                        <a href="#u" style="font-size:20px">U</a> &sdot;
+                        <a href="#v" style="font-size:20px">V</a> &sdot;
+                        <a href="#w" style="font-size:20px">W</a> &sdot;
+                        <a href="#x" style="font-size:20px">X</a> &sdot;
+                        <a href="#y" style="font-size:20px">Y</a> &sdot;
+                        <a href="#z" style="font-size:20px">Z</a>
+                    </p>
                  <div class="listing">
                  """)
 
@@ -312,24 +1316,39 @@ def process_dir(top_dir):
                     directed[d] = []
                 directed[d] += [m]
         ## this sorts by how many watched
-        # directed = OrderedDict(sorted(directed.items(), key = lambda x: len(x[1]), reverse = True))
+          # directed = OrderedDict(sorted(directed.items(), key = lambda x: len(x[1]), reverse = True))
         # this sorts by last name
-        directed = OrderedDict(sorted(directed.items(), key = lambda x: x[0].split(" ")[-1]))
-        for k, v in directed.items():
+        directed = list(OrderedDict(sorted(directed.items(), key = lambda x: unidecode.unidecode(x[0].split(" ")[-1]))).items())
+        index_file.write(f"""
+        <a name="a"></a>
+""")
+
+        for i in range(0, len(directed)):
+            k, v = directed[i]
+            if i > 0:
+              initLetter = unidecode.unidecode(k.split(" ")[-1][0])
+              lastLetter = unidecode.unidecode(directed[i-1][0].split(" ")[-1][0])
+              # print("test with ", k, " vs ", directed[i-1][0])
+              # print("test with ", initLetter, " vs ", lastLetter)
+              if initLetter != lastLetter:
+                  index_file.write(f"""
+                  <a name="{initLetter.lower()}"></a>
+""")
+              # else:
+                  # print("..they're the same")
+            if len(v) < 2:
+                continue
             index_file.write(f"""
             <hr>
-            <br>
-            <h3>{k} ({len(v)})</h3>
-            <br>
-            <ul>
+            <b>{k}</b> <span class="number">[{len(v)}]</span><p>
 """)
             v = sorted(v, key = lambda x:x["year"])
             for m in v:
-                rating = (" : " + m["diary"][-1]["rating"]["str"]) if m["diary"] and m["diary"][-1]["rating"]["num"] > 0 else ""
+                rating = ("<a href=\"" + m["diary"][-1]["entryURL"] + "\"><span class=\"rating\">" + m["diary"][-1]["rating"]["str"] + "</span></a>") if m["diary"] and m["diary"][-1]["rating"]["num"] > 0 else ""
                 index_file.write(f"""
-                <li>{m["title"]} ({m["year"]})<span class="rating">{rating}</span></li>
+                <li><a href="{m["lbURL"]}">{m["title"]}</a> ({m["year"]})  {rating}</li>
 """)
-            index_file.write(f"""</ul><br>""")
+            index_file.write(f"""<p>""")
     index_file.write("""
     </div>
 </main>

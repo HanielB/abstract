@@ -20,11 +20,6 @@ function App() {
       console.log("Set src to", src)
       init = src;
     }
-    else if (list)
-    {
-      console.log("Set init to", init)
-      init = "./lists/" + list + ".json";
-    }
     fetch(init,
           { method: 'get',
             headers: {
@@ -36,8 +31,19 @@ function App() {
         console.log("loaded ", init);
         if (list)
         {
-          setListName(loadedSrc.title)
-          setMovies(loadedSrc.movies.map((movie) => convertMovie(movie)));
+          fetch("./lists/" + list + ".json",
+          { method: 'get',
+            headers: {
+              'content-type': 'text/csv;charset=UTF-8',
+            }})
+            .then((resList) => resList.json())
+            .then((resList) => {
+              setListName(resList.title);
+              console.log("Loading list ", resList.title, ": ids ", resList.movies);
+              let idsSet = new Set<Number>(resList.movies.map((id) => Number(id)));
+              getMoviesFromIds(loadedSrc, idsSet)
+                .then((movies) => {setMovies(movies)})
+            });
         }
         else if (ids)
         {

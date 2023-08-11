@@ -1338,15 +1338,16 @@ h2 {
                   # print("..they're the same")
             if len(v) < 2:
                 continue
+            dirRegex = k.replace(" ", ".").lower()
             index_file.write(f"""
             <hr>
-            <b>{k}</b> <span class="number">[{len(v)}]</span><p>
+            <a href="../?director={dirRegex}"><b>{k}</b></a> <span class="number">[{len(v)}]</span><p>
 """)
             v = sorted(v, key = lambda x:x["year"])
             for m in v:
                 rating = ("<a href=\"" + m["diary"][-1]["entryURL"] + "\"><span class=\"rating\">" + m["diary"][-1]["rating"]["str"] + "</span></a>") if m["diary"] and m["diary"][-1]["rating"]["num"] > 0 else ""
                 index_file.write(f"""
-                <li><a href="{m["lbURL"]}">{m["title"]}</a> ({m["year"]})  {rating}</li>
+                <li><a href="{m["lbURL"]}">{m["title"]} ({m["year"]})</a> {rating}</li>
 """)
             index_file.write(f"""<p>""")
     index_file.write("""

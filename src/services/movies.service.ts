@@ -79,20 +79,20 @@ function getPicture (movie : Movie) : Promise<Movie> {
 }
 
 function addAvailable(providers: string[], candidateProvider : string, movie: Movie) : Movie {
-  console.log("Test provider ", candidateProvider)
+  console.log("..test provider ", candidateProvider)
   if (!providers.includes(candidateProvider))
   {
     return movie;
   }
   if (!movie.available)
   {
-    console.log("Added", candidateProvider)
+    console.log("..added", candidateProvider)
     movie.available = [candidateProvider];
     return movie;
   }
   if (!movie.available.includes(candidateProvider))
   {
-    console.log("Added", candidateProvider)
+    console.log("..added", candidateProvider)
     movie.available.push(candidateProvider);
   }
   return movie;
@@ -119,42 +119,47 @@ async function getAvailable(movie : Movie, providers : string[]) : Promise<Movie
   {
     if ("buy" in dataJson.results["BR"])
     {
+      console.log("Test BR buy providers ", dataJson.results["BR"].buy)
       dataJson.results["BR"].buy.map((entry) => {
         movie = addAvailable(providers, entry.provider_name, movie);
       })
     }
     if ("rent" in dataJson.results["BR"])
     {
+      console.log("Test BR rent providers ", dataJson.results["BR"].rent)
       dataJson.results["BR"].rent.map((entry) => {
         movie = addAvailable(providers, entry.provider_name, movie);
       })
     }
     if ("flatrate" in dataJson.results["BR"])
     {
-      // console.log("got here")
+      console.log("Test BR flatrate providers ", dataJson.results["BR"].flatrate)
       dataJson.results["BR"].flatrate.map((entry) => {
         movie = addAvailable(providers, entry.provider_name, movie);
       })
     }
   }
-  if ("US" in dataJson.results)
+  if ("US" in dataJson.results && providers.includes("Criterion Channel"))
   {
     if ("buy" in dataJson.results["US"])
     {
+      console.log("Test US buy providers ", dataJson.results["US"].buy)
       dataJson.results["US"].buy.map((entry) => {
-        movie = addAvailable(providers, entry.provider_name, movie);
+        movie = addAvailable(["Criterion Channel"], entry.provider_name, movie);
       })
     }
     if ("rent" in dataJson.results["US"])
     {
+      console.log("Test US rent providers ", dataJson.results["US"].rent)
       dataJson.results["US"].rent.map((entry) => {
-        movie = addAvailable(providers, entry.provider_name, movie);
+        movie = addAvailable(["Criterion Channel"], entry.provider_name, movie);
       })
     }
     if ("flatrate" in dataJson.results["US"])
     {
+      console.log("Test US flatrate providers ", dataJson.results["US"].flatrate)
       dataJson.results["US"].flatrate.map((entry) => {
-        movie = addAvailable(providers, entry.provider_name, movie);
+        movie = addAvailable(["Criterion Channel"], entry.provider_name, movie);
       })
     }
   }

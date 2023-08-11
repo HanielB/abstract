@@ -698,6 +698,23 @@ Promise<Movie[]> {
    return Promise.all(movies).then((movies) => movies);
 }
 
+export function getMoviesFromIds(master: any, ids : Set<Number>):
+Promise<Movie[]> {
+  var movies : Movie[] = [];
+  master.movies?.map((movie) => {
+    if (ids.has(movie.tmdbId))
+      movies.push(populateMovie(movie, [], [], [], "yes"));
+  });
+  return Promise.all(movies.map((movie) => {
+        if (movie.picture)
+        {
+          return getAvailable(movie, ["Netflix", "Amazon Prime Video", "HBO Max", "Google Play Movies", "Mubi", "Globoplay", "Disey Plus", "Star Plus", "Criterion Channel"]);
+        }
+        return getPicture(movie);
+      }))
+  
+}
+
 export function getMovies(master: Object[],
                           title: string, year: string, date: string,
                           rating: string, runtime: string, tags : string,
@@ -706,7 +723,7 @@ export function getMovies(master: Object[],
                           country: string, studio: string,
                           sorting: string, onlywatched: boolean,
                           watchlist: boolean, rewatch: string,
-                          available: string, providers: string[] = [],
+                          available: string, providers: string[] = ["Netflix", "Amazon Prime Video", "HBO Max", "Google Play Movies", "Mubi", "Globoplay", "Disey Plus", "Star Plus", "Criterion Channel"],
                           collection = -1
                          ):
 Promise<Movie[]> {

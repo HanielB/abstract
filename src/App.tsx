@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Search } from "./components/Search/Search";
 import { Catalog } from "./components/Catalog/Catalog";
-import { Movie, convertMovie, getMovies } from "./services/movies.service";
+import { Movie, convertMovie, getMovies, getMoviesFromIds } from "./services/movies.service";
 import { MoviesContext } from "./services/context";
 
 function App() {
@@ -51,8 +51,19 @@ function App() {
       .then((loadedSrc) => {
         console.log("loaded master");
         setMaster(loadedSrc);
+        const ids = url.searchParams.get("ids");
         let director = url.searchParams.get("director");
-        if (director)
+        if (ids)
+        {
+          let idsArray = ids.split(";");
+          let idsSet = new Set(idsArray.map((id) => Number(id)));
+
+          getMoviesFromIds(loadedSrc, idsSet)
+            .then((movies) => {
+              setMovies(movies)
+            })
+        } 
+        else if (director)
         {
           console.log("Try loading director", director);
           getMovies(loadedSrc, "", "", "", "", "", "",
@@ -61,7 +72,7 @@ function App() {
             .then((movies) => {
               if (movies.length > 0)
               {
-                const directors = new Set();
+                const directors = new Set<string>();
                 movies.map((movie) =>
                   {
                     if (movie.directors)
@@ -73,7 +84,7 @@ function App() {
                 director = ""
                 let first = true
                 directors.forEach((dirStr) => {
-                  director = first? dirStr + "" : director + ", " + dirStr
+                  director = first? dirStr: director + ", " + dirStr
                   first = false
                 })
               }

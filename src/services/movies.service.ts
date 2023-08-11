@@ -700,12 +700,19 @@ Promise<Movie[]> {
 
 export function getMoviesFromIds(master: any, ids : Set<Number>):
 Promise<Movie[]> {
-  var movies : Movie[] = [];
+  var movies : Movie[] = [], moviesOrdered : Movie[] = [];
   master.movies?.map((movie) => {
     if (ids.has(movie.tmdbId))
       movies.push(populateMovie(movie, [], [], [], "yes"));
   });
-  return Promise.all(movies.map((movie) => {
+  // order movies according to set order
+  ids.forEach((id) => {
+    const found = movies.find((movie) => movie.tmdbId === id)
+    if (found)
+      moviesOrdered.push(found)
+  })
+  
+  return Promise.all(moviesOrdered.map((movie) => {
         if (movie.picture)
         {
           return getAvailable(movie, ["Netflix", "Amazon Prime Video", "HBO Max", "Google Play Movies", "Mubi", "Globoplay", "Disey Plus", "Star Plus", "Criterion Channel"]);

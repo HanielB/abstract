@@ -693,7 +693,6 @@ Promise<Movie[]> {
    return Promise.all(movies).then((movies) => movies);
 }
 
-
 export function getMovies(master: Object[],
                           title: string, year: string, date: string,
                           rating: string, runtime: string, tags : string,

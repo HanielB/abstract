@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Search } from "./components/Search/Search";
 import { Catalog } from "./components/Catalog/Catalog";
-import { Movie, convertMovie } from "./services/movies.service";
+import { Movie, convertMovie, getMovies } from "./services/movies.service";
 import { MoviesContext } from "./services/context";
 
 function App() {
@@ -11,6 +11,7 @@ function App() {
 
   useEffect(() => {
     const list = url.searchParams.get("list");
+    const director = url.searchParams.get("director");
     var init = "favorites.json";
     console.log("Init is", init)
     if (list)
@@ -18,16 +19,19 @@ function App() {
       init = "./lists/" + list + ".json";
       console.log("Set init to", init)
     }
-    fetch(init,
-          { method: 'get',
-            headers: {
-              'content-type': 'text/csv;charset=UTF-8',
-            }})
-      .then((res) => res.json())
-      .then((res) => {
-        setListName(res.title)
-        setMovies(res.movies.map((movie) => convertMovie(movie)));
-      });
+    if (!director)
+    {
+      fetch(init,
+            { method: 'get',
+              headers: {
+                'content-type': 'text/csv;charset=UTF-8',
+              }})
+        .then((res) => res.json())
+        .then((res) => {
+          setListName(res.title)
+          setMovies(res.movies.map((movie) => convertMovie(movie)));
+        });
+    }
   }, []);
 
   useEffect(() => {
@@ -44,7 +48,40 @@ function App() {
               'content-type': 'text/csv;charset=UTF-8',
             }})
       .then((res) => res.json())
-      .then((loadedSrc) => setMaster(loadedSrc));
+      .then((loadedSrc) => {
+        console.log("loaded master");
+        setMaster(loadedSrc);
+        let director = url.searchParams.get("director");
+        if (director)
+        {
+          console.log("Try loading director", director);
+          getMovies(loadedSrc, "", "", "", "", "", "",
+                director, "", "", "", "", "",
+                "year", true, true, "", "yes")
+            .then((movies) => {
+              if (movies.length > 0)
+              {
+                const directors = new Set();
+                movies.map((movie) =>
+                  {
+                    if (movie.directors)
+                    {
+                      movie.directors.map((dirStr) => directors.add(dirStr));
+                    }
+                  }
+                );
+                director = ""
+                let first = true
+                directors.forEach((dirStr) => {
+                  director = first? dirStr + "" : director + ", " + dirStr
+                  first = false
+                })
+              }
+              setListName(director? director : "")
+              setMovies(movies)
+            });
+        }
+      });
   }, []);
 
   const [movies, _setMovies] = useState<Movie[]>([]);

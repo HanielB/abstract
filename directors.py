@@ -1316,7 +1316,7 @@ h2 {
                     directed[d] = []
                 directed[d] += [m]
         ## this sorts by how many watched
-          # directed = OrderedDict(sorted(directed.items(), key = lambda x: len(x[1]), reverse = True))
+        # directed = list(OrderedDict(sorted(directed.items(), key = lambda x: len(x[1]), reverse = True)).items())
         # this sorts by last name
         directed = list(OrderedDict(sorted(directed.items(), key = lambda x: unidecode.unidecode(x[0].split(" ")[-1]))).items())
         index_file.write(f"""

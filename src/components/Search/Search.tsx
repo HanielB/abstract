@@ -31,9 +31,9 @@ export const Search = () => {
   // }
 
   const exportToJsonFile = () => {
-    var exportOjb = {"title": "", "movies": movies}
     let title = prompt("Please enter list name", "");
-    exportOjb.title = title? title : "";
+    let onlyIds = prompt("Only ids?", "Yes");
+    var exportOjb = {"title": title? title : "", "movies": onlyIds === "Yes"? movies.map((movie) => movie.tmdbId) : movies }
     let dataStr = JSON.stringify(exportOjb);
     let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
 

@@ -79,20 +79,20 @@ function getPicture (movie : Movie) : Promise<Movie> {
 }
 
 function addAvailable(providers: string[], candidateProvider : string, movie: Movie) : Movie {
-  console.log("..test provider ", candidateProvider)
+  // console.log("..test provider ", candidateProvider)
   if (!providers.includes(candidateProvider))
   {
     return movie;
   }
   if (!movie.available)
   {
-    console.log("..added", candidateProvider)
+    // console.log("..added", candidateProvider)
     movie.available = [candidateProvider];
     return movie;
   }
   if (!movie.available.includes(candidateProvider))
   {
-    console.log("..added", candidateProvider)
+    // console.log("..added", candidateProvider)
     movie.available.push(candidateProvider);
   }
   return movie;
@@ -104,7 +104,7 @@ async function getAvailable(movie : Movie, providers : string[]) : Promise<Movie
   {
     return movie;
   }
-  console.log("Test with ", providers);
+  // console.log("Test with ", providers);
 
   // console.log(`${movieApiBaseUrl}/movie/${movie.tmdbId}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`)
   const tmdbRequest = await fetch(`${movieApiBaseUrl}/movie/${movie.tmdbId}/watch/providers?api_key=${process.env.REACT_APP_API_KEY}`);
@@ -119,21 +119,21 @@ async function getAvailable(movie : Movie, providers : string[]) : Promise<Movie
   {
     if ("buy" in dataJson.results["BR"])
     {
-      console.log("Test BR buy providers ", dataJson.results["BR"].buy)
+      // console.log("Test BR buy providers ", dataJson.results["BR"].buy)
       dataJson.results["BR"].buy.map((entry) => {
         movie = addAvailable(providers, entry.provider_name, movie);
       })
     }
     if ("rent" in dataJson.results["BR"])
     {
-      console.log("Test BR rent providers ", dataJson.results["BR"].rent)
+      // console.log("Test BR rent providers ", dataJson.results["BR"].rent)
       dataJson.results["BR"].rent.map((entry) => {
         movie = addAvailable(providers, entry.provider_name, movie);
       })
     }
     if ("flatrate" in dataJson.results["BR"])
     {
-      console.log("Test BR flatrate providers ", dataJson.results["BR"].flatrate)
+      // console.log("Test BR flatrate providers ", dataJson.results["BR"].flatrate)
       dataJson.results["BR"].flatrate.map((entry) => {
         movie = addAvailable(providers, entry.provider_name, movie);
       })
@@ -143,21 +143,21 @@ async function getAvailable(movie : Movie, providers : string[]) : Promise<Movie
   {
     if ("buy" in dataJson.results["US"])
     {
-      console.log("Test US buy providers ", dataJson.results["US"].buy)
+      // console.log("Test US buy providers ", dataJson.results["US"].buy)
       dataJson.results["US"].buy.map((entry) => {
         movie = addAvailable(["Criterion Channel"], entry.provider_name, movie);
       })
     }
     if ("rent" in dataJson.results["US"])
     {
-      console.log("Test US rent providers ", dataJson.results["US"].rent)
+      // console.log("Test US rent providers ", dataJson.results["US"].rent)
       dataJson.results["US"].rent.map((entry) => {
         movie = addAvailable(["Criterion Channel"], entry.provider_name, movie);
       })
     }
     if ("flatrate" in dataJson.results["US"])
     {
-      console.log("Test US flatrate providers ", dataJson.results["US"].flatrate)
+      // console.log("Test US flatrate providers ", dataJson.results["US"].flatrate)
       dataJson.results["US"].flatrate.map((entry) => {
         movie = addAvailable(["Criterion Channel"], entry.provider_name, movie);
       })

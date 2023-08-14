@@ -8,6 +8,22 @@ export const MoviesContext = React.createContext<{
   updateMovies: Function;
   loading : boolean;
   listName : string;
+  searchTitle    : string;
+  searchYear     : string;
+  searchRuntime  : string;
+  searchWatched  : string;
+  searchRating   : string;
+  searchTags     : string;
+  searchDirector : string;
+  searchGenre    : string;
+  searchCountry  : string;
+  searchWriter   : string;
+  searchActor    : string;
+  searchStudio   : string;
+  searchSingleton : string;
+  searchWatchlist : string;
+  searchAvailable : string;
+  searchSorting : string;
   setLoading : Function;
   setSelected : Function;
   setListName : Function;
@@ -18,6 +34,22 @@ export const MoviesContext = React.createContext<{
   updateMovies: Function,
   loading : false,
   listName : "",
+  searchTitle : "",
+  searchYear : "",
+  searchRuntime : "",
+  searchWatched : "",
+  searchRating : "",
+  searchTags : "",
+  searchDirector : "",
+  searchGenre : "",
+  searchCountry : "",
+  searchWriter : "",
+  searchActor : "",
+  searchStudio : "",
+  searchSingleton : "",
+  searchWatchlist : "",
+  searchAvailable : "",
+  searchSorting : "",
   setLoading : Function,
   setSelected : Function,
   setListName : Function

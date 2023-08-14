@@ -9,17 +9,56 @@ function App() {
 
   const url = new URL(window.location.href);
 
+  const [movies, _setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [master, setMaster] = useState<Object[]>([]);
+  const [selected, setSelected] = useState<number[]>([]);
+  const [listName, setListName] = useState("");
+  const [searchTitle, setSearchTitle] = useState("");
+  const [searchYear, setSearchYear] = useState("");
+  const [searchRuntime, setSearchRuntime] = useState("");
+  const [searchWatched, setSearchWatched] = useState("");
+  const [searchRating, setSearchRating] = useState("");
+  const [searchTags, setSearchTags] = useState("");
+  const [searchDirector, setSearchDirector] = useState("");
+  const [searchGenre, setSearchGenre] = useState("");
+  const [searchCountry, setSearchCountry] = useState("");
+  const [searchWriter, setSearchWriter] = useState("");
+  const [searchActor, setSearchActor] = useState("");
+  const [searchStudio, setSearchStudio] = useState("");
+  const [searchSingleton, setSearchSingleton] = useState("");
+  const [searchWatchlist, setSearchWatchlist] = useState("");
+  const [searchSorting, setSearchSorting] = useState("");
+  const [searchAvailable, setSearchAvailable] = useState("");
+
+  const setMovies = (movies) => {
+    _setMovies([]);
+    _setMovies(movies);
+  };
+  
   useEffect(() => {
     const src = url.searchParams.get("src");
     const list = url.searchParams.get("list");
     const ids = url.searchParams.get("ids");
+    let header   = url.searchParams.get("header");
+    let title    = url.searchParams.get("title");
+    let year     = url.searchParams.get("year");
+    let runtime  = url.searchParams.get("runtime");
+    let watched  = url.searchParams.get("watched");
+    let rating   = url.searchParams.get("rating");
+    let tags     = url.searchParams.get("tags");
     let director = url.searchParams.get("director");
-    var init = "master.json";
-    if (src)
-    {
-      console.log("Set src to", src)
-      init = src;
-    }
+    let genre    = url.searchParams.get("genre");
+    let country  = url.searchParams.get("country");
+    let writer   = url.searchParams.get("writer");
+    let actor    = url.searchParams.get("actor");
+    let studio   = url.searchParams.get("studio");
+    let sorting   = url.searchParams.get("sorting");
+    let singleton   = url.searchParams.get("singleton");
+    let watchlist   = url.searchParams.get("watchlist");
+    let available   = url.searchParams.get("available");
+
+    var init = src ? src : "master.json";
     fetch(init,
           { method: 'get',
             headers: {
@@ -29,6 +68,8 @@ function App() {
       .then((loadedSrc) => {
         setMaster(loadedSrc);
         console.log("loaded ", init);
+        console.log("ids ", ids);
+        console.log("director ", director);
         if (list)
         {
           fetch("./lists/" + list + ".json",
@@ -55,33 +96,86 @@ function App() {
               setMovies(movies)
             });
         } 
-        else if (director)
+        else if (title || year || runtime || watched || rating || tags || director || genre || country || writer || actor || studio)
         {
-          console.log("Try loading director", director);
-          getMovies(loadedSrc, "", "", "", "", "", "",
-                    director, "", "", "", "", "",
-                    "year", true, true, "", "yes")
+          if (title)
+            setSearchTitle(title.replace("_"," "));
+          else
+            title = ""
+          if (year)
+            setSearchYear(year);
+          else
+            year = ""
+          if (runtime)
+            setSearchRuntime(runtime);
+          else
+            runtime = ""
+          if (watched)
+            setSearchWatched(watched);
+          else
+            watched = ""
+          if (rating)
+            setSearchRating(rating);
+          else
+            rating = ""
+          if (tags)
+            setSearchTags(tags);
+          else
+            tags = ""
+          if (director)
+            setSearchDirector(director.replace("_"," "));
+          else
+            director = ""
+          if (writer)
+            setSearchWriter(writer.replace("_"," "));
+          else
+            writer = ""
+          if (actor)
+            setSearchActor(actor.replace("_"," "));
+          else
+            actor = ""
+          if (genre)
+            setSearchGenre(genre.replace("_"," "));
+          else
+            genre = ""
+          if (country)
+            setSearchCountry(country.replace("_"," "));
+          else
+            country = ""
+          if (studio)
+            setSearchStudio(studio.replace("_"," "));
+          else
+            studio = ""
+          if (sorting)
+            setSearchSorting(sorting)
+          else
+            sorting = "watched"
+          if (available)
+            setSearchAvailable(available)
+          else
+            available = "no"
+          let singletonV = false;
+          if (singleton)
+          {
+            singletonV = singleton === "1"
+            setSearchSingleton(singleton)
+          }
+          let watchlistV = false;
+          if (watchlist)
+          {
+            watchlistV = watchlist === "1"
+            setSearchWatchlist(watchlist)
+          }
+
+          getMovies(loadedSrc, title, year, watched, rating, runtime, tags,
+                    director, writer, actor, genre, country, studio,
+                    sorting, singletonV, watchlistV, "", available)
             .then((movies) => {
-              if (movies.length > 0)
+              if (header)
               {
-                const directors = new Set<string>();
-                movies.map((movie) =>
-                  {
-                    if (movie.directors)
-                    {
-                      movie.directors.map((dirStr) => directors.add(dirStr));
-                    }
-                  }
-                );
-                director = ""
-                let first = true
-                directors.forEach((dirStr) => {
-                  director = first? dirStr: director + ", " + dirStr
-                  first = false
-                })
+                setListName(header.replace("_", " "));
               }
-              setListName(director? director : "")
-              setMovies(movies)
+              setMovies(movies);
             });
         }
         else
@@ -94,31 +188,19 @@ function App() {
       });
   }, []);
 
-  const [movies, _setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [master, setMaster] = useState<Object[]>([]);
-  const [selected, setSelected] = useState<number[]>([]);
-  const [listName, setListName] = useState("");
-
-  const setMovies = (movies) => {
-    _setMovies([]);
-    _setMovies(movies);
-  };
-
   return (
     <MoviesContext.Provider value={
-                              {master, movies, selected, updateMovies: setMovies,
-                               loading, listName, setLoading: setLoading,
-                               setSelected: setSelected, setListName: setListName }}>
+    {master, movies, selected, updateMovies: setMovies,
+     loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
       <div className="App">
         <div className="header">
           <h1 className="header__title">
             {listName !== ""? listName : "Abstract"}
           </h1>
           <div className="header__search">
-          {
-            listName === "" ? <Search></Search> : <span></span>
-          }
+            {
+              listName === "" ? <Search></Search> : <span></span>
+            }
           </div>
         </div>
         <Catalog></Catalog>

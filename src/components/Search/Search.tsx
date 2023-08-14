@@ -165,12 +165,14 @@ export const Search = () => {
         }
       }
     }
-    console.log("Active providers ", providers);
+    /* console.log("Active providers ", providers); */
 
     /* update url with search parameters */
     var currURL = window.location.href;
+    console.log("currURL: ", currURL)
     /* discard whatever previous search parameters */
-    currURL = currURL.slice(0, currURL.lastIndexOf("/"))
+    currURL = currURL.lastIndexOf("?") === -1? currURL.slice(0, currURL.length - 1) : currURL.slice(0, currURL.lastIndexOf("?") - 1)
+    console.log("currURL sliced: ", currURL)
     /* for each non-default parameter, add it to the URL */
     var first = true
     var parameters = ""
@@ -223,8 +225,10 @@ export const Search = () => {
     first = parameters === ""
 
     parameters += rewatch != "" && rewatch != "yes" ? (first? "?" : "&") + "rewatch=" + rewatch : ""
-    
-    window.history.pushState({}, "", currURL + parameters != "" ? "/" + parameters : "");
+
+    console.log("currURL before push: ", currURL)
+    console.log("parameters: ", parameters)
+    window.history.pushState({}, "", currURL + (parameters != "" ? "/" + parameters : ""));
 
     getMovies(master, title, year, date, rating, runtime, tags,
               director, writer, actor, genre, country, studio,

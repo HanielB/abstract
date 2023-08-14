@@ -174,7 +174,7 @@ export const Search = () => {
     /* for each non-default parameter, add it to the URL */
     var first = true
     var parameters = ""
-    parameters += title != "" ? (first? "?" : "&") + "title=" + title.replace(" ",".") : ""
+    parameters += title != "" ? (first? "?" : "&") + "title=" + title.replaceAll(" ",".") : ""
     first = parameters === ""
 
     parameters += year != "" ? (first? "?" : "&") + "year=" + year : ""
@@ -192,22 +192,22 @@ export const Search = () => {
     parameters += tags != "" ? (first? "?" : "&") + "tags=" + tags : ""
     first = parameters === ""
 
-    parameters += director != "" ? (first? "?" : "&") + "director=" + director.replace(" ",".") : ""
+    parameters += director != "" ? (first? "?" : "&") + "director=" + director.replaceAll(" ",".") : ""
     first = parameters === ""
 
-    parameters += writer != "" ? (first? "?" : "&") + "writer=" + writer.replace(" ",".") : ""
+    parameters += writer != "" ? (first? "?" : "&") + "writer=" + writer.replaceAll(" ",".") : ""
     first = parameters === ""
 
-    parameters += actor != "" ? (first? "?" : "&") + "actor=" + actor.replace(" ",".") : ""
+    parameters += actor != "" ? (first? "?" : "&") + "actor=" + actor.replaceAll(" ",".") : ""
     first = parameters === ""
 
-    parameters += genre != "" ? (first? "?" : "&") + "genre=" + genre.replace(" ",".") : ""
+    parameters += genre != "" ? (first? "?" : "&") + "genre=" + genre.replaceAll(" ",".") : ""
     first = parameters === ""
 
-    parameters += country != "" ? (first? "?" : "&") + "country=" + country.replace(" ",".") : ""
+    parameters += country != "" ? (first? "?" : "&") + "country=" + country.replaceAll(" ",".") : ""
     first = parameters === ""
 
-    parameters += studio != "" ? (first? "?" : "&") + "studio=" + studio.replace(" ",".") : ""
+    parameters += studio != "" ? (first? "?" : "&") + "studio=" + studio.replaceAll(" ",".") : ""
     first = parameters === ""
 
     parameters += onlywatchedCheck && onlywatchedCheck.checked ? (first? "?" : "&") + "singleton=1" : ""

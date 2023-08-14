@@ -71,7 +71,6 @@ function App() {
         setMaster(loadedSrc);
         console.log("loaded ", init);
         console.log("ids ", ids);
-        console.log("director ", director);
         if (list)
         {
           fetch("./lists/" + list + ".json",
@@ -101,7 +100,7 @@ function App() {
         else if (title || year || runtime || watched || rating || tags || director || genre || country || writer || actor || studio)
         {
           if (title)
-            setSearchTitle(title.replace("_"," "));
+            setSearchTitle(title.replaceAll("_"," "));
           else
             title = ""
           if (year)
@@ -125,27 +124,27 @@ function App() {
           else
             tags = ""
           if (director)
-            setSearchDirector(director.replace("_"," "));
+            setSearchDirector(director.replaceAll("_"," "));
           else
             director = ""
           if (writer)
-            setSearchWriter(writer.replace("_"," "));
+            setSearchWriter(writer.replaceAll("_"," "));
           else
             writer = ""
           if (actor)
-            setSearchActor(actor.replace("_"," "));
+            setSearchActor(actor.replaceAll("_"," "));
           else
             actor = ""
           if (genre)
-            setSearchGenre(genre.replace("_"," "));
+            setSearchGenre(genre.replaceAll("_"," "));
           else
             genre = ""
           if (country)
-            setSearchCountry(country.replace("_"," "));
+            setSearchCountry(country.replaceAll("_"," "));
           else
             country = ""
           if (studio)
-            setSearchStudio(studio.replace("_"," "));
+            setSearchStudio(studio.replaceAll("_"," "));
           else
             studio = ""
           if (sorting)
@@ -179,7 +178,7 @@ function App() {
             .then((movies) => {
               if (header)
               {
-                setListName(header.replace("_", " "));
+                setListName(header.replaceAll("_", " "));
               }
               setMovies(movies);
             });

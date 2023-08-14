@@ -150,7 +150,7 @@ export const Catalog = () => {
     if (prov === "Netflix") return "https://a.ltrbxd.com/sm/upload/za/bp/jc/zn/netflix-small.png";
     if (prov === "Amazon Prime Video") return "https://images.justwatch.com/icon/52449861/s100"
     if (prov === "HBO Max") return "https://images.justwatch.com/icon/182948653/s100"
-    if (prov === "Globo Play") return "https://images.justwatch.com/icon/136871678/s100"
+    if (prov === "Globoplay") return "https://images.justwatch.com/icon/136871678/s100"
     if (prov === "Mubi") return "https://a.ltrbxd.com/sm/upload/0t/1m/aa/u9/mubi.png?k=371edba60c"
     if (prov === "Google Play Movies") return "https://a.ltrbxd.com/sm/upload/o0/8s/mp/ej/google-small.png?k=c07a6d2d92"
     if (prov === "Disney Plus") return "https://images.justwatch.com/icon/147638351/s100"

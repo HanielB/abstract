@@ -24,6 +24,7 @@ export const MoviesContext = React.createContext<{
   searchWatchlist : string;
   searchAvailable : string;
   searchSorting : string;
+  searchRewatch : string;
   setLoading : Function;
   setSelected : Function;
   setListName : Function;
@@ -50,6 +51,7 @@ export const MoviesContext = React.createContext<{
   searchWatchlist : "",
   searchAvailable : "",
   searchSorting : "",
+  searchRewatch : "",
   setLoading : Function,
   setSelected : Function,
   setListName : Function

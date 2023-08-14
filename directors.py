@@ -1342,7 +1342,7 @@ h2 {
             header = k.replace(" ", "_")
             index_file.write(f"""
             <hr>
-            <a href="../?header={header}&director={dirRegex}"&sorting=year&singleton=1&watchlist=1&available=yes><b>{k}</b></a> <span class="number">[{len(v)}]</span><p>
+            <a href="../?header={header}&director={dirRegex}&sorting=year&singleton=1&watchlist=1&available=yes" target="_blank"><b>{k}</b></a> <span class="number">[{len(v)}]</span><p>
 """)
             v = sorted(v, key = lambda x:x["year"])
             for m in v:

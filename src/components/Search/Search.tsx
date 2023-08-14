@@ -21,7 +21,7 @@ export const Search = () => {
   const [rewatch, setRewatch] = useState("");
   const [available, setAvailable] = useState("");
   const [file, setFile] = useState("");
-  const {master, movies, updateMovies, setLoading, setListName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting } = useContext(MoviesContext);
+  const {master, movies, updateMovies, setLoading, setListName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
 
   if (searchTitle && !title)
   {
@@ -74,6 +74,10 @@ export const Search = () => {
   if (searchSorting && searchSorting != "watched" && sorting == "watched")
   {
     setSorting(searchSorting);    
+  }
+  if (searchRewatch && searchRewatch != "yes" && rewatch == "yes")
+  {
+    setRewatch(searchRewatch);    
   }
   if (searchSingleton && searchSingleton === "1")
   {
@@ -216,6 +220,9 @@ export const Search = () => {
     first = parameters === ""
 
     parameters += sorting != "" && sorting != "watched" ? (first? "?" : "&") + "sorting=" + sorting : ""
+    first = parameters === ""
+
+    parameters += rewatch != "" && rewatch != "yes" ? (first? "?" : "&") + "rewatch=" + rewatch : ""
     
     window.history.pushState({}, "", currURL + parameters != "" ? "/" + parameters : "");
 

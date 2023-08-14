@@ -29,6 +29,7 @@ function App() {
   const [searchSingleton, setSearchSingleton] = useState("");
   const [searchWatchlist, setSearchWatchlist] = useState("");
   const [searchSorting, setSearchSorting] = useState("");
+  const [searchRewatch, setSearchRewatch] = useState("");
   const [searchAvailable, setSearchAvailable] = useState("");
 
   const setMovies = (movies) => {
@@ -54,6 +55,7 @@ function App() {
     let actor    = url.searchParams.get("actor");
     let studio   = url.searchParams.get("studio");
     let sorting   = url.searchParams.get("sorting");
+    let rewatch   = url.searchParams.get("rewatch");
     let singleton   = url.searchParams.get("singleton");
     let watchlist   = url.searchParams.get("watchlist");
     let available   = url.searchParams.get("available");
@@ -150,6 +152,10 @@ function App() {
             setSearchSorting(sorting)
           else
             sorting = "watched"
+          if (rewatch)
+            setSearchRewatch(rewatch)
+          else
+            rewatch = "yes"
           if (available)
             setSearchAvailable(available)
           else
@@ -169,7 +175,7 @@ function App() {
 
           getMovies(loadedSrc, title, year, watched, rating, runtime, tags,
                     director, writer, actor, genre, country, studio,
-                    sorting, singletonV, watchlistV, "", available)
+                    sorting, singletonV, watchlistV, rewatch, available)
             .then((movies) => {
               if (header)
               {
@@ -191,7 +197,7 @@ function App() {
   return (
     <MoviesContext.Provider value={
     {master, movies, selected, updateMovies: setMovies,
-     loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
+     loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
       <div className="App">
         <div className="header">
           <h1 className="header__title">

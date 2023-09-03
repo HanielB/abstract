@@ -294,9 +294,7 @@ function filterStatic(movie : any, title : RegExp, year: number[],
       || (!isRegexAll(genre) &&
           (movie.genres.length === 0
            || !movie.genres.some((genreName) => genre.test(genreName))))
-      || (!isRegexAll(country) &&
-          (movie.countries.length === 0
-           || !movie.countries.some((countryName) => country.test(countryName))))
+      || (!isRegexAll(country) && !country.test(movie.countries))
       || (!isRegexAll(studio) &&
           (movie.studios.length === 0
            || !movie.studios.some((studioName) => studio.test(studioName))))
@@ -327,6 +325,7 @@ function populateMovie(movie : any, date: Date[], rating: number[],
   var ratingInfo = "";
   var ratingNum = 0;
   var lbDiaryLink = "";
+  var countryStr = "";
   var views = 0;
   var previousView = false;
   if (movie.diary.length > 0)
@@ -338,6 +337,7 @@ function populateMovie(movie : any, date: Date[], rating: number[],
     views = entries.length;
     if (entries.length > 0)
     {
+      countryStr = movie.countries;
       watchedInfo = entries[entries.length - 1].date;
       ratingInfo = entries[entries.length - 1].rating.str;
       ratingNum = entries[entries.length - 1].rating.num;
@@ -355,6 +355,7 @@ function populateMovie(movie : any, date: Date[], rating: number[],
     tmdbId : movie.tmdbId,
     year : movie.year,
     title : movie.title,
+    country : countryStr? countryStr : undefined,
     watched : watchedInfo,
     rating : ratingInfo,
     ratingNum : ratingNum,
@@ -398,6 +399,7 @@ Movie[] {
         tmdbId : movie.tmdbId,
         year : movie.year,
         title : movie.title,
+        country : movie.countries? movie.countries : undefined,
         runtime : movie.runtime,
         ratingNum: -1,
         picture: movie.posterPath? `${posterBaseUrl}${movie.posterPath}` : undefined,
@@ -445,6 +447,7 @@ Movie[] {
         tmdbId : movie.tmdbId,
         year : movie.year,
         title : movie.title,
+        country : movie.countries,
         watched : entry.date,
         rating : entry.rating.str,
         ratingNum : entry.rating.num,
@@ -781,5 +784,6 @@ export interface Movie {
   views?: number;
   previousView?: boolean;
   collectionId?: number;
-  collectionName?: string
+  collectionName?: string;
+  country?: string
 }

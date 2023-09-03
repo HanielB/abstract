@@ -216,7 +216,7 @@ export const Catalog = () => {
             </a>
               </span>
               <span className="year">
-                ({movie.year})
+                ({movie.year}{movie.country? ", " + movie.country.toUpperCase() : ""})
               </span>
             </div>
             <div className="watchedRating">

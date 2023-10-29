@@ -142,8 +142,6 @@ h3 em {
         color: RGBa(147, 174, 185,0.3);
 }
 
-
-
 /* !FINE PRINT ---------------------------------------------------------------------*/
 
 .fineprint {
@@ -1305,12 +1303,9 @@ h2 {
 
     directed = {}
 
-    # TODO: need to do the collecting of information from the master.json file, then populate this html
     with open("public/master.json", "rb") as master:
         data = json.load(master)
         for m in data["movies"]:
-            if m["runtime"] < 40 or not m["status"]:
-                continue
             for d in m["directors"]:
                 if d not in list(directed):
                     directed[d] = []
@@ -1328,27 +1323,30 @@ h2 {
             if i > 0:
               initLetter = unidecode.unidecode(k.split(" ")[-1][0])
               lastLetter = unidecode.unidecode(directed[i-1][0].split(" ")[-1][0])
-              # print("test with ", k, " vs ", directed[i-1][0])
-              # print("test with ", initLetter, " vs ", lastLetter)
               if initLetter != lastLetter:
                   index_file.write(f"""
                   <a name="{initLetter.lower()}"></a>
 """)
-              # else:
-                  # print("..they're the same")
             if len(v) < 2:
                 continue
             dirRegex = k.replace(" ", ".").lower()
             header = k.replace(" ", "_")
+            total = len(v)
+            watched = len(list(filter(lambda x : x["status"], v)))
+            countStr = "[" + str(total) + "]" + (" ({0}, {1})".format(watched, total-watched) if total != watched else "")
+
             index_file.write(f"""
             <hr>
-            <a href="../?header={header}&director={dirRegex}&sorting=year&singleton=1&watchlist=1&available=yes" target="_blank"><b>{k}</b></a> <span class="number">[{len(v)}]</span><p>
+            <a href="../?header={header}&director={dirRegex}&sorting=year&singleton=1&watchlist=1&available=yes" target="_blank"><b>{k}</b></a> <span class="number">{countStr}</span><p>
 """)
             v = sorted(v, key = lambda x:x["year"])
             for m in v:
-                rating = ("<a href=\"" + m["diary"][-1]["entryURL"] + "\"><span class=\"rating\">" + m["diary"][-1]["rating"]["str"] + "</span></a>") if m["diary"] and m["diary"][-1]["rating"]["num"] > 0 else ""
+                if m["runtime"] < 40:
+                    m["title"] = "[s] " + m["title"]
+
+                annotation = ("<a href=\"" + m["diary"][-1]["entryURL"] + "\"><span class=\"rating\">" + m["diary"][-1]["rating"]["str"] + "</span></a>") if m["diary"] and m["diary"][-1]["rating"]["num"] > 0 else ("" if m["status"] else "<span><img src =\"../not-watched-color.png\" style=\"height:10px;\"/></span></a>")
                 index_file.write(f"""
-                <li><a href="{m["lbURL"]}">{m["title"]} ({m["year"]})</a> {rating}</li>
+                <li><a href="{m["lbURL"]}">{m["title"]} ({m["year"]})</a> {annotation}</li>
 """)
             index_file.write(f"""<p>""")
     index_file.write("""

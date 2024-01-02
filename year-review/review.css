@@ -111,8 +111,8 @@ li{
 .i-am-centered { text-align:right; }
 
 sup {
-  vertical-align: 0.6em;
-  font-size: 0.6em;
+  /* vertical-align: 0.6em; */
+  font-size: 0.8em;
 }
 
 a.ref {

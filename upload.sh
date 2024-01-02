@@ -16,3 +16,5 @@ rsync --exclude='.git/' --recursive --times --compress --progress lists hostinge
 echo "Uploading directors..."
 ./directors.py
 rsync --exclude='.git/' --recursive --times --compress --progress directors hostinger:~/public_html/filminhos/ &> /dev/null
+echo "Uploading yearly review..."
+rsync --exclude='.git/' --recursive --times --compress --progress year-review hostinger:~/public_html/filminhos/ &> /dev/null

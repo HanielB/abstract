@@ -1,5 +1,11 @@
 #+STARTUP:hideblocks fninline fold
 
+* TODO Pass parameters to IDs page
+:STATES:
+- State "TODO"       from              [2024-01-03 Wed 13:24] \\
+  So that I can define if the ids results will have available or not etc. But this will also be useful to do the search within lists from LB. The crux of the matter is that the way I filter movies now depends on how movies are in the master file. I should change things so that filtering happens on something that I get from the IDs.
+:END:
+
 * TODO Allow keep current selection and just add to it
   :STATES:
   - State "TODO"       from              [2023-01-01 Sun 12:41] \\
@@ -14,8 +20,10 @@
     To do this I'll use the MySQL remote stuff and see what I can do. It'll be necessary to create SQL commands as requests to both insert into the BD and also to select from it.
   - State "TODO"       from              [2022-12-29 Thu 00:21]
   :END:
-* TODO [#A] Put query in url so I can go back
+* DONE [#A] Put query in url so I can go back
+CLOSED: [2024-01-03 Wed 13:24]
   :STATES:
+  - State "DONE"       from "TODO"       [2024-01-03 Wed 13:24]
   - State "TODO"       from              [2022-12-29 Thu 15:11]
   :END:
 * TODO [#B] Show total somehow

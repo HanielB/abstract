@@ -71,8 +71,81 @@ function App() {
         setMaster(loadedSrc);
         console.log("loaded ", init);
         console.log("ids ", ids);
-        if (list)
+        if (title)
+          setSearchTitle(title.replaceAll("_"," "));
+        else
+          title = ""
+        if (year)
+          setSearchYear(year);
+        else
+          year = ""
+        if (runtime)
+          setSearchRuntime(runtime);
+        else
+          runtime = ""
+        if (watched)
+          setSearchWatched(watched);
+        else
+          watched = ""
+        if (rating)
+          setSearchRating(rating);
+        else
+          rating = ""
+        if (tags)
+          setSearchTags(tags);
+        else
+          tags = ""
+        if (director)
+          setSearchDirector(director.replaceAll("_"," "));
+        else
+          director = ""
+        if (writer)
+          setSearchWriter(writer.replaceAll("_"," "));
+        else
+          writer = ""
+        if (actor)
+          setSearchActor(actor.replaceAll("_"," "));
+        else
+          actor = ""
+        if (genre)
+          setSearchGenre(genre.replaceAll("_"," "));
+        else
+          genre = ""
+        if (country)
+          setSearchCountry(country.replaceAll("_"," "));
+        else
+          country = ""
+        if (studio)
+          setSearchStudio(studio.replaceAll("_"," "));
+        else
+          studio = ""
+        if (sorting)
+          setSearchSorting(sorting)
+        else
+          sorting = "watched"
+        if (rewatch)
+          setSearchRewatch(rewatch)
+        else
+          rewatch = "yes"
+        if (available)
+          setSearchAvailable(available)
+        else
+          available = "no"
+        let singletonV = false;
+        if (singleton)
         {
+          singletonV = singleton === "1"
+          setSearchSingleton(singleton)
+        }
+        let watchlistV = false;
+        if (watchlist)
+        {
+          watchlistV = watchlist === "1"
+          setSearchWatchlist(watchlist)
+        }
+
+        if (list)
+          {
           fetch("./lists/" + list + ".json",
           { method: 'get',
             headers: {
@@ -94,84 +167,88 @@ function App() {
 
           getMoviesFromIds(loadedSrc, idsSet)
             .then((movies) => {
-              setMovies(movies)
-            });
+              console.log("Got these many movies: ", movies.length)
+              if (title)
+                setSearchTitle(title.replaceAll("_"," "));
+              else
+                title = ""
+              if (year)
+                setSearchYear(year);
+              else
+                year = ""
+              if (runtime)
+                setSearchRuntime(runtime);
+              else
+                runtime = ""
+              if (watched)
+                setSearchWatched(watched);
+              else
+                watched = ""
+              if (rating)
+                setSearchRating(rating);
+              else
+                rating = ""
+              if (tags)
+                setSearchTags(tags);
+              else
+                tags = ""
+              if (director)
+                setSearchDirector(director.replaceAll("_"," "));
+              else
+                director = ""
+              if (writer)
+                setSearchWriter(writer.replaceAll("_"," "));
+              else
+                writer = ""
+              if (actor)
+                setSearchActor(actor.replaceAll("_"," "));
+              else
+                actor = ""
+              if (genre)
+                setSearchGenre(genre.replaceAll("_"," "));
+              else
+                genre = ""
+              if (country)
+                setSearchCountry(country.replaceAll("_"," "));
+              else
+                country = ""
+              if (studio)
+                setSearchStudio(studio.replaceAll("_"," "));
+              else
+                studio = ""
+              if (sorting)
+                setSearchSorting(sorting)
+              else
+                sorting = "watched"
+              if (rewatch)
+                setSearchRewatch(rewatch)
+              else
+                rewatch = "yes"
+              if (available)
+                setSearchAvailable(available)
+              else
+                available = "no"
+              let singletonV = false;
+              if (singleton)
+              {
+                singletonV = singleton === "1"
+                setSearchSingleton(singleton)
+              }
+              let watchlistV = false;
+              if (watchlist)
+              {
+                watchlistV = watchlist === "1"
+                setSearchWatchlist(watchlist)
+              }
+              /* return getMovies(movies, title, year, watched, rating, runtime, tags,
+               *                  director, writer, actor, genre, country, studio,
+               *                  sorting, singletonV, watchlistV, rewatch, available); */
+              return movies;
+            })
+            .then((movies) => setMovies(movies));
         } 
         else if (title || year || runtime || watched || rating || tags || director || genre || country || writer || actor || studio)
         {
-          if (title)
-            setSearchTitle(title.replaceAll("_"," "));
-          else
-            title = ""
-          if (year)
-            setSearchYear(year);
-          else
-            year = ""
-          if (runtime)
-            setSearchRuntime(runtime);
-          else
-            runtime = ""
-          if (watched)
-            setSearchWatched(watched);
-          else
-            watched = ""
-          if (rating)
-            setSearchRating(rating);
-          else
-            rating = ""
-          if (tags)
-            setSearchTags(tags);
-          else
-            tags = ""
-          if (director)
-            setSearchDirector(director.replaceAll("_"," "));
-          else
-            director = ""
-          if (writer)
-            setSearchWriter(writer.replaceAll("_"," "));
-          else
-            writer = ""
-          if (actor)
-            setSearchActor(actor.replaceAll("_"," "));
-          else
-            actor = ""
-          if (genre)
-            setSearchGenre(genre.replaceAll("_"," "));
-          else
-            genre = ""
-          if (country)
-            setSearchCountry(country.replaceAll("_"," "));
-          else
-            country = ""
-          if (studio)
-            setSearchStudio(studio.replaceAll("_"," "));
-          else
-            studio = ""
-          if (sorting)
-            setSearchSorting(sorting)
-          else
-            sorting = "watched"
-          if (rewatch)
-            setSearchRewatch(rewatch)
-          else
-            rewatch = "yes"
-          if (available)
-            setSearchAvailable(available)
-          else
-            available = "no"
-          let singletonV = false;
-          if (singleton)
-          {
-            singletonV = singleton === "1"
-            setSearchSingleton(singleton)
-          }
-          let watchlistV = false;
-          if (watchlist)
-          {
-            watchlistV = watchlist === "1"
-            setSearchWatchlist(watchlist)
-          }
-
           getMovies(loadedSrc, title, year, watched, rating, runtime, tags,
                     director, writer, actor, genre, country, studio,
                     sorting, singletonV, watchlistV, rewatch, available)

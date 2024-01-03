@@ -45,6 +45,11 @@ h3 {
     font-size: 150%;
 }
 
+.italic {
+    font-style: italic;
+    font-size: inherit;
+  }
+
 h4 {
     font-size: 120%;
 }

@@ -50,6 +50,10 @@ span.italic {
     font-size: inherit;
 }
 
+i, b, a {
+    font-size: inherit;
+}
+
 h4 {
     font-size: 120%;
 }

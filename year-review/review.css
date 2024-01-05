@@ -144,3 +144,24 @@ a.fn {
                        $visited: $link-color-visited,
                        $active: $link-color-active);
 }
+
+/* for phone */
+@media screen and (max-width: 540px) {
+    .singlecard {
+        width: 60%
+    }
+
+    .doublecard {
+        width: 100%
+    }
+}
+/* For rest */
+@media screen and (min-width: 540px) {
+    .singlecard {
+        width: 25%
+    }
+    .doublecard {
+        width: 50%
+    }
+}
+    

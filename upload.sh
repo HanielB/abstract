@@ -10,6 +10,9 @@ cd build
 echo "Uploading..."
 rsync --exclude='.git/' --recursive --times --compress --progress . hostinger:~/public_html/filminhos/ &> /dev/null
 cd - &> /dev/null
+cd public
+unzip master.zip &> /dev/null
+cd - &> /dev/null
 echo "Uploading lists..."
 ./index.py lists/
 rsync --exclude='.git/' --recursive --times --compress --progress lists hostinger:~/public_html/filminhos/ &> /dev/null
@@ -18,3 +21,4 @@ echo "Uploading directors..."
 rsync --exclude='.git/' --recursive --times --compress --progress directors hostinger:~/public_html/filminhos/ &> /dev/null
 echo "Uploading yearly review..."
 rsync --exclude='.git/' --recursive --times --compress --progress year-review hostinger:~/public_html/filminhos/ &> /dev/null
+rm public/master.json

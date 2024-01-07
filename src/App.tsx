@@ -60,13 +60,27 @@ function App() {
     let watchlist   = url.searchParams.get("watchlist");
     let available   = url.searchParams.get("available");
 
-    var init = src ? src : "master.json";
-    fetch(init,
-          { method: 'get',
-            headers: {
-              'content-type': 'text/csv;charset=UTF-8',
-            }})
-      .then((res) => res.json())
+    const JSZip = require('jszip');
+
+    var init = src ? src : "master.zip";
+
+    fetch(init)
+      .then((response) => response.arrayBuffer())
+      .then((zipData) => {
+        // Create a new JSZip instance
+        const zip = new JSZip();
+
+        // Load the zip file content
+        return zip.loadAsync(zipData, { base64: false });
+      })
+      .then((zip) => {
+        // Assuming there's a single JSON file in the zip archive, you
+        // can access it like this:
+        const jsonFile = zip.files['master.json'];
+        // Read the content of the JSON file
+        return jsonFile.async('string');
+      })
+      .then((res) => JSON.parse(res))
       .then((loadedSrc) => {
         setMaster(loadedSrc);
         console.log("loaded ", init);

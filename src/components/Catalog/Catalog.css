@@ -91,6 +91,16 @@ a:active {
         text-decoration: none;
     }
 
+    .watchedDateLoc {
+        display: flex;
+        flex-flow: column;
+        grid-row-gap: .1rem;
+    }
+
+    .loc {
+        font-size: .5rem;
+    }
+
     .rating {
         font-weight: bold;
         padding: 5px 6px;
@@ -188,6 +198,7 @@ a:active {
     }
 
     .year {
+        font-size: .95rem;
     }
 
     .watched {
@@ -197,9 +208,31 @@ a:active {
         text-decoration: none;
     }
 
+    .watchedDateLoc {
+        display: flex;
+        flex-flow: column;
+    }
+
+    .loc {
+        font-size: .8rem;
+        margin-top: -2px;
+    }
+
     .rating {
+        position: relative;
+        display: inline-block;
+    }
+
+    .ratingBox {
+        position: absolute;
+        top: 20%;
+        left: 0;
+        width: 50;
+        height: 10px;
+        line-height: 10px;
+        text-align: center;
         font-weight: bold;
-        padding: 6px 7px;
+        padding: 9px 9px 9px 9px;
         background-color: #343533;
         color: #f5cc5b;
         border-radius: 10px;

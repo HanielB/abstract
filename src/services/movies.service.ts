@@ -325,6 +325,7 @@ function populateMovie(movie : any, date: Date[], rating: number[],
   var ratingInfo = "";
   var ratingNum = 0;
   var lbDiaryLink = "";
+  var watchedLocationStr = "";
   var countryStr = "";
   var views = 0;
   var previousView = false;
@@ -338,6 +339,7 @@ function populateMovie(movie : any, date: Date[], rating: number[],
     if (entries.length > 0)
     {
       countryStr = movie.countries;
+      watchedLocationStr = entries[entries.length - 1].location;
       watchedInfo = entries[entries.length - 1].date;
       ratingInfo = entries[entries.length - 1].rating.str;
       ratingNum = entries[entries.length - 1].rating.num;
@@ -356,6 +358,7 @@ function populateMovie(movie : any, date: Date[], rating: number[],
     year : movie.year,
     title : movie.title,
     country : countryStr? countryStr : undefined,
+    watchedLocation : watchedLocationStr? watchedLocationStr : undefined,
     watched : watchedInfo,
     rating : ratingInfo,
     ratingNum : ratingNum,
@@ -448,6 +451,7 @@ Movie[] {
         year : movie.year,
         title : movie.title,
         country : movie.countries,
+        watchedLocation: entry.location,
         watched : entry.date,
         rating : entry.rating.str,
         ratingNum : entry.rating.num,
@@ -714,7 +718,7 @@ Promise<Movie[]> {
     if (found)
       moviesOrdered.push(found)
   })
-  
+
   return Promise.all(moviesOrdered.map((movie) => {
         if (movie.picture)
         {
@@ -722,7 +726,7 @@ Promise<Movie[]> {
         }
         return getPicture(movie);
       }))
-  
+
 }
 
 export function getMovies(master: Object[],
@@ -786,4 +790,5 @@ export interface Movie {
   collectionId?: number;
   collectionName?: string;
   country?: string
+  watchedLocation?: string
 }

@@ -202,104 +202,111 @@ export const Catalog = () => {
                {
                  handleMove(movie.id, 4);
                }
-               }}
+             }}
         >
           <div className="catalog__item__img">
-              <img src={movie.picture || imgPlaceholder} alt={movie.title}
-              />
+            <img src={movie.picture || imgPlaceholder} alt={movie.title}
+            />
           </div>
           <div className="catalog__item__info">
             <div className="titleYear">
               <span className="title">
-            <a href={movie.lbFilmLink}>
-              {movie.title}
-            </a>
+                <a href={movie.lbFilmLink}>
+                  {movie.title}
+                </a>
               </span>
               <span className="year">
                 ({movie.year}{movie.country? ", " + movie.country.toUpperCase() : ""})
               </span>
             </div>
             <div className="watchedRating">
-              <span className="watched">
-                <a href={movie.lbDiaryLink}>{
-                  movie.watched && movie.watched.split("-").length > 3?
-                    movie.watched.substring(0, 10) : movie.watched
-                }</a>
-              </span>
+              <div className="watchedDateLoc">
+                <span className="watched">
+                  <a href={movie.lbDiaryLink}>{
+                    movie.watched && movie.watched.split("-").length > 3?
+                                                                       movie.watched.substring(0, 10) : movie.watched
+                  }</a>
+                </span>
+                <span className="loc">
+                  {movie.watchedLocation? movie.watchedLocation: ""}
+                </span>
+              </div>
               {
-                <span className={(movie.rating)? "rating" : "year"}>
-                  {movie.rating}
+                <span className="rating">
+                  <div className={(movie.rating)? "ratingBox" : "year"}>
+                    {movie.rating}
+                  </div>
                 </span>
               }
-            </div>
-            <div className="tags">
-              {
-                (collection && movie.collectionName)?
-                  <span className="collection"
-                        onClick={(e) => getCollection(movie.collectionId)}>
-                    {movie.collectionName}
-                  </span>
-                 : (movie.tags)?
-                  movie.tags.map((tag) => (
-                    <span className="tag"
-                          onClick={(e) => getTag(tag)}>
-                      {tag}
-                    </span>
-                  ))
-                : <span></span>
-              }
-            </div>
-            <div className="directors">
-              {
-                (movie.directors)?
-                  movie.directors.map((director) => (
-                    <span className="director"
-                          onClick={(e) => getDirected(director)}>
-                      {director}
-                    </span>
-                  )) : <span></span>
-              }
-            </div>
-            <div className="available">
-              {
-                (movie.available)?
-                  movie.available.map((prov) => (
-                  <span>
-                    <img className="provider" src={getIcon(prov)}
-                    />
-                  </span>
-                  ))
-                : <span></span>
-              }
-          </div>
-            <div className="runtimeRewatch">
-              <span className="runtime">
-                {movie.runtime}min
-              </span>
-              {
-                (movie.views && (movie.views > 1 || movie.previousView))?
-                  <span className="views">
-                    <img src={viewsImg} className="watchedImg"
-                    />
-                    <span className="floatingNumber">
-                      {movie.views}{movie.previousView? "+" : ""}
-                    </span>
-                  </span>
-                : (movie.rewatch)?
-                  <span className="rewatch">
-                    <img src={rewatchImg}
-                    />
-                  </span>
-                : (movie.watchlist)?
-                  <span className="rewatch">
-                    <img src={watchlistImg}
-                    />
-                  </span>
-                : <span></span>
-              }
-            </div>
-          </div>
-        </div>
+    </div>
+    <div className="tags">
+      {
+        (collection && movie.collectionName)?
+        <span className="collection"
+              onClick={(e) => getCollection(movie.collectionId)}>
+          {movie.collectionName}
+        </span>
+        : (movie.tags)?
+        movie.tags.map((tag) => (
+          <span className="tag"
+                onClick={(e) => getTag(tag)}>
+            {tag}
+          </span>
+        ))
+        : <span></span>
+      }
+    </div>
+    <div className="directors">
+      {
+        (movie.directors)?
+        movie.directors.map((director) => (
+          <span className="director"
+                onClick={(e) => getDirected(director)}>
+            {director}
+          </span>
+        )) : <span></span>
+      }
+    </div>
+    <div className="available">
+      {
+        (movie.available)?
+        movie.available.map((prov) => (
+          <span>
+            <img className="provider" src={getIcon(prov)}
+            />
+          </span>
+        ))
+        : <span></span>
+      }
+    </div>
+    <div className="runtimeRewatch">
+      <span className="runtime">
+        {movie.runtime}min
+      </span>
+      {
+        (movie.views && (movie.views > 1 || movie.previousView))?
+        <span className="views">
+          <img src={viewsImg} className="watchedImg"
+          />
+          <span className="floatingNumber">
+            {movie.views}{movie.previousView? "+" : ""}
+          </span>
+        </span>
+        : (movie.rewatch)?
+        <span className="rewatch">
+          <img src={rewatchImg}
+          />
+        </span>
+        : (movie.watchlist)?
+        <span className="rewatch">
+          <img src={watchlistImg}
+          />
+        </span>
+        : <span></span>
+      }
+    </div>
+    </div>
+    </div>
       ))}
     </div>
   );

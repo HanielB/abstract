@@ -44,7 +44,7 @@ export function convertMovie(movie: any): Movie {
     return movie;
   }
   // convert
-  return populateMovie(movie, [], [], [], "yes");
+  return populateMovie(movie, [], new RegExp(/.*/, 'i'), [], [], "yes");
 }
 
 function mapResult(res: any): Movie[] {
@@ -228,11 +228,11 @@ function getMovieDate(dateStr : string) : Date
   return new Date(yearMovie, monthMovie, dayMovie, hourMovie);
 }
 
-function filterDiary(watchedDate : string, movieRating : number,
+function filterDiary(watchedDate : string, watchedLoc: string, movieRating : number,
                      movieTags : string[], movieRewatched : boolean,
-                     date: Date[], rating: number[],
+                     date: Date[], loc : RegExp, rating: number[],
                      tags : RegExp[], rewatch: string)
-: boolean
+                                             : boolean
 {
   if ((rewatch === "no" && movieRewatched) ||
       (rewatch === "only" && !movieRewatched))
@@ -250,6 +250,10 @@ function filterDiary(watchedDate : string, movieRating : number,
     {
       return false;
     }
+  }
+  if (!isRegexAll(loc) && !loc.test(watchedLoc))
+  {
+    return false;
   }
   if (rating.length > 0
       && ((rating[0] === -1 && movieRating > 0)
@@ -318,7 +322,7 @@ function filterStatic(movie : any, title : RegExp, year: number[],
   return true;
 }
 
-function populateMovie(movie : any, date: Date[], rating: number[],
+function populateMovie(movie : any, date: Date[], loc: RegExp, rating: number[],
                        tags : RegExp[], rewatch: string)
 : Movie {
   var watchedInfo = "";
@@ -333,8 +337,8 @@ function populateMovie(movie : any, date: Date[], rating: number[],
   {
     // filter out diary entries that are incompatible
     var entries : any[] = movie.diary.filter((entry) =>
-      filterDiary(entry.date, entry.rating.num, entry.tags, entry.rewatch,
-                  date, rating, tags, rewatch));
+      filterDiary(entry.date, entry.location, entry.rating.num, entry.tags, entry.rewatch,
+                  date, loc, rating, tags, rewatch));
     views = entries.length;
     if (entries.length > 0)
     {
@@ -384,7 +388,7 @@ function filterMovie(movie : any, title: RegExp, year: number[], date: Date[],
                      director: RegExp, writer : RegExp, actor: RegExp,
                      genre: RegExp, country: RegExp, studio: RegExp,
                      onlywatched: boolean, watchlist: boolean, rewatch: string,
-                     collection = -1, collectionName : RegExp):
+                     collection = -1, collectionName : RegExp, loc : RegExp):
 Movie[] {
   var results : Movie[] = [];
   if ((!watchlist && movie.status === 0)
@@ -420,7 +424,7 @@ Movie[] {
   // get latest diary entry to have the rating and watched date, if any
   if (onlywatched)
   {
-    results.push(populateMovie(movie, date, rating, tags, rewatch));
+    results.push(populateMovie(movie, date, loc, rating, tags, rewatch));
   }
   else if (movie.diary.length === 0)
   {
@@ -468,10 +472,11 @@ Movie[] {
   }
   return results.filter((result) =>
     filterDiary(result.watched ? result.watched : "",
+                result.watchedLocation ? result.watchedLocation : "",
                 result.ratingNum ? result.ratingNum : -1,
                 result.tags ? result.tags : [],
                 result.rewatch ? result.rewatch : false,
-                date, rating, tags, rewatch));
+                date, loc, rating, tags, rewatch));
 }
 
 function filterMovies(master : any, title: string, year: string, date: string,
@@ -551,6 +556,19 @@ Promise<Movie[]> {
     ratings[1] = ratings[1] + 0.9;
   }
 
+  // date may contain loc info
+  var locRegex : RegExp;
+  if (date.includes(";"))
+  {
+    var dateSplit = date.split(";");
+    date = dateSplit[0] !== "" ? dateSplit[0] : "";
+    locRegex = new RegExp(dateSplit[1] !== "" ? dateSplit[1] : /.*/, 'i');
+  }
+  else
+  {
+    locRegex = new RegExp(/.*/, 'i');
+  }
+
   if (date.startsWith(".."))
     date = "1900" + date
   var dates : Date[] = date === "-1" ? [new Date(1900), new Date(1900)]: [];
@@ -611,7 +629,7 @@ Promise<Movie[]> {
                                        writerRegex, actorRegex, genreRegex,
                                        countryRegex, studioRegex,
                                        onlywatched, watchlist, rewatch,
-                                       collection, collectionRegex));
+                                       collection, collectionRegex, locRegex));
   });
   // >0: a after b; < 0: a before b; === 0: keep order
   if (sorting === "watched")
@@ -710,7 +728,7 @@ Promise<Movie[]> {
   var movies : Movie[] = [], moviesOrdered : Movie[] = [];
   master.movies?.map((movie) => {
     if (ids.has(movie.tmdbId))
-      movies.push(populateMovie(movie, [], [], [], "yes"));
+      movies.push(populateMovie(movie, [], new RegExp(/.*/, 'i'), [], [], "yes"));
   });
   // order movies according to set order
   ids.forEach((id) => {

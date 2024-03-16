@@ -29,55 +29,55 @@ export const Search = () => {
   }
   if (searchYear && !year)
   {
-    setYear(searchYear);    
+    setYear(searchYear);
   }
   if (searchRuntime && !runtime)
   {
-    setRuntime(searchRuntime);    
+    setRuntime(searchRuntime);
   }
   if (searchWatched && !date)
   {
-    setDate(searchWatched);    
+    setDate(searchWatched);
   }
   if (searchRating && !rating)
   {
-    setRating(searchRating);    
+    setRating(searchRating);
   }
   if (searchTags && !tags)
   {
-    setTags(searchTags);    
+    setTags(searchTags);
   }
   if (searchDirector && !director)
   {
-    setDirector(searchDirector);    
+    setDirector(searchDirector);
   }
   if (searchWriter && !writer)
   {
-    setWriter(searchWriter);    
+    setWriter(searchWriter);
   }
   if (searchActor && !actor)
   {
-    setActor(searchActor);    
+    setActor(searchActor);
   }
   if (searchGenre && !genre)
   {
-    setGenre(searchGenre);    
+    setGenre(searchGenre);
   }
   if (searchCountry && !country)
   {
-    setCountry(searchCountry);    
+    setCountry(searchCountry);
   }
   if (searchStudio && !studio)
   {
-    setStudio(searchStudio);    
+    setStudio(searchStudio);
   }
   if (searchSorting && searchSorting != "watched" && sorting == "watched")
   {
-    setSorting(searchSorting);    
+    setSorting(searchSorting);
   }
   if (searchRewatch && searchRewatch != "yes" && rewatch == "yes")
   {
-    setRewatch(searchRewatch);    
+    setRewatch(searchRewatch);
   }
   if (searchSingleton && searchSingleton === "1")
   {
@@ -184,10 +184,10 @@ export const Search = () => {
 
     parameters += runtime != "" ? (first? "?" : "&") + "runtime=" + runtime : ""
     first = parameters === ""
-    
+
     parameters += date != "" ? (first? "?" : "&") + "watched=" + date : ""
     first = parameters === ""
-    
+
     parameters += rating != "" ? (first? "?" : "&") + "rating=" + rating : ""
     first = parameters === ""
 
@@ -432,6 +432,9 @@ export const Search = () => {
           <label className="search__button">
             <input type="file" onChange={(e) => handleUpload(e)}/>
             UPLOAD
+          </label>
+          <label className="count">
+            {movies.length}
           </label>
         </div>
       </form>

@@ -740,9 +740,10 @@ Promise<Movie[]> {
   return Promise.all(moviesOrdered.map((movie) => {
         if (movie.picture)
         {
-          return getAvailable(movie, ["Netflix", "Amazon Prime Video", "HBO Max", "Google Play Movies", "Mubi", "Globoplay", "Disey Plus", "Star Plus", "Criterion Channel"]);
+          // return getAvailable(movie, ["Netflix", "Amazon Prime Video", "HBO Max", "Google Play Movies", "Mubi", "Globoplay", "Disey Plus", "Star Plus", "Criterion Channel"]);
+          return movie;
         }
-        return getPicture(movie);
+    return getPicture(movie);
       }))
 
 }

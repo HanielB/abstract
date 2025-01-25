@@ -148,7 +148,7 @@ a.fn {
 /* for phone */
 @media screen and (max-width: 540px) {
     .singlecard {
-        width: 60%
+        width: 50%
     }
 
     .doublecard {
@@ -164,4 +164,3 @@ a.fn {
         width: 50%
     }
 }
-    

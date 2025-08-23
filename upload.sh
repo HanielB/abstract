@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# if fresh repo:
+# - install via apt npm
+# - npm install
+
 if [ "$1" != "--no-build" ]; then
     echo "Building..."
     npm run build &> /dev/null

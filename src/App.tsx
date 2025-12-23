@@ -276,7 +276,9 @@ function App() {
         }
         else
         {
-          getMoviesFromIds(loadedSrc, new Set([62,12477,531428,18491]))
+          // 2001, Hotaru no Haka, In the Mood for Love, Protrait de la Jeune Fille en Feu
+          setStart(true);
+          getMoviesFromIds(loadedSrc, new Set([62,12477,843,531428]))
             .then((movies) => {
               setMovies(movies)
             });

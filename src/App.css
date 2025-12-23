@@ -12,3 +12,30 @@
   font-size: 2rem;
   font-weight: bold;
 }
+
+.box-link {
+  font-family: "letter-gothic-std", Monaco, "Lucida Console", monospace;
+  font-size: 1.77em;
+  font-weight: bold;
+  letter-spacing: 1px;
+  line-height: 250%;
+  margin-top: 3px
+}
+
+
+.box-link a {
+  color: #93aeb9;
+  background-color: rgba(147,174,185,0.2);
+
+  border: 1px solid rgba(147,174,185,0.5);
+
+  padding: 4px 6px 3px 6px;
+  margin: 0px 20px 0px 0px;
+
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+
+  white-space: nowrap;
+
+}

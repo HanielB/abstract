@@ -10,6 +10,7 @@ function App() {
   const url = new URL(window.location.href);
 
   const [movies, _setMovies] = useState<Movie[]>([]);
+  const [start, setStart] = useState(false);
   const [loading, setLoading] = useState(false);
   const [master, setMaster] = useState<Object[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
@@ -36,7 +37,7 @@ function App() {
     _setMovies([]);
     _setMovies(movies);
   };
-  
+
   useEffect(() => {
     const src = url.searchParams.get("src");
     const list = url.searchParams.get("list");
@@ -260,7 +261,7 @@ function App() {
               return movies;
             })
             .then((movies) => setMovies(movies));
-        } 
+        }
         else if (title || year || runtime || watched || rating || tags || director || genre || country || writer || actor || studio)
         {
           getMovies(loadedSrc, title, year, watched, rating, runtime, tags,
@@ -289,7 +290,7 @@ function App() {
   return (
     <MoviesContext.Provider value={
     {master, movies, selected, updateMovies: setMovies,
-     loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
+     start, loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setStart: setStart, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
       <div className="App">
         <div className="header">
           <h1 className="header__title">
@@ -302,6 +303,15 @@ function App() {
           </div>
         </div>
         <Catalog></Catalog>
+        {start?
+         <div className="header">
+           <h2 className="header__title">Year in review</h2>
+           <p className="box-link">
+             <a href="year-review/2024.html">2024</a>
+             <a href="year-review/2023.html">2023</a>
+           </p>
+         </div>
+         :<div></div>}
       </div>
     </MoviesContext.Provider>
   );

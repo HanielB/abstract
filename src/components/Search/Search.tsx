@@ -21,7 +21,7 @@ export const Search = () => {
   const [rewatch, setRewatch] = useState("");
   const [available, setAvailable] = useState("");
   const [file, setFile] = useState("");
-  const {master, movies, updateMovies, setLoading, setListName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
+  const {master, movies, updateMovies, setStart, setLoading, setListName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
 
   if (searchTitle && !title)
   {
@@ -129,6 +129,7 @@ export const Search = () => {
 
   const handleOnSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    setStart(false);
     setLoading(true);
     const onlywatchedCheck =
           document.getElementById("onlywatched") as HTMLInputElement

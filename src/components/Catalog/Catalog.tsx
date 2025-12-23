@@ -10,7 +10,7 @@ import { Movie, getMovies } from "../../services/movies.service";
 
 
 export const Catalog = () => {
-  const { master, movies, loading, selected,
+  const { master, movies, start, loading, selected,
           setLoading, updateMovies, setSelected, setListName } =
         useContext(MoviesContext);
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);

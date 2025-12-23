@@ -4,6 +4,7 @@ import { Movie } from "./movies.service";
 export const MoviesContext = React.createContext<{
   master: Object[];
   movies: Movie[];
+  start: boolean;
   selected: number[];
   updateMovies: Function;
   loading : boolean;
@@ -25,12 +26,14 @@ export const MoviesContext = React.createContext<{
   searchAvailable : string;
   searchSorting : string;
   searchRewatch : string;
+  setStart : Function;
   setLoading : Function;
   setSelected : Function;
   setListName : Function;
 }>({
   master: [],
   movies: [],
+  start : false,
   selected: [],
   updateMovies: Function,
   loading : false,
@@ -52,6 +55,7 @@ export const MoviesContext = React.createContext<{
   searchAvailable : "",
   searchSorting : "",
   searchRewatch : "",
+  setStart : Function,
   setLoading : Function,
   setSelected : Function,
   setListName : Function

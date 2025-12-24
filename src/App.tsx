@@ -5,6 +5,99 @@ import { Catalog } from "./components/Catalog/Catalog";
 import { Movie, convertMovie, getMovies, getMoviesFromIds } from "./services/movies.service";
 import { MoviesContext } from "./services/context";
 
+// BarChart.tsx
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+  Colors,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+ChartJS.register(Colors);
+
+ChartJS.register(
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend
+);
+
+type Props = {
+  labels: string[];
+  values: number[];
+};
+
+export function BarChart({ labels, values }: Props) {
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: '',
+        data: values,
+        backgroundColor: 'green',
+        //  These remove the spacing
+        categoryPercentage: 1.0,
+        barPercentage: 1.0,
+        borderColor: 'black',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label(context) {
+            const dataset = context.dataset.label ?? '';
+            return `${context.parsed.y} films`;
+          },
+          title(items) {
+            return `Logged in ${items[0].label}`;
+          },
+        },
+        displayColors: false,
+        titleFont: { size: 14 },
+        bodyFont: { size: 16 }
+      },
+      // tooltip: {
+      //   enabled: true, // hover tooltip
+      // },
+      legend: {display: false},
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false
+        },
+        ticks: {
+          color: "black",
+          font: {
+            family: 'Inter, system-ui, sans-serif',
+            size: 18,
+          }
+        }
+      },
+      y: {
+        grid: {
+          display: false
+        },
+        ticks: {display: false},
+        border: { display: false }
+      }
+    }
+  };
+
+  return <Bar data={data} options={options} />;
+}
+
 function App() {
 
   const url = new URL(window.location.href);
@@ -284,8 +377,8 @@ function App() {
               setMovies(movies)
             });
         }
-      });
-  }, []);
+                                    });
+                                    }, []);
 
   return (
     <MoviesContext.Provider value={
@@ -310,7 +403,14 @@ function App() {
              <a href="year-review/2024.html">2024</a>
              <a href="year-review/2023.html">2023</a>
            </p>
-         </div>
+           <h2 className="header__title">Films per year</h2>
+           <div className="chart-wrapper">
+             <BarChart
+               labels={['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024']}
+               values={[69, 58, 198, 154, 176, 142, 138, 145, 204, 189]}
+             />
+           </div>
+           </div>
          :<div></div>}
       </div>
     </MoviesContext.Provider>

@@ -39,3 +39,10 @@
   white-space: nowrap;
 
 }
+
+.chart-wrapper {
+  width: 100%;
+  max-width: 800px;     /* optional */
+  height: 40vw;        /* responsive height */
+  max-height: 500px;   /* optional */
+}

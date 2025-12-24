@@ -34,17 +34,33 @@ type Props = {
 
 export function BarChart({ labels, values }: Props) {
   const data = {
-    labels,
+    labels: ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'],
     datasets: [
       {
-        label: '',
-        data: values,
+        label: 'films',
+        data: [69, 58, 198, 154, 176, 142, 138, 145, 204, 189],
         backgroundColor: 'green',
+        // backgroundColor: 'rgba(0, 120, 0, 0.5)',
+        //  These remove the spacing
+        categoryPercentage: 1.0,
+        barPercentage: 1,
+        borderColor: 'black',
+        borderWidth: 1,
+        grouped: false,
+        order: 2,
+      },
+      {
+        label: 'cinema',
+        data: [14, 14, 39, 40, 40, 16, 18, 39, 70, 65],
+        backgroundColor: 'purple',
+        // backgroundColor: 'rgba(200, 0, 200, 0.5)',
         //  These remove the spacing
         categoryPercentage: 1.0,
         barPercentage: 1.0,
         borderColor: 'black',
         borderWidth: 1,
+        grouped: false,
+        order: 1,
       },
     ],
   };
@@ -56,20 +72,25 @@ export function BarChart({ labels, values }: Props) {
       tooltip: {
         callbacks: {
           label(context) {
+            // if (context.datasetIndex === 0) {
+            //   const dataset = context.dataset.label ?? '';
+            //   return `${context.parsed.y} films`;
+            // }
             const dataset = context.dataset.label ?? '';
             return `${context.parsed.y} films`;
           },
           title(items) {
-            return `Logged in ${items[0].label}`;
+            const item = items[0]; // first hovered dataset
+            if (item.dataset.label === 'films') {
+              return `Logged in ${items[0].label}`;
+            }
+            return `In a cinema in ${items[0].label}`;
           },
         },
         displayColors: false,
         titleFont: { size: 14 },
         bodyFont: { size: 16 }
       },
-      // tooltip: {
-      //   enabled: true, // hover tooltip
-      // },
       legend: {display: false},
     },
     scales: {
@@ -406,8 +427,8 @@ function App() {
            <h2 className="header__title">Films per year</h2>
            <div className="chart-wrapper">
              <BarChart
-               labels={['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024']}
-               values={[69, 58, 198, 154, 176, 142, 138, 145, 204, 189]}
+               labels={[]}
+               values={[]}
              />
            </div>
            </div>

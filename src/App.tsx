@@ -32,15 +32,17 @@ type Props = {
   values: number[];
 };
 
+
+
+
 export function BarChart({ labels, values }: Props) {
   const data = {
-    labels: ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'],
+    labels: ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'],
     datasets: [
       {
         label: 'films',
-        data: [69, 58, 198, 154, 176, 142, 138, 145, 204, 189],
+        data: [69, 58, 198, 154, 176, 142, 138, 145, 204, 189, 182],
         backgroundColor: 'green',
-        // backgroundColor: 'rgba(0, 120, 0, 0.5)',
         //  These remove the spacing
         categoryPercentage: 1.0,
         barPercentage: 1,
@@ -51,9 +53,8 @@ export function BarChart({ labels, values }: Props) {
       },
       {
         label: 'cinema',
-        data: [14, 14, 39, 40, 40, 16, 18, 39, 70, 65],
+        data: [14, 14, 39, 40, 40, 16, 18, 39, 70, 65, 76],
         backgroundColor: 'purple',
-        // backgroundColor: 'rgba(200, 0, 200, 0.5)',
         //  These remove the spacing
         categoryPercentage: 1.0,
         barPercentage: 1.0,
@@ -420,10 +421,24 @@ function App() {
         {start?
          <div className="header">
            <h2 className="header__title">Year in review</h2>
-           <p className="box-link">
+           <div className="box-link">
              <a href="year-review/2024.html">2024</a>
              <a href="year-review/2023.html">2023</a>
-           </p>
+           </div>
+           <h2 className="header__title">Best of</h2>
+           <div className="box-link">
+             <a href="https://hanielbarbosa.com/filminhos/?list=2025best">2025</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=2024best">2024</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=2023best">2023</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=2022best">2022</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=2021best">2021</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=2020best">2020</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=2019best">2019</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=2018best">2018</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=2017best">2017</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=2016best">2016</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=2015best">2015</a>
+           </div>
            <h2 className="header__title">Films per year</h2>
            <div className="chart-wrapper">
              <BarChart

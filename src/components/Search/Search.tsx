@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import "./Search.css";
-import { getMovie, loadMovies, getMovies } from "../../services/movies.service";
+import { getMovie, loadMovies, getMovies, getMoviesFromIds } from "../../services/movies.service";
 import { MoviesContext } from "../../services/context";
 import { Movie } from "../../services/movies.service";
 
@@ -22,6 +22,7 @@ export const Search = () => {
   const [available, setAvailable] = useState("");
   const [file, setFile] = useState("");
   const {master, movies, updateMovies, setStart, setLoading, setListName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
+
 
   if (searchTitle && !title)
   {
@@ -119,9 +120,10 @@ export const Search = () => {
             console.log("File is null");
             return;
           }
-          var loadedList = JSON.parse(fr.result as string);
-          setListName(loadedList.title);
-          updateMovies(loadedList.movies);
+          var resList = JSON.parse(fr.result as string);
+          // setListName(resList.title);
+          let idsSet = new Set<Number>(resList.movies.map((id) => Number(id)));
+          getMoviesFromIds(master, idsSet).then((movies) => {updateMovies(movies)})
         }
         fr.readAsText(files[0]);
     }

@@ -121,7 +121,8 @@ export const Search = () => {
             return;
           }
           var resList = JSON.parse(fr.result as string);
-          // setListName(resList.title);
+          setStart(false);
+          setListName(resList.title);
           let idsSet = new Set<Number>(resList.movies.map((id) => Number(id)));
           getMoviesFromIds(master, idsSet).then((movies) => {updateMovies(movies)})
         }

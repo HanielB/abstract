@@ -164,3 +164,8 @@ a.fn {
         width: 50%
     }
 }
+
+#footnotes ~ p sup a,
+sup a {
+  font-size: 0.85em;
+}

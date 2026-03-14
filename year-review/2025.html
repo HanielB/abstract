@@ -1,329 +1,382 @@
 <!DOCTYPE html>
 <html lang="en" ng-app='app'>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Year in Review: 2025</title>
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="review.css">
-    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
-    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
-  </head>
-  <body>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Year in Review: 2025</title>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="review.css">
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
+        <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    </head>
+    <script>
+     document.addEventListener("DOMContentLoaded", () => {
+         const fnTags = document.querySelectorAll("fn");
+         const container = document.getElementById("footnotes");
 
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12">
-          <center>
-            <h1>2025 in review</h1>
-          </center>
+         if (fnTags.length === 0) return;
 
-          <br>
-          <br>
+         let html = '<hr><ol start="0" style="list-style:none; padding:0; margin:0;">';
 
-          <p><i>From here on in it's one battle after another </i>. That was 2025.</p>
-          <p><i>La vida es como la espuma, por eso hay que darse como el mar.</i>. That is life.</p>
+         fnTags.forEach((fn, i) => {
+             const n = i;
+             const refId  = `ref:fn${n}`;
+             const noteId = `fn:${n}`;
 
-          <p>
-            <a href="#journey">The Journey</a> &sdot;
-            <a href="#highlights">Highlights</a> &sdot;
-            <a href="#misc">Miscellaneous</a> &sdot;
-            <a href="#bestold">Best Older Films First Watched in 2025</a> &sdot;
-            <a href="#best">Best Newer Films First Watched in 2025</a>
-          </p>
+             const link = document.createElement("sup");
+             link.innerHTML = `<a id="${refId}" href="#${noteId}">[${n}]</a>`;
+             fn.replaceWith(link);
 
+             html += `<li id="${noteId}" style="list-style:none; padding:0; margin-left:0;">
+           ${n}. <a href="#${refId}">↑</a> ${fn.innerHTML}
+         </li>`;
+         });
 
-          <a name="journey"></a>
-          <h2>The Journey</h2>
+         html += "</ol>";
+         container.innerHTML = html;
 
+     });
+    </script>
+    <body>
 
-          <p>The overview of my movie watching in 2025 is summarized in the
-            plot<a class="ref" id="ref:fn0" href="#fn:0"><sup>[0]</sup></a> below. The
-            green bars are for films watched in a cinema.  In the X axis by the
-            names of the months are the number of watched films in that month,
-            with the max and min months in bold.</p>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <center>
+                        <h1>2025 in review</h1>
+                    </center>
 
-          <br>
-          <span><img src="./images/2025/2025.png"  class="img-responsive" style="width: 100%"/></span>
-          <br>
+                    <br>
+                    <br>
 
-          - most films in a cinema: 76. Miraculously, 38 in each half of the year
-            - 4 weeks with 4-cinema; 11 weeks with 3-cinema
-            - in Oct-Dec, a four month period, in only one week I did not go to a cinema (that was a week with a long weekend in which we ran a bit from civilization; I still saw 5 films that week). A 1.98-cinema median for this period, where, excluding the cinema-less September, the average was 1.44. I did feel like going to the movies was a constant in these weks, something to count on, which was very nice.
+                    <p>Here we go again. Today is March 14th 2026 and the Oscars are tomorrow.<fn>I couldn't care less for the Oscars other than to be happy for wins from whom I think deserves it, if they are even nominated (this year Wagner Moura and <i>O Agente Secreto</i> would be my great celebrations), but it <i>is</i> in many ways a milestone.</fn>
+                        I feel a strange obligation to finish this year review, that I have been tinkering with for months, before them, otherwise I may never do it, and I'd certainly regret that. Third time doing this, and already last year I was worried about being able to keep this up, so of course that I thought reasonable to (1) continue to not start early and (2) decide to do even more things than I was doing before (like a whole top 100 for the last 25y). That the last two months some of the busiest I've ever had with work did not help, also. Well, one way or another let's get this done.</p>
 
-          - Lots of travel in Jun/Jul (as always...) so when I was finally home for an extended period in August I took the opportunity to
+                    <p>In the last months I found myself thinking a lot about two quotes from great films from last year:</p>
 
-          - Brutal September: 6 films, 0 in a cinema. Followed by raging October (of 16 films, 10 in a cinema, that fueled by many openings, such as One Battle, O Agente Secreto, The Mastermind, After the Hunt)
+                    <blockquote>
+                        <i>From here on in it's one battle after another.</i>
+                    </blockquote>
 
-          <p>Here
-            are <a target="_blank" href="https://hanielbarbosa.com/filminhos/?watched=2025&header=Films_watched_in_2025">all
-            the films I saw in 2025</a>.</p>
+                    <p>Feels like 2025 (but really, applies for any year). And:</p>
 
-          <a name="highlights"></a>
-          <h2>Highlights</h2>
+                    <blockquote>
+                        <i>La vida es como la espuma, por eso hay que darse como el mar.</i>.
+                    </blockquote>
 
-          <p style="font-size: small"><b>Note</b>: The cards below have the
-            date relative to that watch of the respective film, where I was then, and the rating
-            I gave to that watch<a class="ref" id="ref:fn5"
-                                   href="#fn:5"><sup>[5]</sup></a>. The circled arrows say that watch
-            was a rewatch. In grey there are tags for things like if I saw
-            the movie in a cinema, if I cried, if I dozed-off, etc.
-          </p>
+                    <p>Feels like life. The image of Maribel Verdú going into the see came unbidden to my mind costantly.</p>
 
-          <h3><span class="italic">Mononoke Hime</span> breaks through</h3>
+                    <p>2025 had me worried at times about whether I'd be able to keep up my movie watching the way I like it, i.e., going a lot to movie theaters and watching lots of films, both old and new. The former is crucial because seating in the dark in a movie theater, <i>locked in</i>, is one of my favorite things. The latter is what allows me to be able to have a representative view of newer films, to reduce the number of holes in my old-movie awareness, and to rewatch films, which is good both for films that I like, allowing a deeper experience, and to reevaluate films that did not hit quite right the first time.</p>
 
-          <br>
-          <center>
-              <span><img src="./images/2025/mononoke-hime.png"  class="singlecard"/></span>
-          </center>
-          <br>
+                    <p>It all ended well though. I saw lots of films (182 in total) and went 76 times to a movie theather, my most ever. The number of great films from 2025 was not that great, leading to a weaker "Best of" list (always under construction) than that of 2024, but that did not change the fact that I saw a lot of great cinema, ever renewing my passion for this absolute art form.<fn>More than once in 2025 I complained to other CS researchers about my worry that GenAI will hurt cinema. Because funders want to cut corners and mediocre art automatically generated will be pushed harder. <i>Canalhas</i>. We must not settle for this. But the encroachment persists. Note that this is not something about the technology improving or whatever. It is about thinking that it'll be interesting to remove humans from the process. It's the idiosyncratic human experience that makes cinema what it is. And as Ted Chiang says, <i>experience is algorithmically incompressible</i>. By the way, ironically, how to more easily add such footnotes to this review, and I do use a lot of footnotes, was just taught to me by Claude, magically, from a single prompt. Blessed by thy name. But I'm not looking forward to watch your movies, Claude.</fn></p>
 
-          I was just so happy to finally surrender to this film. And seeing it in IMAX, gloriously, with Joe Hisashi's score surging through that overpowering sound. It gave me life. This also topped an <a target="_blank" href="https://hanielbarbosa.com/filminhos/?watched=20250825..20250831&header=Films_seen_on_week_35">amazing week</a>, the most prolific of 2025, where I went to the cinema a bunch, saw old and new films, and just thoroughly enjoyed it.
 
-          <a name="misc"></a>
-          <h2>Miscellaneous</h2>
+                        <p>
+                            <a href="#journey">The Journey</a> &sdot;
+                            <a href="#highlights">Highlights</a> &sdot;
+                            <a href="#misc">Miscellaneous</a> &sdot;
+                            <a href="#bestold">Best Older Films First Watched in 2025</a> &sdot;
+                            <a href="#best">Best Newer Films First Watched in 2025</a>
+                        </p>
 
 
-          <ul>
+                        <a name="journey"></a>
+                        <h2>The Journey</h2>
 
-              <li>Regarding eclecticism country-wise, 2025 was a year where I saw a higher propertion
-                  of films from the US than in previous years, where I was improving things. Had a 67.03% rate, way up from the 59% and 58% of 2024 and 2023. That said, taking together films from the OK, the rate of Anglophone films stayed in the 70% it was last year.
 
-                  <p>But I did see films from more countries than last year (22, vs 20 of 2024, close to the 24 of 2023). It's a fun distribution: vast majority of US films, then a couple countries with about 10 films (or aroung 5% of the total): Brazil and Japan; a few countries with around 5 films: France, Iran, Hong Kong, the UK; then most others with 3, 2, 1. </p>
-              </li>
+                        <p>The overview of my movie watching in 2025 is summarized in the
+                            plot<fn>The bars equate the
+                            number of movies watched in the respective week, and I define a week as
+                            starting on Mondays.</fn> below. The
+                            green bars are for films watched in a cinema.  In the X axis by the
+                            names of the months are the number of watched films in that month,
+                            with the max and min months in bold.</p>
 
-              <li>27 2-films days; 4 3-films days. No day with more than 3. This was just a more balanced year in this regard.
+                        <br>
+                        <span><img src="./images/2025/2025.png"  class="img-responsive" style="width: 100%"/></span>
+                        <br>
 
-                  <p>2 cinema days: 2025-01-18, 2025-01-26, 2025-04-18, 2025-05-11, 2025-08-13, 2025-08-31, 2025-10-19, 2025-11-30, 2025-12-08, 2025-12-16. 10! Way more than the 6 in 2024 (which included a 3-cinema day of which there was none this year). This was the record, vs the 7 of 2023.</p>
+                        <p>I was on vacation until mid-January and away from Belo Horizonte, saw only one film while visiting my family in Sousa,<fn><i><a href="https://photos.app.goo.gl/GSnsX9xw1vmLJv8x8">Terra dos dinossauros!</a></i> But insanely hot in early January... I was really worried about how people are gonna still be living there 30 years from now, when instead of low 40°C it'll be like low 50°C that time of the year.</fn>
+                            so it was not until the Week 3 that movie-watching got going in earnest.<fn>
+                            It used to be that January was often a stronger month than average, but the more common thing now is for it to be average, with a mix of vacation, work travel, and paper deadlines eroding its potential.</fn>
+                            From Week 3 to Week 10, i.e., mid January to early March, I saw 39 films, for an average of 4.88 films per week, and 18 films seen in a cinema. I was cathing up with a lot of 2024 films I had not seen yet, taking another look at some I had already sene, catching up to some incredible 2023 ones, and enjoying Cine Humberto Mauro's series on summer movies.</p>
 
-                  <p>How many days with at least one film? How are the other years?</p>
 
-              </li>
 
-              <li>I saw 24 films while traveling in 2025, down from 32 in 2024. Similar to 2023, when I had seen 26. Way less films in planes, only 4, while last year it was 10, and in 2023 it was 9. In 2025 I flew the most in my life (took 30 flights! Spent again around 3 months away from home), so the trend continues that I've been doing more other things in fligths: listening to podcasts or audiobooks<a class="ref" id="ref:fn9" href="#fn:9"><sup>[9]</sup></a>, or just sleeping, really. The long international fligths, which offer the opportunity to see films, I've been taking generally as redeyes. Also: I'm writing this in a long flight when I could be watching a film!
-</li>
+                        - most films in a cinema: 76. Miraculously, 38 in each half of the year
+                        - 4 weeks with 4-cinema; 11 weeks with 3-cinema
+                        - in Oct-Dec, a four month period, in only one week I did not go to a cinema (that was a week with a long weekend in which we ran a bit from civilization; I still saw 5 films that week). A 1.98-cinema median for this period, where, excluding the cinema-less September, the average was 1.44. I did feel like going to the movies was a constant in these weks, something to count on, which was very nice.
 
-              <li> 2025 was the third year in a row where a had a weekly average above 3. The years are:
-                  <ul>
-                      <li> 2017: 3.80 weekly</li>
-                      <li> 2019: 3.38 weekly</li>
-                      <li> 2023: 3.91 weekly</li>
-                      <li> 2024: 3.61 weekly</li>
-                      <li> 2025: 3.49 weekly</li>
-                  </ul>
+                        - Lots of travel in Jun/Jul (as always...) so when I was finally home for an extended period in August I took the opportunity to
 
-                  <p>Which teels the following stories, separating my movie watching since I started seriously collecting data on my movie watching, in 2015:
-                      <ul>
-                          <li>2015-2016: 1.22. These were the <i>Dark Ages</i>. I started more seriously collecting data and seeking out films, but still did not watch them at a significantly higher rate than before, meaning I could not both fully grasp the cohort of new films from a given year nor have a suficcient background to better grasp them. Also: cinema-rate: 0.27 weekly, 14/year. </li>
-                          <li>2017-2019: 3.38. This was the <i>consolidation</i> phase. By watching a lot films, both older and newer, I could finally have a good sense of what I was going on and discover so, so, so many great things. Also: cinema-rate: 0.76 weekly, roughly 40/year. </li>
-                          <li>2020-2022: 2.71. This was the <i>pandemic</i> phase. The horror. I did what I could. Also: cinema-rate: 0.33 weekly, or roughly 24/year. And that was with a rate in 2022 akin to that of the consolidation phase (went 39 times); in 2020 and 2021 together I went 34 times, including a period from 2020-03-01 to 2021-07-19 where I went 2 times to a movie theater, both in Nov'20 when I risked it a bit but thought better afterwards</li>
-
-                  - 2023-2025: 3.67 (renaissance)
-              </ul>
-                  </p>
-
-              </li>
-
-            <li> Comprehensive lists:
-              <ul>
-                <li>Newer films (past three years) first watched: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=2023..&watched=2025&rewatch=no&header=Newer,_from_2023_on,_films_first_watched_in_2025">66</a> (previous year: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=2022..&watched=2024&rewatch=no&header=Newer,_from_2022_on,_films_first_watched_in_2024">63</a>)</li>
-
-                <li>Newer films (past three years) rewatched: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=2023..&watched=2025&rewatch=only&header=Newer,_from_2023_on,_films_rewatched_in_2025">11</a> (previous year: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=2022..&watched=2024&rewatch=only&header=Newer,_from_2022_on,_films_rewatched_in_2024">15</a>)</li>
-                <li>Older films (up to 2022) first watch: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=..2022&watched=2025&rewatch=no&header=Older,_until_2022,_films_first_watched_in_2025">52</a> (previous year: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=..2021&watched=2024&rewatch=no&header=Older,_until_2021,_films_first_watched_in_2024">69</a>)</li>
-
-                <li>Older films (up to 2022) rewatched: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=..2022&watched=2025&rewatch=only&header=Older,_until_2022,_films_rewatched_in_2025">52</a> (previous year: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=..2021&watched=2024&rewatch=only&header=Older,_until_2021,_films_rewatched_in_2024">42</a>)</li>
-              </ul>
-            </li>
-            <li>Also comprehensive lists but for this year cinema going:
-                <ul>
-                    <li>Newer films (past three years) first watched in a cinema: 37
-
-                    <li>Newer films (past three years) rewatched in a cinema: 10
-
-                    <li>Older films (up to 2021) first watch in a cinema: 9
-
-                    <li>Older films (up to 2021) rewatched in a cinema: 20
-
-                </ul>
-            </li>
-          </ul>
-
-          <a name="bestold"></a>
-          <h2>Best older (until 2022) films first watched in 2025</h2>
-
-          <br>
-          <center>
-            <span><img src ="./images/2025/2025bestOldFirstWatched.png"  class="img-responsive" style="width: 100%"/></span>
-          </center>
-          <br>
-
-          <p>I like compiling the list of my favorite first watches of older films because there is so much I'm still catching up with and it can be so cathartic to discover these films.</p>
-
-          <p>Atypically, this was a much weaker year in this regard. I did see significantly less older films
-              for the first time than in previous years (52 this year while 69 and 80 in 2024 and 2023), while
-              at the same time the number of older films rewatched went up significantly (52 vs 42 and 40), so
-              that might explain it.</p>
-
-          <p>Two films seared into my mind: <i>Todo Sobre Mi Madre</i> and <i>Y Tu Mamá También</i>.</p>
-
-          - Also: The revelatory Nicholson in <i>Chinatown</i> (OK, so that was what everybody talked about regarding his acting); the overwhelming melancholy of <i>The Boys from Fengkuei</i>.
-
-          Honorable: A Brigher Summer Day, Rachel Getting Married, Take Out, After Life, The Face of Another
-
-          <p>The list with the cards for the movies is available <a target="_blank" href="https://hanielbarbosa.com/filminhos/?list=2025bestOldFirstWatch">here</a>.</p>
-
-
-          <a name="best"></a>
-          <h2>Best newer (from 2023) films first watched in 2025</h2>
-
-          <p style="font-size: small"><b>Note</b>: In 2023 I tried to pretend I
-          could do here a "best of the year" list, but it's silly to do this if
-          you are not somebody who goes to movie festivals worldwide and/or has
-          access to advance copies of films (besides not caring to wait to see
-          the films in a movie theater if they are only gonna open in the
-          following year). As I'm not such a person, I only settle on a "best of
-          the year" list well into the first semester of the following
-          year... Of the twelve films in my <a target="_blank" href="https://hanielbarbosa.com/filminhos/?list=2023best">Best of 2023</a> list
-          three have changed through 2024, and it may change still since there
-          are 2023 films I still want to see. It's an evolving thing. For 2024,
-          given how thin the field has been so far, I expect (hope!) for an even
-          bigger change, so for the purposes of this review I'll do what makes
-          more sense: the "best <i>new films</i> first watched <i>in 2024</i>". It
-          is also more useful because then I can highlight films I'd have
-          potentially added to "best of" lists of previous years (like <i>Showing Up</i>, from 2022).</p>
-
-          <br>
-          <center>
-            <span><img src ="./images/2025/2025bestNewFirstWatched.png"  class="img-responsive" style="width: 100%"/></span>
-          </center>
-          <br>
-
-          <p>Weak. Significantly below 2024, which was already a less strong year. I lived
-              for the 2023 films, so maybe that skewed my expectations too much. 2022 in 2021 would probably have been comparable (TODO: check the watched from last three years rather than just the films of the year). 2020 was all COVID.</p>
-
-          <p>The list with the cards for the movies is available <a target="_blank" href="https://hanielbarbosa.com/filminhos/?list=2025bestNewFirstWatch">here</a>. Below is the list in decreasing order with a few words. This year I'm including honorable mentions to highlight more films.</p>
-
-          <p>Honorable mentions: Mickey 17, Bugonia, Eephus, Final Reckoning, It Was Just an Accident,
-              Baby, O Último Azul, A Normal Family, Cloud, Wake Up Dead Man </p>
-
-          <ol reversed>
-              <li><b>Girls Will Be Girls (2024, IN)</b></li>
-              <li><b>Wallace & Gromit: Vengeance Most Fowl (2024, US)</b></li>
-              <li><b>Havoc (2025, GB)</b></li>
-              <li><b>Warfare (2025, US)</b></li>
-              <li><b>No Other Land (2024, PS)</b></li>
-              <li><b>Chime (2024, JP)</b></li>
-              <li><b>The Phoenician Scheme (2025, US)</b></li>
-              <li><b>Sinners (2025, US)</b></li>
-              <li><b>One Battle After Another (2025, US)</b></li>
-              <li><b>O Agente Secreto (2025, BR)</b></li>
-              <li><b>in water (2023, KR)</b></li>
-              <li><b>28 Years Later (2025, US)</b></li>
-              <li><b>Anora (2024, US)</b></li>
-              <li><b>Die My Love (2025, US)</b></li>
-              <li><b>Les chambres rouges (2023, CA)</b></li>
-          </ol>
-
-          <!-- <a name="best-scenes"></a>
-               <h2>Best scenes of 2025</h2>
-
-               <p style="font-size: small"><b>Note</b>: As of .... Unfortunately I don't have a good interface yet to link the movies to a scene description in a list I can link to keep up to date, so I'll just update directly here. Meh. </p>
-
-               <ul>
-               <li>Sinners: Sammie plays in the juke joint AKA "apocalyptically metaphysical conflagration" </li>
-               <li>Havoc: truck chase</li>
-               </ul>
-          -->
-          <a name="best-scenes"></a>
-          <h2>Top 100 of the last 25 years (2000-2024)</h2>
-
-          <p>Inspired my the New York Times top 100 films of the 21st century (nevermind including 2000
-              as if it were part of this century) I felt like doing a top 100 myself as well for the first
-              25 years in the 2000s.<p>
-
-              <p>This was a rather painful process, as it turns out, which I did mostly
-                  in early July of 2025. Selecting some 120 films I could do quickly (from films I have rated
-                  at least an 8 since 2015 and also unrated films which I held in high steem). Getting down
-                  to 100 was tough though. One thing that made it more complicated is not only the unrated films
-                  that I may want to keep that were harder to compare with the rated ones but also the fact that
-                  I am suspicious of my own ranking. Ratings from 2015 and 2016 are hard to trust, I was only just
-                  beginning to watch more films and could be easily impressed, and from 2017 to 2019 while I
-                  feel like the ratings got stable, inconsistencies here and there were probably still happening.<p>
-
-                  <p>I thought about rewatching a bunch of unrated films that either I considered could shot up to the top 10
-                      or top 20 (which I was considering of being more particular of the films to get into it, leaving
-                      all others unordered) or that I might want to include in the top 100<a class="ref" id="ref:fn50"
-                                                                                             href="#fn:50"><sup>[50]</sup></a>.
-                      I never got to do that really and only a couple things changed from the initial list.</p>
-
-                  <p>So here is the top 100 and, to avoid me dragging this on forever, a top 25 in a loose order only of films I
-                      rated and that I'm only truly confident about the top 2. In the top 100 after the first 25 all others are
-                  in order of year of release / alphabetical.</p>
-
-                  <br>
-                  <center>
-                      <span><img src ="./images/2025/2000_2024-top25.png"  class="img-responsive" style="width: 100%"/></span>
-                  </center>
-                  <br>
-
-
-                  <p>Looking at the distribution it is surprising to me that it was so even! Only 2005-2009 and
-                      2015-2019 differ more, being a bit under- and over-represented, respectively.
-
-                  </p>
-
-                  <center>
-                  <table style="font-family: monospace;">
-                      <tr><th></th><th style="padding: 0px 0px 0px 16px">Top25</th><th style="padding: 0px 0px 0px 16px">Top100</th></tr>
-                      <tr><td>2000–2004</td><td align="right">9</td><td align="right">20</td></tr>
-                      <tr><td>2005–2009</td><td align="right">3</td><td align="right">15</td></tr>
-                      <tr><td>2010–2014</td><td align="right">3</td><td align="right">19</td></tr>
-                      <tr><td>2015–2019</td><td align="right">7</td><td align="right">26</td></tr>
-                      <tr><td>2020–2024</td><td align="right">3</td><td align="right">20</td></tr>
-                  </table>
-                  </center>
-
-          </p>
-          <hr>
-
-          <p>And that's it. As I feared last year, it was harder for me to put
-              this together than in 2023 (January is almost over), so for next year
-              I will start before January... but anyway, again I quite liked doing
-              it and I am glad I have it written so I can better remember in the
-              future how was my 2024 in <i>filminhos</i>. For 2025, I hope there will be many great films
-              (more than in 2024... which I think is gonna be the case given all the
-              things I'm already hyped for) and that I'll continue to be able to
-              manage this lovely hobby!</p>
+                        - Brutal September: 6 films, 0 in a cinema. Followed by raging October (of 16 films, 10 in a cinema, that fueled by many openings, such as One Battle, O Agente Secreto, The Mastermind, After the Hunt)
 
+                        <p>Here
+                            are <a target="_blank" href="https://hanielbarbosa.com/filminhos/?watched=2025&header=Films_watched_in_2025">all
+                            the films I saw in 2025</a>.</p>
+
+                        <a name="highlights"></a>
+                        <h2>Highlights</h2>
+
+                        <p style="font-size: small"><b>Note</b>: The cards below have the
+                            date relative to that watch of the respective film, where I was then, and the rating
+                            I gave to that watch<a class="ref" id="ref:fn5"
+                                                   href="#fn:5"><sup>[5]</sup></a>. The circled arrows say that watch
+                            was a rewatch. In grey there are tags for things like if I saw
+                            the movie in a cinema, if I cried, if I dozed-off, etc.
+                        </p>
+
+                        <h3>Sean Baker extravaganza</h3>
+
+                        three films, finally Anora, lead up to his historical oscars bonanza
+
+                        <h3>Summer movies!</h3>
+
+                        Espuma. Brighter Summer Day.
+
+                        <h3>A scream</h3>
+
+                        Les chambres rouges scene.
+
+                        <h3><span class="italic">Mononoke Hime</span> breaks through</h3>
+
+                        <br>
+                        <center>
+                            <span><img src="./images/2025/mononoke-hime.png"  class="singlecard"/></span>
+                        </center>
+                        <br>
+
+                        I was just so happy to finally surrender to this film. And seeing it in IMAX, gloriously, with Joe Hisashi's score surging through that overpowering sound. It gave me life. This also topped an <a target="_blank" href="https://hanielbarbosa.com/filminhos/?watched=20250825..20250831&header=Films_seen_on_week_35">amazing week</a>, the most prolific of 2025, where I went to the cinema a bunch, saw old and new films, and just thoroughly enjoyed it.
+
+                        <a name="misc"></a>
+                        <h2>Miscellaneous</h2>
+
+
+                        <ul>
+
+                            <li>Regarding eclecticism country-wise, 2025 was a year where I saw a higher propertion
+                                of films from the US than in previous years, where I was improving things. Had a 67.03% rate, way up from the 59% and 58% of 2024 and 2023. That said, taking together films from the OK, the rate of Anglophone films stayed in the 70% it was last year.
+
+                                <p>But I did see films from more countries than last year (22, vs 20 of 2024, close to the 24 of 2023). It's a fun distribution: vast majority of US films, then a couple countries with about 10 films (or aroung 5% of the total): Brazil and Japan; a few countries with around 5 films: France, Iran, Hong Kong, the UK; then most others with 3, 2, 1. </p>
+                            </li>
+
+                            <li>27 2-films days; 4 3-films days. No day with more than 3. This was just a more balanced year in this regard.
+
+                                <p>2 cinema days: 2025-01-18, 2025-01-26, 2025-04-18, 2025-05-11, 2025-08-13, 2025-08-31, 2025-10-19, 2025-11-30, 2025-12-08, 2025-12-16. 10! Way more than the 6 in 2024 (which included a 3-cinema day of which there was none this year). This was the record, vs the 7 of 2023.</p>
+
+                                <p>How many days with at least one film? How are the other years?</p>
+
+                            </li>
+
+                            <li>I saw 24 films while traveling in 2025, down from 32 in 2024. Similar to 2023, when I had seen 26. Way less films in planes, only 4, while last year it was 10, and in 2023 it was 9. In 2025 I flew the most in my life (took 30 flights! Spent again around 3 months away from home), so the trend continues that I've been doing more other things in fligths: listening to podcasts or audiobooks,<fn>
+                                Started audiobooks in 2025 and went into a rampage with <i>Dungeon Crawler Carl</i> where I listened to all the six books in a span of X months, a good number of those hours in planes (this year most of my travel was between July and October).</fn>
+                                or just sleeping, really. The long international fligths, which offer the opportunity to see films, I've been taking generally as redeyes. Also: I'm writing this in a long flight when I could be watching a film!
+                            </li>
+
+                            <li> 2025 was the third year in a row where a had a weekly average above 3. The years are:
+                                <ul>
+                                    <li> 2017: 3.80 weekly</li>
+                                    <li> 2019: 3.38 weekly</li>
+                                    <li> 2023: 3.91 weekly</li>
+                                    <li> 2024: 3.61 weekly</li>
+                                    <li> 2025: 3.49 weekly</li>
+                                </ul>
+
+                                <p>Which teels the following stories, separating my movie watching since I started seriously collecting data on my movie watching, in 2015:
+                                    <ul>
+                                        <li>2015-2016: 1.22. These were the <i>Dark Ages</i>. I started more seriously collecting data and seeking out films, but still did not watch them at a significantly higher rate than before, meaning I could not both fully grasp the cohort of new films from a given year nor have a suficcient background to better grasp them. Also: cinema-rate: 0.27 weekly, 14/year. </li>
+                                        <li>2017-2019: 3.38. This was the <i>consolidation</i> phase. By watching a lot films, both older and newer, I could finally have a good sense of what I was going on and discover so, so, so many great things. Also: cinema-rate: 0.76 weekly, roughly 40/year. </li>
+                                        <li>2020-2022: 2.71. This was the <i>pandemic</i> phase. The horror. I did what I could. Also: cinema-rate: 0.33 weekly, or roughly 24/year. And that was with a rate in 2022 akin to that of the consolidation phase (went 39 times); in 2020 and 2021 together I went 34 times, including a period from 2020-03-01 to 2021-07-19 where I went 2 times to a movie theater, both in Nov'20 when I risked it a bit but thought better afterwards</li>
+
+                                        - 2023-2025: 3.67 (renaissance)
+                                    </ul>
+                                </p>
+
+                            </li>
+
+                            <li> Comprehensive lists:
+                                <ul>
+                                    <li>Newer films (past three years) first watched: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=2023..&watched=2025&rewatch=no&header=Newer,_from_2023_on,_films_first_watched_in_2025">66</a> (previous year: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=2022..&watched=2024&rewatch=no&header=Newer,_from_2022_on,_films_first_watched_in_2024">63</a>)</li>
+
+                                    <li>Newer films (past three years) rewatched: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=2023..&watched=2025&rewatch=only&header=Newer,_from_2023_on,_films_rewatched_in_2025">11</a> (previous year: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=2022..&watched=2024&rewatch=only&header=Newer,_from_2022_on,_films_rewatched_in_2024">15</a>)</li>
+                                    <li>Older films (up to 2022) first watch: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=..2022&watched=2025&rewatch=no&header=Older,_until_2022,_films_first_watched_in_2025">52</a> (previous year: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=..2021&watched=2024&rewatch=no&header=Older,_until_2021,_films_first_watched_in_2024">69</a>)</li>
+
+                                    <li>Older films (up to 2022) rewatched: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=..2022&watched=2025&rewatch=only&header=Older,_until_2022,_films_rewatched_in_2025">52</a> (previous year: <a target="_blank" href="https://hanielbarbosa.com/filminhos/?year=..2021&watched=2024&rewatch=only&header=Older,_until_2021,_films_rewatched_in_2024">42</a>)</li>
+                                </ul>
+                            </li>
+                            <li>Also comprehensive lists but for this year cinema going:
+                                <ul>
+                                    <li>Newer films (past three years) first watched in a cinema: 37
+
+                                        <li>Newer films (past three years) rewatched in a cinema: 10
+
+                                            <li>Older films (up to 2021) first watch in a cinema: 9
+
+                                                <li>Older films (up to 2021) rewatched in a cinema: 20
+
+                                </ul>
+                                                </li>
+                        </ul>
+
+                        <a name="bestold"></a>
+                        <h2>Best older (until 2022) films first watched in 2025</h2>
+
+                        <br>
+                        <center>
+                            <span><img src ="./images/2025/2025bestOldFirstWatched.png"  class="img-responsive" style="width: 100%"/></span>
+                        </center>
+                        <br>
+
+                        <p>I like compiling the list of my favorite first watches of older films because there is so much I'm still catching up with and it can be so cathartic to discover these films.</p>
+
+                        <p>Atypically, this was a much weaker year in this regard. I did see significantly less older films
+                            for the first time than in previous years (52 this year while 69 and 80 in 2024 and 2023), while
+                            at the same time the number of older films rewatched went up significantly (52 vs 42 and 40), so
+                            that might explain it.</p>
+
+                        <p>Two films seared into my mind: <i>Todo Sobre Mi Madre</i> and <i>Y Tu Mamá También</i>.</p>
+
+                        - Also: The revelatory Nicholson in <i>Chinatown</i> (OK, so that was what everybody talked about regarding his acting); the overwhelming melancholy of <i>The Boys from Fengkuei</i>.
+
+                        Honorable: A Brigher Summer Day, Rachel Getting Married, Take Out, After Life, The Face of Another
+
+                        <p>The list with the cards for the movies is available <a target="_blank" href="https://hanielbarbosa.com/filminhos/?list=2025bestOldFirstWatch">here</a>.</p>
+
+
+                        <a name="best"></a>
+                        <h2>Best newer (from 2023) films first watched in 2025</h2>
+
+                        <p style="font-size: small"><b>Note</b>: In 2023 I tried to pretend I
+                            could do here a "best of the year" list, but it's silly to do this if
+                            you are not somebody who goes to movie festivals worldwide and/or has
+                            access to advance copies of films (besides not caring to wait to see
+                            the films in a movie theater if they are only gonna open in the
+                            following year). As I'm not such a person, I only settle on a "best of
+                            the year" list well into the first semester of the following
+                            year... Of the twelve films in my <a target="_blank" href="https://hanielbarbosa.com/filminhos/?list=2023best">Best of 2023</a> list
+                            three have changed through 2024, and it may change still since there
+                            are 2023 films I still want to see. It's an evolving thing. For 2024,
+                            given how thin the field has been so far, I expect (hope!) for an even
+                            bigger change, so for the purposes of this review I'll do what makes
+                            more sense: the "best <i>new films</i> first watched <i>in 2024</i>". It
+                            is also more useful because then I can highlight films I'd have
+                            potentially added to "best of" lists of previous years (like <i>Showing Up</i>, from 2022).</p>
+
+                        <br>
+                        <center>
+                            <span><img src ="./images/2025/2025bestNewFirstWatched.png"  class="img-responsive" style="width: 100%"/></span>
+                        </center>
+                        <br>
+
+                        <p>Weak. Significantly below 2024, which was already a less strong year. I lived
+                            for the 2023 films, so maybe that skewed my expectations too much. 2022 in 2021 would probably have been comparable (TODO: check the watched from last three years rather than just the films of the year). 2020 was all COVID.</p>
+
+                        <p>The list with the cards for the movies is available <a target="_blank" href="https://hanielbarbosa.com/filminhos/?list=2025bestNewFirstWatch">here</a>. Below is the list in decreasing order with a few words. This year I'm including honorable mentions to highlight more films.</p>
+
+                        <p>Honorable mentions: Mickey 17, Bugonia, Eephus, Final Reckoning, It Was Just an Accident,
+                            Baby, O Último Azul, A Normal Family, Cloud, Wake Up Dead Man </p>
+
+                        <ol reversed>
+                            <li><b>Girls Will Be Girls (2024, IN)</b></li>
+                            <li><b>Wallace & Gromit: Vengeance Most Fowl (2024, US)</b></li>
+                            <li><b>Havoc (2025, GB)</b></li>
+                            <li><b>Warfare (2025, US)</b></li>
+                            <li><b>No Other Land (2024, PS)</b></li>
+                            <li><b>Chime (2024, JP)</b></li>
+                            <li><b>The Phoenician Scheme (2025, US)</b></li>
+                            <li><b>Sinners (2025, US)</b></li>
+                            <li><b>One Battle After Another (2025, US)</b></li>
+                            <li><b>O Agente Secreto (2025, BR)</b></li>
+                            <li><b>in water (2023, KR)</b></li>
+                            <li><b>28 Years Later (2025, US)</b></li>
+                            <li><b>Anora (2024, US)</b></li>
+                            <li><b>Die My Love (2025, US)</b></li>
+                            <li><b>Les chambres rouges (2023, CA)</b></li>
+                        </ol>
+
+                        <!-- <a name="best-scenes"></a>
+                             <h2>Best scenes of 2025</h2>
+
+                             <p style="font-size: small"><b>Note</b>: As of .... Unfortunately I don't have a good interface yet to link the movies to a scene description in a list I can link to keep up to date, so I'll just update directly here. Meh. </p>
+
+                             <ul>
+                             <li>Sinners: Sammie plays in the juke joint AKA "apocalyptically metaphysical conflagration" </li>
+                             <li>Havoc: truck chase</li>
+                             </ul>
+                        -->
+                        <a name="best-scenes"></a>
+                        <h2>Top 100 of the last 25 years (2000-2024)</h2>
+
+                        <p>Inspired my the New York Times top 100 films of the 21st century (nevermind including 2000
+                            as if it were part of this century) I felt like doing a top 100 myself as well for the first
+                            25 years in the 2000s.<p>
+
+                            <p>This was a rather painful process, as it turns out, which I did mostly
+                                in early July of 2025. Selecting some 120 films I could do quickly (from films I have rated
+                                at least an 8 since 2015 and also unrated films which I held in high steem). Getting down
+                                to 100 was tough though. One thing that made it more complicated is not only the unrated films
+                                that I may want to keep that were harder to compare with the rated ones but also the fact that
+                                I am suspicious of my own ranking. Ratings from 2015 and 2016 are hard to trust, I was only just
+                                beginning to watch more films and could be easily impressed, and from 2017 to 2019 while I
+                                feel like the ratings got stable, inconsistencies here and there were probably still happening.<p>
+
+                                <p>I thought about rewatching a bunch of unrated films that either I considered could shot up to the top 10
+                                    or top 20 (which I was considering of being more particular of the films to get into it, leaving
+                                    all others unordered) or that I might want to include in the top 100.<fn>
+                                    I thought that maybe <i>Black Swan</i>, <i>Dogville</i>, <i>Tree of Life</i>, <i>Amour</i>, <i>Her</i> or <i>Brokeback Mountain</i> were films that I might regard more strongly now. Of those only <i>Brokeback Mountain</i> I had seen since 2015 but all others were films that absolutely shattered me the first time around. Some of the films that had not made it to the top 100 that I thought maybe rewatching could change things were <i>Melancholia</i>, <i>Boyhood</i>, and <i>Eternal Sunshine of the Spotless Mind</i>. In the end I ended up only getting to see <i>Black Swan</i>, which actually made me <i>remove</i> it from the top 100.
+
+                                    I never got to do that really and only a couple things changed from the initial list.</p>
+
+                                <p>So here is the top 100 and, to avoid me dragging this on forever, a top 25 in a loose order only of films I
+                                    rated and that I'm only truly confident about the top 2. In the top 100 after the first 25 all others are
+                                    in order of year of release / alphabetical.</p>
+
+                                <br>
+                                <center>
+                                    <span><img src ="./images/2025/2000_2024-top25.png"  class="img-responsive" style="width: 100%"/></span>
+                                </center>
+                                <br>
+
+
+                                <p>Looking at the distribution it is surprising to me that it was so even! Only 2005-2009 and
+                                    2015-2019 differ more, being a bit under- and over-represented, respectively.
+
+                                </p>
+
+                                <center>
+                                    <table style="font-family: monospace;">
+                                        <tr><th></th><th style="padding: 0px 0px 0px 16px">Top25</th><th style="padding: 0px 0px 0px 16px">Top100</th></tr>
+                                        <tr><td>2000–2004</td><td align="right">9</td><td align="right">20</td></tr>
+                                        <tr><td>2005–2009</td><td align="right">3</td><td align="right">15</td></tr>
+                                        <tr><td>2010–2014</td><td align="right">3</td><td align="right">19</td></tr>
+                                        <tr><td>2015–2019</td><td align="right">7</td><td align="right">26</td></tr>
+                                        <tr><td>2020–2024</td><td align="right">3</td><td align="right">20</td></tr>
+                                    </table>
+                                </center>
+
+                                </p>
+                                <hr>
+
+                                <p>And that's it. As I feared last year, it was harder for me to put
+                                    this together than in 2023 (January is almost over), so for next year
+                                    I will start before January... but anyway, again I quite liked doing
+                                    it and I am glad I have it written so I can better remember in the
+                                    future how was my 2024 in <i>filminhos</i>. For 2025, I hope there will be many great films
+                                    (more than in 2024... which I think is gonna be the case given all the
+                                    things I'm already hyped for) and that I'll continue to be able to
+                                    manage this lovely hobby!</p>
+
+                </div>
+            </div>
+            <br>
+            <hr>
+            <div id="footnotes"></div>
+
+            <br>
+            <br>
+            <br>
         </div>
-      </div>
-      <br>
-      <hr>
-      0.  <a class="fn" id="fn:0" href="#ref:fn0">&uarr;</a> The bars equate the
-      number of movies watched in the respective week, and I define a week as
-      starting on Mondays. Week 1 of 2024 is the week starting on the first day
-      of 2024 that is a Monday, which by coincidence was exactly
-      2024-01-01. Likewise, the last week in the plot includes first week of
-      2025, since there are 2024 days running into the first week of 2025. But
-      only the films watched in the 2024 as part of that week are represented in
-      the plot (which in this case were none, as in 2024-12-30 and 2024-12-31 I
-      was in the isolated beach of <a href="https://photos.app.goo.gl/YiXSJjyLC6GK3RHx8">Galos</a> and not really thinking about cinema).
-      <br>
-      9. <a class="fn" id="fn:9" href="#ref:fn9">&uarr;</a> Started audiobooks in 2025 and went into a rampage with <i>Dungeon Crawler Carl</i> where I listened to all the six books in a span of X months, a good number of those hours in planes (this year most of my travel was between July and October).
-      <br>
-      50. <a class="fn" id="fn:50" href="#ref:fn50">&uarr;</a> I thought that maybe <i>Black Swan</i>, <i>Dogville</i>,
-      <i>Tree of Life</i>, <i>Amour</i>, <i>Her</i> or <i>Brokeback Mountain</i> were films that I might regard more
-      strongly now. Of those only <i>Brokeback Mountain</i> I had seen since 2015 but all others were films that absolutely
-      shattered me the first time around. Some of the films that had not made it to the top 100 that I thought maybe rewatching
-      could change things were <i>Melancholia</i>, <i>Boyhood</i>, and <i>Eternal Sunshine of the Spotless Mind</i>. In the end
-      I ended up only getting to see <i>Black Swan</i>, which actually made me <i>remove</i> it from the top 100.
-      <br>
 
-      <br>
-      <br>
-      <br>
-    </div>
-
-  </body>
+    </body>
 </html>

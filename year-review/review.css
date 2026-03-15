@@ -163,6 +163,9 @@ a.fn {
     .doublecard {
         width: 50%
     }
+    .quadruplecard {
+        width: 40%
+    }
 }
 
 #footnotes ~ p sup a,

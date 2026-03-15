@@ -172,3 +172,9 @@ a.fn {
 sup a {
   font-size: 0.85em;
 }
+
+.tag {
+  color: black;
+  font-size: .9em;
+  font-weight: bold;
+}

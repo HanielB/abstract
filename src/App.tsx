@@ -422,6 +422,7 @@ function App() {
          <div className="header">
            <h2 className="header__title">Year in review</h2>
            <div className="box-link">
+             <a href="year-review/2025.html">2025</a>
              <a href="year-review/2024.html">2024</a>
              <a href="year-review/2023.html">2023</a>
            </div>

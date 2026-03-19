@@ -295,6 +295,11 @@ function App() {
           let idsArray = ids.split(";");
           let idsSet = new Set(idsArray.map((id) => Number(id)));
 
+          if (header)
+          {
+            setListName(header.replaceAll("_", " "));
+          }
+
           getMoviesFromIds(loadedSrc, idsSet)
             .then((movies) => {
               console.log("Got these many movies: ", movies.length)

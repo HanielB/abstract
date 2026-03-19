@@ -214,6 +214,21 @@ export const Catalog = () => {
                 <a href={movie.lbFilmLink}>
                   {movie.title}
                 </a>
+                {movie.tmdbId && (
+                  <span className="tmdb-id-tooltip">
+                    ID: {movie.tmdbId}
+                    <button
+                      className="copy-id-btn"
+                      title="Copy TMDB ID"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigator.clipboard.writeText(movie.tmdbId!.toString());
+                      }}
+                    >
+                      📋
+                    </button>
+                  </span>
+                )}
               </span>
               <span className="year">
                 ({movie.year}{movie.country? ", " + movie.country.toUpperCase() : ""})

@@ -432,7 +432,7 @@ export const Search = () => {
               <label>Cards per row</label>
               <input
                 type="range"
-                min="2"
+                min="1"
                 max="10"
                 step="1"
                 value={cardsPerRow}

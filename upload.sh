@@ -21,7 +21,7 @@ echo "Uploading lists..."
 ./index.py lists/
 rsync --exclude='.git/' --exclude='node-modules' --recursive --times --compress --progress lists hostinger:~/public_html/filminhos/ &> /dev/null
 echo "Uploading directors..."
-./directors.py
+python3 directors.py
 rsync --exclude='.git/' --exclude='node-modules' --recursive --times --compress --progress directors hostinger:~/public_html/filminhos/ &> /dev/null
 # echo "Uploading yearly review..."
 # rsync --exclude='.git/' --recursive --times --compress --progress year-review hostinger:~/public_html/filminhos/ &> /dev/null

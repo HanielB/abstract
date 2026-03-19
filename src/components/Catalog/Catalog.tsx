@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from "react";
+import React, { useContext, useReducer, useState, useRef, useEffect, useCallback } from "react";
 import "./Catalog.css";
 import imgPlaceholder from "./movie_placeholder.png";
 import viewsImg from "./watched.png";
@@ -10,10 +10,27 @@ import { Movie, getMovies } from "../../services/movies.service";
 
 
 export const Catalog = () => {
-  const { master, movies, start, loading, selected,
+  const { master, movies, start, loading, selected, cardsPerRow,
           setLoading, updateMovies, setSelected, setListName } =
         useContext(MoviesContext);
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  const updateContainerWidth = useCallback(() => {
+    if (containerRef.current) {
+      setContainerWidth(containerRef.current.offsetWidth);
+    }
+  }, []);
+
+  useEffect(() => {
+    updateContainerWidth();
+    window.addEventListener("resize", updateContainerWidth);
+    return () => window.removeEventListener("resize", updateContainerWidth);
+  }, [updateContainerWidth]);
+
+  const cardWidthPercent = 100 / cardsPerRow;
+  const cardWidth = containerWidth > 0 ? Math.floor(containerWidth / cardsPerRow) : 460;
 
   // remove all selected cards
   const handleRemoval = () => {
@@ -169,7 +186,7 @@ export const Catalog = () => {
   const collection = collectionCheck? collectionCheck.checked : false;
 
   return (
-    <div className="catalogContainer" id="catalog">
+    <div className="catalogContainer" id="catalog" ref={containerRef} style={{ "--card-width": `${cardWidthPercent}%`, "--card-scale": cardWidth / 460 } as React.CSSProperties}>
       {movies.map((movie) => (
         <div className={"catalog__item" + (selected.includes(movie.id) ? "__selected" : "")}
              tabIndex={0}

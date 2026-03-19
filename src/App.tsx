@@ -130,6 +130,10 @@ function App() {
   const [master, setMaster] = useState<Object[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [listName, setListName] = useState("");
+  const [cardsPerRow, setCardsPerRow] = useState(() => {
+    const saved = localStorage.getItem("cardsPerRow");
+    return saved ? parseInt(saved, 10) : 3;
+  });
   const [searchTitle, setSearchTitle] = useState("");
   const [searchYear, setSearchYear] = useState("");
   const [searchRuntime, setSearchRuntime] = useState("");
@@ -410,7 +414,7 @@ function App() {
   return (
     <MoviesContext.Provider value={
     {master, movies, selected, updateMovies: setMovies,
-     start, loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setStart: setStart, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
+     start, loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, cardsPerRow, setCardsPerRow, setStart: setStart, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
       <div className="App">
         <div className="header">
           <h1 className="header__title">

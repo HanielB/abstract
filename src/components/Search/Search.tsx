@@ -21,7 +21,7 @@ export const Search = () => {
   const [rewatch, setRewatch] = useState("");
   const [available, setAvailable] = useState("");
   const [file, setFile] = useState("");
-  const {master, movies, updateMovies, setStart, setLoading, setListName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
+  const {master, movies, updateMovies, setStart, setLoading, setListName, cardsPerRow, setCardsPerRow, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
 
 
   if (searchTitle && !title)
@@ -428,6 +428,27 @@ export const Search = () => {
                 </div>
               </div>
             </fieldset>
+            <div className="card-size-slider">
+              <label>Cards per row</label>
+              <input
+                type="range"
+                min="2"
+                max="10"
+                step="1"
+                value={cardsPerRow}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value, 10);
+                  setCardsPerRow(val);
+                  localStorage.setItem("cardsPerRow", val.toString());
+                }}
+              />
+              <label className="count count-mobile">
+                {movies.length + " films"}
+              </label>
+            </div>
+            <label className="count count-desktop">
+              {movies.length + " films"}
+            </label>
           </div>
         </div>
         <div className="form_buttons_search">
@@ -436,9 +457,6 @@ export const Search = () => {
           <label className="search__button">
             <input type="file" onChange={(e) => handleUpload(e)}/>
             UPLOAD
-          </label>
-          <label className="count">
-            {movies.length}
           </label>
         </div>
       </form>

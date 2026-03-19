@@ -56,6 +56,11 @@ a:active {
     line-height: 1;
 }
 
+.catalog__item,
+.catalog__item__selected {
+    box-sizing: border-box;
+}
+
 .catalogContainer {
     display: flex;
     flex-wrap: wrap;
@@ -64,7 +69,7 @@ a:active {
     width: 100%;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    justify-content: space-around;
+    justify-content: center;
 }
 
 /* for phone */
@@ -74,8 +79,7 @@ a:active {
         display: flex;
         flex-flow: row nowrap;
         border: 2px solid transparent;
-        /* width: 22%; */
-        width: 380px;
+        width: var(--card-width, 380px);
         position: relative;
         transition: all ease-in-out 0.3s;
         cursor: pointer;
@@ -85,8 +89,7 @@ a:active {
         display: flex;
         flex-flow: row nowrap;
         border: 2px solid red;
-        /* width: 22%; */
-        width: 380px;
+        width: var(--card-width, 380px);
         position: relative;
         transition: all ease-in-out 0.3s;
         cursor: pointer;
@@ -204,8 +207,7 @@ a:active {
         display: flex;
         flex-flow: row nowrap;
         border: 3px solid transparent;
-        /* width: 22%; */
-        width: 460px;
+        width: var(--card-width, 460px);
         position: relative;
         transition: all ease-in-out 0.3s;
         cursor: pointer;
@@ -215,8 +217,7 @@ a:active {
         display: flex;
         flex-flow: row nowrap;
         border: 3px solid red;
-        /* width: 22%; */
-        width: 460px;
+        width: var(--card-width, 460px);
         position: relative;
         transition: all ease-in-out 0.3s;
         cursor: pointer;
@@ -343,6 +344,7 @@ a:active {
     padding: 1rem;
     background-color: #f5cb5c;
     color: #242423;
+    zoom: var(--card-scale, 1);
 }
 
 

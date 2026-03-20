@@ -132,7 +132,7 @@ function App() {
   const [listName, setListName] = useState("");
   const [cardsPerRow, setCardsPerRow] = useState(() => {
     const saved = localStorage.getItem("cardsPerRow");
-    return saved ? parseInt(saved, 10) : 3;
+    return saved ? parseInt(saved, 10) : 4;
   });
   const [searchTitle, setSearchTitle] = useState("");
   const [searchYear, setSearchYear] = useState("");
@@ -422,7 +422,22 @@ function App() {
           </h1>
           <div className="header__search">
             {
-              listName === "" ? <Search></Search> : <span></span>
+              listName === "" ? <Search></Search> :
+              <div className="header-slider">
+                <label>Cards per row</label>
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  step="1"
+                  value={cardsPerRow}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value, 10);
+                    setCardsPerRow(val);
+                    localStorage.setItem("cardsPerRow", val.toString());
+                  }}
+                />
+              </div>
             }
           </div>
         </div>

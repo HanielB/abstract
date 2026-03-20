@@ -6,6 +6,21 @@
   padding: 1rem;
   color: #242423;
   background-color: #f5cc5b;
+  position: relative;
+}
+
+.header-slider {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.header-slider input[type="range"] {
+  width: 120px;
 }
 
 .header__title {

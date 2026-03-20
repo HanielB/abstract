@@ -35,9 +35,6 @@
 .search__button:hover {
   opacity: 0.8
 }
-input[type="file"] {
-    display: none;
-}
 
 .form {
     display: flex;

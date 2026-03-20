@@ -20,7 +20,7 @@ export const Search = () => {
   const [sorting, setSorting] = useState("");
   const [rewatch, setRewatch] = useState("");
   const [available, setAvailable] = useState("");
-  const [file, setFile] = useState("");
+
   const {master, movies, updateMovies, setStart, setLoading, setListName, cardsPerRow, setCardsPerRow, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
 
 
@@ -93,41 +93,11 @@ export const Search = () => {
     watchlistCheck.checked = true
   }
 
-  const exportToJsonFile = () => {
-    let title = prompt("Please enter list name", "");
-    let onlyIds = prompt("Only ids?", "Yes");
-    var exportOjb = {"title": title? title : "", "movies": onlyIds === "Yes"? movies.map((movie) => movie.tmdbId) : movies }
-    let dataStr = JSON.stringify(exportOjb);
-    let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-
-    let exportFileDefaultName = 'data.json';
-
-    let linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-  }
-
-  const handleUpload = (e : React.ChangeEvent<HTMLInputElement>) => {
-    var files = e.target.files;
-
-    // FileReader support
-    if (FileReader && files && files.length) {
-        var fr = new FileReader();
-        fr.onload = function () {
-          if (!fr.result)
-          {
-            console.log("File is null");
-            return;
-          }
-          var resList = JSON.parse(fr.result as string);
-          setStart(false);
-          setListName(resList.title);
-          let idsSet = new Set<Number>(resList.movies.map((id) => Number(id)));
-          getMoviesFromIds(master, idsSet).then((movies) => {updateMovies(movies)})
-        }
-        fr.readAsText(files[0]);
-    }
+  const copyIdsUrl = () => {
+    const baseUrl = window.location.href.split("?")[0];
+    const ids = movies.map((movie) => movie.tmdbId).join(";");
+    const url = baseUrl + "?ids=" + ids;
+    navigator.clipboard.writeText(url);
   }
 
   const handleOnSubmit = (event: React.FormEvent) => {
@@ -453,11 +423,7 @@ export const Search = () => {
         </div>
         <div className="form_buttons_search">
           <button name="Button" className="search__button" type="submit">Search</button>
-          <button name="Button" className="search__button" type="button" onClick={(e) => exportToJsonFile()}>Download</button>
-          <label className="search__button">
-            <input type="file" onChange={(e) => handleUpload(e)}/>
-            UPLOAD
-          </label>
+          <button name="Button" className="search__button" type="button" onClick={() => copyIdsUrl()}>Copy URL</button>
         </div>
       </form>
     </div>

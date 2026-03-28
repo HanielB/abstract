@@ -713,9 +713,9 @@ Promise<Movie[]> {
       var a = movie1.views;
       var b = movie2.views;
       if (movie1.previousView && a)
-        a = a + 1;
+        a = a + 0.5;
       if (movie2.previousView && b)
-        b = b + 1;
+        b = b + 0.5;
       if (!a)
       {
         return 1;

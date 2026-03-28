@@ -169,6 +169,9 @@ export default function ResultsChart() {
   const dayMonthBoundariesRef = useRef<number[]>([]);
   const dayMonthNamesRef = useRef<string[]>([]);
   const labelCountRef = useRef<number>(0);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const yAxisOverlayRef = useRef<HTMLCanvasElement>(null);
+
 
   const { labels, counts } = useMemo(() => {
     const buckets = new Map<string, number>();
@@ -428,6 +431,38 @@ export default function ResultsChart() {
     }
   };
 
+  // Plugin to copy the y-axis region onto a sticky overlay canvas
+  const stickyYAxisPlugin = {
+    id: "stickyYAxis",
+    afterDraw(chart: any) {
+      const overlay = yAxisOverlayRef.current;
+      if (!overlay) return;
+      const srcCanvas = chart.canvas;
+      const yScale = chart.scales.y;
+      if (!yScale) return;
+      const dpr = window.devicePixelRatio || 1;
+      const width = yScale.right + 1; // include the axis edge
+      const cssW = width;
+      const cssH = srcCanvas.clientHeight;
+
+      overlay.width = Math.ceil(cssW * dpr);
+      overlay.height = Math.ceil(cssH * dpr);
+      overlay.style.width = cssW + "px";
+      overlay.style.height = cssH + "px";
+
+      const ctx = overlay.getContext("2d");
+      if (!ctx) return;
+      ctx.clearRect(0, 0, overlay.width, overlay.height);
+      // Fill background to cover the chart beneath
+      ctx.fillStyle = "#f5cc5b";
+      ctx.fillRect(0, 0, overlay.width, overlay.height);
+      // Copy the y-axis strip from the source canvas
+      const srcW = Math.ceil(cssW * dpr);
+      const srcH = srcCanvas.height;
+      ctx.drawImage(srcCanvas, 0, 0, srcW, srcH, 0, 0, overlay.width, overlay.height);
+    }
+  };
+
   // Reserve space below the primary x-axis for secondary axes
   // Always set afterFit so it resets to 0 when switching to months/years
   const extraRows = (unit === "days") ? 2 : (unit === "weeks") ? 1 : 0;
@@ -509,9 +544,12 @@ export default function ResultsChart() {
           </button>
         ))}
       </div>
-      <div className="results-chart-wrapper">
-        <div className="results-chart-inner" style={{ minWidth: labels.length * 15 }}>
-          <Bar data={data} options={options} plugins={[hierarchicalAxisPlugin]} />
+      <div className="results-chart-viewport">
+        <canvas ref={yAxisOverlayRef} className="results-chart-yaxis-overlay" />
+        <div className="results-chart-wrapper" ref={wrapperRef}>
+          <div className="results-chart-inner" style={{ minWidth: labels.length * 15 }}>
+            <Bar data={data} options={options} plugins={[hierarchicalAxisPlugin, stickyYAxisPlugin]} />
+          </div>
         </div>
       </div>
     </div>

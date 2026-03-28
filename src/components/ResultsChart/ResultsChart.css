@@ -35,9 +35,14 @@
   background: #eee;
 }
 
-.results-chart-wrapper {
+.results-chart-viewport {
+  position: relative;
   width: 100%;
   max-width: 100%;
+}
+
+.results-chart-wrapper {
+  width: 100%;
   height: 40vw;
   max-height: 500px;
   box-sizing: border-box;
@@ -47,4 +52,12 @@
 
 .results-chart-inner {
   height: 100%;
+}
+
+.results-chart-yaxis-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  pointer-events: none;
 }

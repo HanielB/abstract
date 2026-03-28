@@ -6,7 +6,7 @@ import rewatchImg from "./two-circular-arrows.png";
 import watchlistImg from "./not-watched.png";
 import downloadImg from "./download.png";
 import { MoviesContext } from "../../services/context";
-import { Movie, getMovies } from "../../services/movies.service";
+import { Movie, DiaryEntry, getMovies } from "../../services/movies.service";
 
 
 export const Catalog = () => {
@@ -323,6 +323,17 @@ export const Catalog = () => {
           <span className="floatingNumber">
             {movie.views}{movie.previousView? "+" : ""}
           </span>
+          {movie.diaryEntries && movie.diaryEntries.length > 1 &&
+            <div className="diaryPopup">
+              {[...movie.diaryEntries].reverse().map((entry, idx) => (
+                <div className="diaryPopupEntry" key={idx}>
+                  <span className="diaryPopupDate"><a href={entry.entryURL}>{entry.date.split("-").length > 3 ? entry.date.substring(0, 10) : entry.date}</a></span>
+                  <span className="diaryPopupRating">{entry.rating}</span>
+                  <span className="diaryPopupLocation">{entry.location}</span>
+                </div>
+              ))}
+            </div>
+          }
         </span>
         : (movie.rewatch)?
         <span className="rewatch">

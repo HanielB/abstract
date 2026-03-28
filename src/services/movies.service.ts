@@ -333,10 +333,11 @@ function populateMovie(movie : any, date: Date[], loc: RegExp, rating: number[],
   var countryStr = "";
   var views = 0;
   var previousView = false;
+  var entries : any[] = [];
   if (movie.diary.length > 0)
   {
     // filter out diary entries that are incompatible
-    var entries : any[] = movie.diary.filter((entry) =>
+    entries = movie.diary.filter((entry) =>
       filterDiary(entry.date, entry.location, entry.rating.num, entry.tags, entry.rewatch,
                   date, loc, rating, tags, rewatch));
     views = entries.length;
@@ -376,6 +377,12 @@ function populateMovie(movie : any, date: Date[], loc: RegExp, rating: number[],
     available : movie.available,
     views : views,
     previousView : previousView,
+    diaryEntries : (views > 1 && entries) ? entries.map((e: any) => ({
+      date: e.date,
+      rating: e.rating.str,
+      location: e.location,
+      entryURL: e.entryURL,
+    })) : undefined,
     collectionId :
     movie.collection.id !== -1 ? movie.collection.id : undefined,
     collectionName :
@@ -787,6 +794,13 @@ Promise<Movie[]> {
     });
 }
 
+export interface DiaryEntry {
+  date: string;
+  rating: string;
+  location: string;
+  entryURL: string;
+}
+
 export interface Movie {
   id: number;
   tmdbId: number;
@@ -810,4 +824,5 @@ export interface Movie {
   collectionName?: string;
   country?: string
   watchedLocation?: string
+  diaryEntries?: DiaryEntry[];
 }

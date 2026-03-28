@@ -410,3 +410,62 @@ a:active {
     color: #f5cc5b;
     border-radius: 10px;
 }
+
+.diaryPopup {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 8px 0;
+    padding-bottom: 14px;
+    z-index: 100;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.views:hover .diaryPopup {
+    display: block;
+}
+
+.diaryPopupEntry {
+    display: flex;
+    flex-flow: row;
+    column-gap: .8rem;
+    padding: 4px 12px;
+    font-size: .8rem;
+    color: #ccc;
+}
+
+.diaryPopupEntry:hover {
+    background-color: #2a2a2a;
+}
+
+.diaryPopupDate a {
+    color: #f5cc5b;
+    text-decoration: none;
+}
+
+.diaryPopupDate a:hover {
+    text-decoration: underline;
+}
+
+.diaryPopupDate {
+    min-width: 80px;
+}
+
+.diaryPopupRating {
+    min-width: 60px;
+}
+
+.diaryPopupLocation {
+    color: #999;
+}
+
+@media (hover: none) {
+    .views:hover .diaryPopup {
+        display: none;
+    }
+}

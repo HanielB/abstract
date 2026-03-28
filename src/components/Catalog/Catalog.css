@@ -464,8 +464,10 @@ a:active {
     color: #999;
 }
 
-@media (hover: none) {
-    .views:hover .diaryPopup {
-        display: none;
-    }
+.diaryPopupOpen {
+    display: block !important;
+}
+
+.views {
+    cursor: pointer;
 }

@@ -16,6 +16,7 @@ export const Catalog = () => {
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
+  const [openDiaryPopup, setOpenDiaryPopup] = useState<number | null>(null);
 
   const updateContainerWidth = useCallback(() => {
     if (containerRef.current) {
@@ -28,6 +29,17 @@ export const Catalog = () => {
     window.addEventListener("resize", updateContainerWidth);
     return () => window.removeEventListener("resize", updateContainerWidth);
   }, [updateContainerWidth]);
+
+  useEffect(() => {
+    if (openDiaryPopup === null) return;
+    const handleClick = (e: MouseEvent) => {
+      if (!(e.target as HTMLElement).closest('.views')) {
+        setOpenDiaryPopup(null);
+      }
+    };
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, [openDiaryPopup]);
 
   const cardWidthPercent = 100 / cardsPerRow;
   const cardWidth = containerWidth > 0 ? Math.floor(containerWidth / cardsPerRow) : 460;
@@ -317,14 +329,17 @@ export const Catalog = () => {
       </span>
       {
         (movie.views && (movie.views > 1 || movie.previousView))?
-        <span className="views">
+        <span className="views" onClick={(e) => {
+          e.stopPropagation();
+          setOpenDiaryPopup(openDiaryPopup === movie.id ? null : movie.id);
+        }}>
           <img src={viewsImg} className="watchedImg"
           />
           <span className="floatingNumber">
             {movie.views}{movie.previousView? "+" : ""}
           </span>
           {movie.diaryEntries && movie.diaryEntries.length > 1 &&
-            <div className="diaryPopup">
+            <div className={`diaryPopup${openDiaryPopup === movie.id ? ' diaryPopupOpen' : ''}`}>
               {[...movie.diaryEntries].reverse().map((entry, idx) => (
                 <div className="diaryPopupEntry" key={idx}>
                   <span className="diaryPopupDate"><a href={entry.entryURL}>{entry.date.split("-").length > 3 ? entry.date.substring(0, 10) : entry.date}</a></span>

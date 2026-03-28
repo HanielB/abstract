@@ -21,7 +21,7 @@ export const Search = () => {
   const [rewatch, setRewatch] = useState("");
   const [available, setAvailable] = useState("");
 
-  const {master, movies, updateMovies, setStart, setLoading, setListName, cardsPerRow, setCardsPerRow, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
+  const {master, movies, updateMovies, setStart, setLoading, setListName, cardsPerRow, setCardsPerRow, setSearchWatched, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
 
 
   if (searchTitle && !title)
@@ -203,6 +203,7 @@ export const Search = () => {
     console.log("currURL before push: ", currURL)
     console.log("parameters: ", parameters)
     window.history.pushState({}, "", currURL + (parameters != "" ? "/" + parameters : ""));
+    setSearchWatched(date);
 
     getMovies(master, title, year, date, rating, runtime, tags,
               director, writer, actor, genre, country, studio,

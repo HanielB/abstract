@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Search } from "./components/Search/Search";
 import { Catalog } from "./components/Catalog/Catalog";
+import ResultsChart from "./components/ResultsChart/ResultsChart";
 import { Movie, convertMovie, getMovies, getMoviesFromIds } from "./services/movies.service";
 import { MoviesContext } from "./services/context";
 
@@ -414,7 +415,7 @@ function App() {
   return (
     <MoviesContext.Provider value={
     {master, movies, selected, updateMovies: setMovies,
-     start, loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, cardsPerRow, setCardsPerRow, setStart: setStart, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
+     start, loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setSearchWatched, cardsPerRow, setCardsPerRow, setStart: setStart, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
       <div className="App">
         <div className="header">
           <h1 className="header__title">
@@ -442,6 +443,7 @@ function App() {
           </div>
         </div>
         <Catalog></Catalog>
+        <ResultsChart />
         {start?
          <div className="header">
            <h2 className="header__title">Year in review</h2>

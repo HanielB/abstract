@@ -3,123 +3,9 @@ import "./App.css";
 import { Search } from "./components/Search/Search";
 import { Catalog } from "./components/Catalog/Catalog";
 import ResultsChart from "./components/ResultsChart/ResultsChart";
+import HomeChart from "./components/HomeChart/HomeChart";
 import { Movie, convertMovie, getMovies, getMoviesFromIds } from "./services/movies.service";
 import { MoviesContext } from "./services/context";
-
-// BarChart.tsx
-import {
-  Chart as ChartJS,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend,
-  Colors,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-
-ChartJS.register(Colors);
-
-ChartJS.register(
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend
-);
-
-type Props = {
-  labels: string[];
-  values: number[];
-};
-
-
-
-
-export function BarChart({ labels, values }: Props) {
-  const data = {
-    labels: ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'],
-    datasets: [
-      {
-        label: 'films',
-        data: [69, 58, 198, 154, 176, 142, 138, 145, 204, 189, 182],
-        backgroundColor: 'green',
-        //  These remove the spacing
-        categoryPercentage: 1.0,
-        barPercentage: 1,
-        borderColor: 'black',
-        borderWidth: 1,
-        grouped: false,
-        order: 2,
-      },
-      {
-        label: 'cinema',
-        data: [14, 14, 39, 40, 40, 16, 18, 39, 70, 65, 76],
-        backgroundColor: 'purple',
-        //  These remove the spacing
-        categoryPercentage: 1.0,
-        barPercentage: 1.0,
-        borderColor: 'black',
-        borderWidth: 1,
-        grouped: false,
-        order: 1,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label(context) {
-            // if (context.datasetIndex === 0) {
-            //   const dataset = context.dataset.label ?? '';
-            //   return `${context.parsed.y} films`;
-            // }
-            const dataset = context.dataset.label ?? '';
-            return `${context.parsed.y} films`;
-          },
-          title(items) {
-            const item = items[0]; // first hovered dataset
-            if (item.dataset.label === 'films') {
-              return `Logged in ${items[0].label}`;
-            }
-            return `In a cinema in ${items[0].label}`;
-          },
-        },
-        displayColors: false,
-        titleFont: { size: 14 },
-        bodyFont: { size: 16 }
-      },
-      legend: {display: false},
-    },
-    scales: {
-      x: {
-        grid: {
-          display: false
-        },
-        ticks: {
-          color: "black",
-          font: {
-            family: 'Inter, system-ui, sans-serif',
-            size: 18,
-          }
-        }
-      },
-      y: {
-        grid: {
-          display: false
-        },
-        ticks: {display: false},
-        border: { display: false }
-      }
-    }
-  };
-
-  return <Bar data={data} options={options} />;
-}
 
 function App() {
 
@@ -467,12 +353,7 @@ function App() {
              <a href="https://hanielbarbosa.com/filminhos/?list=2015best">2015</a>
            </div>
            <h2 className="header__title">Films per year</h2>
-           <div className="chart-wrapper">
-             <BarChart
-               labels={[]}
-               values={[]}
-             />
-           </div>
+           <HomeChart />
            </div>
          :<div></div>}
       </div>

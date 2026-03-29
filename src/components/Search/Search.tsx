@@ -223,53 +223,59 @@ export const Search = () => {
           <div>
             <input
               type="text"
-              name="movie"
-              className="search__inputLong"
-              placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <input
-              type="text"
-              name="year"
-              className="search__inputShort"
-              placeholder="Year"
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-            />
-            <input
-              type="text"
-              name="runtime"
-              className="search__inputShorter"
-              placeholder="Runtime"
-              value={runtime}
-              onChange={(e) => setRuntime(e.target.value)}
-            />
-          </div>
-          <div>
-            <input
-              type="text"
               name="date"
-              className="search__inputShort"
+              className="search__input"
               placeholder="Watched"
+              title="Date range: YYYY, YYYYMM, YYYYMMDD, or YYYY..YYYY. Open-ended: 2020.. or ..2020. Add ;regex for location, e.g. 2024;Paris. Use -1 for unwatched."
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
             <input
               type="text"
               name="rating"
-              className="search__inputShorter"
+              className="search__input"
               placeholder="Rating"
+              title="Rating 1-10 or range: 8, 7..9. Open-ended: 8.. or ..6. Use -1 for unrated."
               value={rating}
               onChange={(e) => setRating(e.target.value)}
             />
             <input
               type="text"
               name="tags"
-              className="search__inputLong"
+              className="search__input"
               placeholder="Tags"
+              title="Semicolon-separated regexes. All must match. E.g. cinema;cried"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              name="movie"
+              className="search__input"
+              placeholder="Title"
+              title="Regex for title. Use ; to also filter by collection, e.g. title;collection"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <input
+              type="text"
+              name="year"
+              className="search__input"
+              placeholder="Year"
+              title="Release year or range: 2020, 1990..2000. Open-ended: 2000.. or ..1980"
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+            />
+            <input
+              type="text"
+              name="runtime"
+              className="search__input"
+              placeholder="Runtime"
+              title="Runtime in minutes or range: 120, 90..150. Open-ended: 120.. or ..90"
+              value={runtime}
+              onChange={(e) => setRuntime(e.target.value)}
             />
           </div>
           <div>
@@ -278,6 +284,7 @@ export const Search = () => {
               name="director"
               className="search__input"
               placeholder="Director"
+              title="Regex, case-insensitive. E.g. tarantino, spielberg|scorsese"
               value={director}
               onChange={(e) => setDirector(e.target.value)}
             />
@@ -286,6 +293,7 @@ export const Search = () => {
               name="writer"
               className="search__input"
               placeholder="Writer"
+              title="Regex, case-insensitive. E.g. kaufman, coen"
               value={writer}
               onChange={(e) => setWriter(e.target.value)}
             />
@@ -294,6 +302,7 @@ export const Search = () => {
               name="actor"
               className="search__input"
               placeholder="Actor"
+              title="Regex, case-insensitive. E.g. pitt, streep|blanchett"
               value={actor}
               onChange={(e) => setActor(e.target.value)}
             />
@@ -304,6 +313,7 @@ export const Search = () => {
               name="genre"
               className="search__input"
               placeholder="Genre"
+              title="Regex, case-insensitive. E.g. horror, drama|comedy"
               value={genre}
               onChange={(e) => setGenre(e.target.value)}
             />
@@ -312,6 +322,7 @@ export const Search = () => {
               name="country"
               className="search__input"
               placeholder="Country"
+              title="Regex, case-insensitive. E.g. france, japan|korea"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
             />
@@ -320,6 +331,7 @@ export const Search = () => {
               name="studio"
               className="search__input"
               placeholder="Studio"
+              title="Regex, case-insensitive. E.g. a24, pixar"
               value={studio}
               onChange={(e) => setStudio(e.target.value)}
             />

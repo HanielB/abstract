@@ -317,6 +317,7 @@ function App() {
                   min="1"
                   max="10"
                   step="1"
+                  title={`${cardsPerRow}`}
                   value={cardsPerRow}
                   onChange={(e) => {
                     const val = parseInt(e.target.value, 10);

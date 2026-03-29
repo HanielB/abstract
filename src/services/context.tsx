@@ -27,6 +27,7 @@ export const MoviesContext = React.createContext<{
   searchSorting : string;
   searchRewatch : string;
   setSearchWatched : Function;
+  setSearchSingleton : Function;
   cardsPerRow : number;
   setCardsPerRow : Function;
   setStart : Function;
@@ -59,6 +60,7 @@ export const MoviesContext = React.createContext<{
   searchSorting : "",
   searchRewatch : "",
   setSearchWatched : Function,
+  setSearchSingleton : Function,
   cardsPerRow : 4,
   setCardsPerRow : Function,
   setStart : Function,

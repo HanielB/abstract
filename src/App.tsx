@@ -301,7 +301,7 @@ function App() {
   return (
     <MoviesContext.Provider value={
     {master, movies, selected, updateMovies: setMovies,
-     start, loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setSearchWatched, cardsPerRow, setCardsPerRow, setStart: setStart, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
+     start, loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setSearchWatched, setSearchSingleton, cardsPerRow, setCardsPerRow, setStart: setStart, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
       <div className="App">
         <div className="header">
           <h1 className="header__title">

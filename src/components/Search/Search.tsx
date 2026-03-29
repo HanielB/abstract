@@ -21,7 +21,7 @@ export const Search = () => {
   const [rewatch, setRewatch] = useState("");
   const [available, setAvailable] = useState("");
 
-  const {master, movies, updateMovies, setStart, setLoading, setListName, cardsPerRow, setCardsPerRow, setSearchWatched, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
+  const {master, movies, updateMovies, setStart, setLoading, setListName, cardsPerRow, setCardsPerRow, setSearchWatched, setSearchSingleton, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
 
 
   if (searchTitle && !title)
@@ -204,6 +204,7 @@ export const Search = () => {
     console.log("parameters: ", parameters)
     window.history.pushState({}, "", currURL + (parameters != "" ? "/" + parameters : ""));
     setSearchWatched(date);
+    setSearchSingleton(onlywatched ? "1" : "");
 
     getMovies(master, title, year, date, rating, runtime, tags,
               director, writer, actor, genre, country, studio,
@@ -396,17 +397,17 @@ export const Search = () => {
               <legend>Display</legend>
               <div className="form_radio">
                 <div>
-                  <input type="checkbox" id="onlywatched" name="display" value="onlywatched"/>
+                  <input type="checkbox" id="onlywatched" name="display" value="onlywatched" title="Show one entry per film, using the latest diary entry"/>
                   <label htmlFor="onlywatched">Singleton</label>
                 </div>
                 <div>
-                  <input type="checkbox" id="watchlist" name="display" value="watchlist"/>
+                  <input type="checkbox" id="watchlist" name="display" value="watchlist" title="Include films from watchlist (not yet watched)"/>
                   <label htmlFor="watchlist">Watchlist</label>
                 </div>
               </div>
               <div className="form_radio">
                 <div>
-                  <input type="checkbox" id="collection" name="display" value="collection"/>
+                  <input type="checkbox" id="collection" name="display" value="collection" title="Group films by TMDB collection (e.g. trilogies, franchises)"/>
                   <label htmlFor="collection">Collection</label>
                 </div>
               </div>

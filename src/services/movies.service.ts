@@ -524,7 +524,7 @@ Promise<Movie[]> {
     const allTags = tags.split(";");
     for (let i = 0; i < allTags.length; i++)
     {
-      tagsRegexes.push(new RegExp(allTags[i]))
+      tagsRegexes.push(new RegExp(allTags[i], 'i'))
     }
   }
 

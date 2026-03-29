@@ -186,7 +186,7 @@ export default function ResultsChart() {
     return { labels: filled.map(([k]) => k), counts: filled.map(([, v]) => v) };
   }, [movies, unit, searchWatched]);
 
-  if (start || labels.length === 0) return null;
+  if (start || labels.length === 0 || searchSingleton === "1") return null;
 
   // For weeks view: compute month boundary ticks and centered month labels
   // for the secondary x-axis, matching process.py logic.

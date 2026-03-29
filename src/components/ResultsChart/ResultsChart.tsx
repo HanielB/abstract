@@ -157,7 +157,7 @@ function isoWeekToDate(isoYear: number, isoWeek: number): Date {
 }
 
 export default function ResultsChart() {
-  const { movies, start, searchWatched } = useContext(MoviesContext);
+  const { movies, start, searchWatched, searchTitle, searchYear, searchRuntime, searchRating, searchTags, searchDirector, searchWriter, searchActor, searchGenre, searchCountry, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
   const [unit, setUnit] = useState<TimeUnit>("weeks");
   const unitRef = useRef<TimeUnit>(unit);
   unitRef.current = unit;
@@ -497,13 +497,35 @@ export default function ResultsChart() {
     if (elements.length === 0) return;
     const idx = elements[0].index;
     const fullLabel = labels[idx];
-    const watchedRange = labelToWatchedRange(fullLabel, unit);
+    let watchedRange = labelToWatchedRange(fullLabel, unit);
 
-    // Build URL with current params but replace watched
-    const currentParams = new URLSearchParams(window.location.search);
-    currentParams.set("watched", watchedRange);
+    // Preserve location suffix from the original search (e.g. ";Paris")
+    if (searchWatched.includes(";")) {
+      watchedRange += ";" + searchWatched.split(";")[1];
+    }
+
+    // Build URL from context, not from the current URL
+    const params = new URLSearchParams();
+    params.set("watched", watchedRange);
+    if (searchTitle) params.set("title", searchTitle.replaceAll(" ", "."));
+    if (searchYear) params.set("year", searchYear);
+    if (searchRuntime) params.set("runtime", searchRuntime);
+    if (searchRating) params.set("rating", searchRating);
+    if (searchTags) params.set("tags", searchTags);
+    if (searchDirector) params.set("director", searchDirector.replaceAll(" ", "."));
+    if (searchWriter) params.set("writer", searchWriter.replaceAll(" ", "."));
+    if (searchActor) params.set("actor", searchActor.replaceAll(" ", "."));
+    if (searchGenre) params.set("genre", searchGenre.replaceAll(" ", "."));
+    if (searchCountry) params.set("country", searchCountry.replaceAll(" ", "."));
+    if (searchStudio) params.set("studio", searchStudio.replaceAll(" ", "."));
+    if (searchSingleton === "1") params.set("singleton", "1");
+    if (searchWatchlist === "1") params.set("watchlist", "1");
+    if (searchAvailable && searchAvailable !== "no") params.set("available", searchAvailable);
+    if (searchSorting && searchSorting !== "watched") params.set("sorting", searchSorting);
+    if (searchRewatch && searchRewatch !== "yes") params.set("rewatch", searchRewatch);
+
     const baseUrl = window.location.pathname;
-    window.open(baseUrl + "?" + currentParams.toString(), "_blank");
+    window.open(baseUrl + "?" + params.toString(), "_blank");
   }
 
   const options = {

@@ -17,7 +17,7 @@ export const Catalog = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const [openDiaryPopup, setOpenDiaryPopup] = useState<number | null>(null);
-  const [openReview, setOpenReview] = useState<{title: string, year?: string, date: string, rating?: string, rewatch?: boolean, review: string, tags?: string[], lbDiaryLink?: string} | null>(null);
+  const [openReview, setOpenReview] = useState<{title: string, year?: string, date: string, rating?: string, rewatch?: boolean, review: string, tags?: string[], lbDiaryLink?: string, location?: string} | null>(null);
 
   const updateContainerWidth = useCallback(() => {
     if (containerRef.current) {
@@ -272,7 +272,7 @@ export const Catalog = () => {
                     <a href="#" onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      setOpenReview({title: movie.title, year: movie.year, date: movie.watched?.substring(0, 10) || "", rating: movie.rating, rewatch: movie.rewatch, review: movie.review!, tags: movie.reviewTags || movie.tags, lbDiaryLink: movie.lbDiaryLink});
+                      setOpenReview({title: movie.title, year: movie.year, date: movie.watched?.substring(0, 10) || "", rating: movie.rating, rewatch: movie.rewatch, review: movie.review!, tags: movie.reviewTags || movie.tags, lbDiaryLink: movie.lbDiaryLink, location: movie.watchedLocation});
                     }}>{
                       movie.watched && movie.watched.split("-").length > 3?
                                                                          movie.watched.substring(0, 10) : movie.watched
@@ -359,7 +359,7 @@ export const Catalog = () => {
                     <a href="#" onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      setOpenReview({title: movie.title, year: movie.year, date: entry.date.substring(0, 10), rating: entry.rating, rewatch: entry.rewatch, review: entry.review!, tags: entry.tags, lbDiaryLink: entry.entryURL});
+                      setOpenReview({title: movie.title, year: movie.year, date: entry.date.substring(0, 10), rating: entry.rating, rewatch: entry.rewatch, review: entry.review!, tags: entry.tags, lbDiaryLink: entry.entryURL, location: entry.location});
                     }}>{entry.date.split("-").length > 3 ? entry.date.substring(0, 10) : entry.date}</a>
                   ) : (
                     <a href={entry.entryURL}>{entry.date.split("-").length > 3 ? entry.date.substring(0, 10) : entry.date}</a>
@@ -402,6 +402,7 @@ export const Catalog = () => {
                   </span>
                   {openReview.rating && <span className="reviewModalRating">{openReview.rating}</span>}
                 </div>
+                {openReview.location && <span className="reviewModalLocation">{openReview.location}</span>}
               </div>
               <button className="reviewModalClose" onClick={() => setOpenReview(null)}>×</button>
             </div>

@@ -559,6 +559,11 @@ a:active {
     color: #fff;
 }
 
+.reviewModalLocation {
+    font-size: 0.8rem;
+    color: #777;
+}
+
 .reviewModalClose {
     background: none;
     border: none;

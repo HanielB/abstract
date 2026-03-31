@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import "./Search.css";
 import { getMovie, loadMovies, getMovies, getMoviesFromIds } from "../../services/movies.service";
 import { MoviesContext } from "../../services/context";
@@ -24,74 +24,41 @@ export const Search = () => {
   const {master, movies, updateMovies, setStart, setLoading, setListName, posterOnly, setPosterOnly, cardsPerRow, setCardsPerRow, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
 
 
-  if (searchTitle && !title)
-  {
-    setTitle(searchTitle);
-  }
-  if (searchYear && !year)
-  {
-    setYear(searchYear);
-  }
-  if (searchRuntime && !runtime)
-  {
-    setRuntime(searchRuntime);
-  }
-  if (searchWatched && !date)
-  {
-    setDate(searchWatched);
-  }
-  if (searchRating && !rating)
-  {
-    setRating(searchRating);
-  }
-  if (searchTags && !tags)
-  {
-    setTags(searchTags);
-  }
-  if (searchDirector && !director)
-  {
-    setDirector(searchDirector);
-  }
-  if (searchWriter && !writer)
-  {
-    setWriter(searchWriter);
-  }
-  if (searchActor && !actor)
-  {
-    setActor(searchActor);
-  }
-  if (searchGenre && !genre)
-  {
-    setGenre(searchGenre);
-  }
-  if (searchCountry && !country)
-  {
-    setCountry(searchCountry);
-  }
-  if (searchStudio && !studio)
-  {
-    setStudio(searchStudio);
-  }
-  if (searchSorting && searchSorting != "watched" && sorting == "watched")
-  {
-    setSorting(searchSorting);
-  }
-  if (searchRewatch && searchRewatch != "yes" && rewatch == "yes")
-  {
-    setRewatch(searchRewatch);
-  }
-  if (searchSingleton && searchSingleton === "1")
-  {
-    const onlywatchedCheck =
-      document.getElementById("onlywatched") as HTMLInputElement
-    onlywatchedCheck.checked = true
-  }
-  if (searchWatchlist && searchWatchlist === "1")
-  {
-    const watchlistCheck =
-      document.getElementById("watchlist") as HTMLInputElement
-    watchlistCheck.checked = true
-  }
+  const synced = useRef(false);
+  useEffect(() => {
+    if (synced.current) return;
+    const hasAny = searchTitle || searchYear || searchRuntime || searchWatched ||
+      searchRating || searchTags || searchDirector || searchWriter ||
+      searchActor || searchGenre || searchCountry || searchStudio ||
+      searchSingleton || searchWatchlist || searchSorting || searchRewatch;
+    if (!hasAny) return;
+    synced.current = true;
+    if (searchTitle) setTitle(searchTitle);
+    if (searchYear) setYear(searchYear);
+    if (searchRuntime) setRuntime(searchRuntime);
+    if (searchWatched) setDate(searchWatched);
+    if (searchRating) setRating(searchRating);
+    if (searchTags) setTags(searchTags);
+    if (searchDirector) setDirector(searchDirector);
+    if (searchWriter) setWriter(searchWriter);
+    if (searchActor) setActor(searchActor);
+    if (searchGenre) setGenre(searchGenre);
+    if (searchCountry) setCountry(searchCountry);
+    if (searchStudio) setStudio(searchStudio);
+    if (searchSorting && searchSorting !== "watched") setSorting(searchSorting);
+    if (searchRewatch && searchRewatch !== "yes") setRewatch(searchRewatch);
+    if (searchSingleton === "1") {
+      const el = document.getElementById("onlywatched") as HTMLInputElement;
+      if (el) el.checked = true;
+    }
+    if (searchWatchlist === "1") {
+      const el = document.getElementById("watchlist") as HTMLInputElement;
+      if (el) el.checked = true;
+    }
+  }, [searchTitle, searchYear, searchRuntime, searchWatched, searchRating,
+      searchTags, searchDirector, searchWriter, searchActor, searchGenre,
+      searchCountry, searchStudio, searchSingleton, searchWatchlist,
+      searchSorting, searchRewatch]);
 
   const copyIdsUrl = () => {
     const baseUrl = window.location.href.split("?")[0];

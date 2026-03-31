@@ -27,7 +27,22 @@ export const MoviesContext = React.createContext<{
   searchSorting : string;
   searchRewatch : string;
   setSearchWatched : Function;
+  setSearchRating : Function;
+  setSearchTags : Function;
+  setSearchTitle : Function;
+  setSearchYear : Function;
+  setSearchRuntime : Function;
+  setSearchDirector : Function;
+  setSearchWriter : Function;
+  setSearchActor : Function;
+  setSearchGenre : Function;
+  setSearchCountry : Function;
+  setSearchStudio : Function;
   setSearchSingleton : Function;
+  setSearchWatchlist : Function;
+  setSearchAvailable : Function;
+  setSearchSorting : Function;
+  setSearchRewatch : Function;
   cardsPerRow : number;
   setCardsPerRow : Function;
   setStart : Function;
@@ -60,7 +75,22 @@ export const MoviesContext = React.createContext<{
   searchSorting : "",
   searchRewatch : "",
   setSearchWatched : Function,
+  setSearchRating : Function,
+  setSearchTags : Function,
+  setSearchTitle : Function,
+  setSearchYear : Function,
+  setSearchRuntime : Function,
+  setSearchDirector : Function,
+  setSearchWriter : Function,
+  setSearchActor : Function,
+  setSearchGenre : Function,
+  setSearchCountry : Function,
+  setSearchStudio : Function,
   setSearchSingleton : Function,
+  setSearchWatchlist : Function,
+  setSearchAvailable : Function,
+  setSearchSorting : Function,
+  setSearchRewatch : Function,
   cardsPerRow : 4,
   setCardsPerRow : Function,
   setStart : Function,

@@ -21,7 +21,7 @@ export const Search = () => {
   const [rewatch, setRewatch] = useState("");
   const [available, setAvailable] = useState("");
 
-  const {master, movies, updateMovies, setStart, setLoading, setListName, cardsPerRow, setCardsPerRow, setSearchWatched, setSearchSingleton, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
+  const {master, movies, updateMovies, setStart, setLoading, setListName, cardsPerRow, setCardsPerRow, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
 
 
   if (searchTitle && !title)
@@ -203,8 +203,23 @@ export const Search = () => {
     console.log("currURL before push: ", currURL)
     console.log("parameters: ", parameters)
     window.history.pushState({}, "", currURL + (parameters != "" ? "/" + parameters : ""));
+    setSearchTitle(title);
+    setSearchYear(year);
+    setSearchRuntime(runtime);
     setSearchWatched(date);
+    setSearchRating(rating);
+    setSearchTags(tags);
+    setSearchDirector(director);
+    setSearchWriter(writer);
+    setSearchActor(actor);
+    setSearchGenre(genre);
+    setSearchCountry(country);
+    setSearchStudio(studio);
     setSearchSingleton(onlywatched ? "1" : "");
+    setSearchWatchlist(watchlist ? "1" : "");
+    setSearchAvailable(available || "no");
+    setSearchSorting(sorting || "watched");
+    setSearchRewatch(rewatch || "yes");
 
     getMovies(master, title, year, date, rating, runtime, tags,
               director, writer, actor, genre, country, studio,

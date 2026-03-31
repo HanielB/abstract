@@ -10,7 +10,7 @@ import { Movie, DiaryEntry, getMovies } from "../../services/movies.service";
 
 
 export const Catalog = () => {
-  const { master, movies, start, loading, selected, cardsPerRow,
+  const { master, movies, start, loading, selected, posterOnly, cardsPerRow,
           setLoading, updateMovies, setSelected, setListName } =
         useContext(MoviesContext);
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
@@ -235,9 +235,10 @@ export const Catalog = () => {
         >
           <div className="catalog__item__img">
             <img src={movie.picture || imgPlaceholder} alt={movie.title}
+              title={posterOnly ? `${movie.title} (${movie.year || "?"})${movie.watched ? "\n" + movie.watched.substring(0, 10) : ""}${movie.rating ? " — " + movie.rating : ""}` : undefined}
             />
           </div>
-          <div className="catalog__item__info">
+          {!posterOnly && <div className="catalog__item__info">
             <div className="titleYear">
               <span className="title">
                 <a href={movie.lbFilmLink}>
@@ -363,7 +364,7 @@ export const Catalog = () => {
         : <span></span>
       }
     </div>
-    </div>
+    </div>}
     </div>
       ))}
     </div>

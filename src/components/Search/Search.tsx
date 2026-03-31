@@ -21,7 +21,7 @@ export const Search = () => {
   const [rewatch, setRewatch] = useState("");
   const [available, setAvailable] = useState("");
 
-  const {master, movies, updateMovies, setStart, setLoading, setListName, cardsPerRow, setCardsPerRow, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
+  const {master, movies, updateMovies, setStart, setLoading, setListName, posterOnly, setPosterOnly, cardsPerRow, setCardsPerRow, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
 
 
   if (searchTitle && !title)
@@ -425,6 +425,10 @@ export const Search = () => {
                   <input type="checkbox" id="collection" name="display" value="collection" title="Group films by TMDB collection (e.g. trilogies, franchises)"/>
                   <label htmlFor="collection">Collection</label>
                 </div>
+                <div>
+                  <input type="checkbox" id="posteronly" checked={posterOnly} onChange={(e) => setPosterOnly(e.target.checked)} title="Show only posters, hiding the info panel"/>
+                  <label htmlFor="posteronly">No card</label>
+                </div>
               </div>
             </fieldset>
             <div className="card-size-slider">
@@ -432,7 +436,7 @@ export const Search = () => {
               <input
                 type="range"
                 min="1"
-                max="10"
+                max="20"
                 step="1"
                 title={`${cardsPerRow}`}
                 value={cardsPerRow}

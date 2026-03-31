@@ -17,6 +17,7 @@ function App() {
   const [master, setMaster] = useState<Object[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [listName, setListName] = useState("");
+  const [posterOnly, setPosterOnly] = useState(false);
   const [cardsPerRow, setCardsPerRow] = useState(() => {
     const saved = localStorage.getItem("cardsPerRow");
     return saved ? parseInt(saved, 10) : 4;
@@ -301,7 +302,7 @@ function App() {
   return (
     <MoviesContext.Provider value={
     {master, movies, selected, updateMovies: setMovies,
-     start, loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, cardsPerRow, setCardsPerRow, setStart: setStart, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
+     start, loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, posterOnly, setPosterOnly, cardsPerRow, setCardsPerRow, setStart: setStart, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
       <div className="App">
         <div className="header">
           <h1 className="header__title">
@@ -315,7 +316,7 @@ function App() {
                 <input
                   type="range"
                   min="1"
-                  max="10"
+                  max="20"
                   step="1"
                   title={`${cardsPerRow}`}
                   value={cardsPerRow}

@@ -43,6 +43,8 @@ export const MoviesContext = React.createContext<{
   setSearchAvailable : Function;
   setSearchSorting : Function;
   setSearchRewatch : Function;
+  posterOnly : boolean;
+  setPosterOnly : Function;
   cardsPerRow : number;
   setCardsPerRow : Function;
   setStart : Function;
@@ -91,6 +93,8 @@ export const MoviesContext = React.createContext<{
   setSearchAvailable : Function,
   setSearchSorting : Function,
   setSearchRewatch : Function,
+  posterOnly : false,
+  setPosterOnly : Function,
   cardsPerRow : 4,
   setCardsPerRow : Function,
   setStart : Function,

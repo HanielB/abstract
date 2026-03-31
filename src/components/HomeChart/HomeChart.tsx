@@ -106,7 +106,7 @@ export default function HomeChart() {
                 ? `In a cinema in ${year}`
                 : `Logged in ${year}`;
             if (isCurrentYear && lastUpdate) {
-              return `${prefix} (updated ${lastUpdate})`;
+              return `${prefix} (last update: ${lastUpdate})`;
             }
             return prefix;
           },

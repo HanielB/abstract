@@ -471,3 +471,128 @@ a:active {
 .views {
     cursor: pointer;
 }
+
+
+.reviewOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reviewModal {
+    background: #1a1a1a;
+    color: #ddd;
+    border-radius: 10px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+.reviewModalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid #333;
+}
+
+.reviewModalHeaderContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.reviewModalTitleLine {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.reviewModalFilmTitle {
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: #fff;
+}
+
+.reviewModalYear {
+    font-size: 0.95rem;
+    color: #999;
+}
+
+.reviewModalWatchedRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.reviewModalRating {
+    background-color: #343533;
+    color: #f5cc5b;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.reviewModalWatched {
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.reviewModalWatched a {
+    color: #f5cc5b;
+    text-decoration: none;
+}
+
+.reviewModalWatched a:hover {
+    color: #fff;
+}
+
+.reviewModalClose {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.reviewModalClose:hover {
+    color: #fff;
+}
+
+.reviewModalTags {
+    display: flex;
+    flex-flow: row wrap;
+    gap: .25rem;
+    padding: 0.8rem 1.2rem 0;
+}
+
+.reviewModalBody {
+    padding: 1.2rem;
+    overflow-y: auto;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.reviewModalBody a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.reviewModalBody a:hover {
+    text-decoration: underline;
+}

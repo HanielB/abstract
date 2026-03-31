@@ -17,6 +17,7 @@ export const Catalog = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const [openDiaryPopup, setOpenDiaryPopup] = useState<number | null>(null);
+  const [openReview, setOpenReview] = useState<{title: string, year?: string, date: string, rating?: string, rewatch?: boolean, review: string, tags?: string[], lbDiaryLink?: string} | null>(null);
 
   const updateContainerWidth = useCallback(() => {
     if (containerRef.current) {
@@ -267,10 +268,21 @@ export const Catalog = () => {
             <div className="watchedRating">
               <div className="watchedDateLoc">
                 <span className="watched">
-                  <a href={movie.lbDiaryLink}>{
-                    movie.watched && movie.watched.split("-").length > 3?
-                                                                       movie.watched.substring(0, 10) : movie.watched
-                  }</a>
+                  {movie.review ? (
+                    <a href="#" onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setOpenReview({title: movie.title, year: movie.year, date: movie.watched?.substring(0, 10) || "", rating: movie.rating, rewatch: movie.rewatch, review: movie.review!, tags: movie.reviewTags || movie.tags, lbDiaryLink: movie.lbDiaryLink});
+                    }}>{
+                      movie.watched && movie.watched.split("-").length > 3?
+                                                                         movie.watched.substring(0, 10) : movie.watched
+                    }</a>
+                  ) : (
+                    <a href={movie.lbDiaryLink}>{
+                      movie.watched && movie.watched.split("-").length > 3?
+                                                                         movie.watched.substring(0, 10) : movie.watched
+                    }</a>
+                  )}
                 </span>
                 <span className="loc">
                   {movie.watchedLocation? movie.watchedLocation: ""}
@@ -343,7 +355,15 @@ export const Catalog = () => {
             <div className={`diaryPopup${openDiaryPopup === movie.id ? ' diaryPopupOpen' : ''}`}>
               {[...movie.diaryEntries].reverse().map((entry, idx) => (
                 <div className="diaryPopupEntry" key={idx}>
-                  <span className="diaryPopupDate"><a href={entry.entryURL}>{entry.date.split("-").length > 3 ? entry.date.substring(0, 10) : entry.date}</a></span>
+                  <span className="diaryPopupDate">{entry.review ? (
+                    <a href="#" onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setOpenReview({title: movie.title, year: movie.year, date: entry.date.substring(0, 10), rating: entry.rating, rewatch: entry.rewatch, review: entry.review!, tags: entry.tags, lbDiaryLink: entry.entryURL});
+                    }}>{entry.date.split("-").length > 3 ? entry.date.substring(0, 10) : entry.date}</a>
+                  ) : (
+                    <a href={entry.entryURL}>{entry.date.split("-").length > 3 ? entry.date.substring(0, 10) : entry.date}</a>
+                  )}</span>
                   <span className="diaryPopupRating">{entry.rating}</span>
                   <span className="diaryPopupLocation">{entry.location}</span>
                 </div>
@@ -367,6 +387,35 @@ export const Catalog = () => {
     </div>}
     </div>
       ))}
+      {openReview && (
+        <div className="reviewOverlay" onClick={() => setOpenReview(null)}>
+          <div className="reviewModal" onClick={(e) => e.stopPropagation()}>
+            <div className="reviewModalHeader">
+              <div className="reviewModalHeaderContent">
+                <div className="reviewModalTitleLine">
+                  <span className="reviewModalFilmTitle">{openReview.title}</span>
+                  {openReview.year && <span className="reviewModalYear">{openReview.year}</span>}
+                </div>
+                <div className="reviewModalWatchedRow">
+                  <span className="reviewModalWatched">
+                    {openReview.rewatch ? "Rewatched" : "Watched"} {openReview.lbDiaryLink ? <a href={openReview.lbDiaryLink}>{openReview.date}</a> : openReview.date}
+                  </span>
+                  {openReview.rating && <span className="reviewModalRating">{openReview.rating}</span>}
+                </div>
+              </div>
+              <button className="reviewModalClose" onClick={() => setOpenReview(null)}>×</button>
+            </div>
+            {openReview.tags && openReview.tags.length > 0 && (
+              <div className="reviewModalTags">
+                {openReview.tags.map((tag, i) => (
+                  <span className="tag" key={i}>{tag}</span>
+                ))}
+              </div>
+            )}
+            <div className="reviewModalBody" dangerouslySetInnerHTML={{__html: openReview.review}} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

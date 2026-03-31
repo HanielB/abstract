@@ -375,6 +375,8 @@ function populateMovie(movie : any, date: Date[], loc: RegExp, rating: number[],
     lbFilmLink: movie.lbURL,
     directors : movie.directors,
     available : movie.available,
+    review : (entries.length > 0 && entries[entries.length - 1].review) ? entries[entries.length - 1].review : undefined,
+    reviewTags : (entries.length > 0) ? entries[entries.length - 1].tags : undefined,
     views : views,
     previousView : previousView,
     diaryEntries : (views > 1 && entries) ? entries.map((e: any) => ({
@@ -382,6 +384,9 @@ function populateMovie(movie : any, date: Date[], loc: RegExp, rating: number[],
       rating: e.rating.str,
       location: e.location,
       entryURL: e.entryURL,
+      review: e.review || undefined,
+      rewatch: e.rewatch || false,
+      tags: e.tags || undefined,
     })) : undefined,
     collectionId :
     movie.collection.id !== -1 ? movie.collection.id : undefined,
@@ -473,7 +478,8 @@ Movie[] {
         lbFilmLink: movie.lbURL,
         directors : movie.directors,
         rewatch : entry.rewatch,
-        available : movie.available
+        available : movie.available,
+        review : entry.review || undefined,
       })
     });
   }
@@ -799,6 +805,9 @@ export interface DiaryEntry {
   rating: string;
   location: string;
   entryURL: string;
+  review?: string;
+  rewatch?: boolean;
+  tags?: string[];
 }
 
 export interface Movie {
@@ -824,5 +833,7 @@ export interface Movie {
   collectionName?: string;
   country?: string
   watchedLocation?: string
+  review?: string;
+  reviewTags?: string[];
   diaryEntries?: DiaryEntry[];
 }

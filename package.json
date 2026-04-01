@@ -21,6 +21,7 @@
     "typescript": "^4.0.2"
   },
   "scripts": {
+    "postinstall": "sed -i 's/throw new Error(\"\\[HMR\\] Hot Module Replacement is disabled.\"/console.warn(\"[HMR] Hot Module Replacement is disabled.\"/' node_modules/webpack/hot/dev-server.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

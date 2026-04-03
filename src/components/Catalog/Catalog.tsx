@@ -17,7 +17,7 @@ export const Catalog = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const [openDiaryPopup, setOpenDiaryPopup] = useState<number | null>(null);
-  const [openReview, setOpenReview] = useState<{title: string, year?: string, date: string, rating?: string, rewatch?: boolean, review: string, tags?: string[], lbDiaryLink?: string, location?: string, diaryEntries?: DiaryEntry[]} | null>(null);
+  const [openReview, setOpenReview] = useState<{title: string, year?: string, date: string, rating?: string, rewatch?: boolean, review: string, tags?: string[], lbDiaryLink?: string, location?: string, diaryEntries?: DiaryEntry[], previousView?: boolean} | null>(null);
   const [diaryExpanded, setDiaryExpanded] = useState(false);
 
   const updateContainerWidth = useCallback(() => {
@@ -280,7 +280,7 @@ export const Catalog = () => {
                     <a href="#" onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      setOpenReview({title: movie.title, year: movie.year, date: movie.watched?.substring(0, 10) || "", rating: movie.rating, rewatch: movie.rewatch, review: movie.review || "", tags: movie.reviewTags || movie.tags, lbDiaryLink: movie.lbDiaryLink, location: movie.watchedLocation, diaryEntries: movie.diaryEntries});
+                      setOpenReview({title: movie.title, year: movie.year, date: movie.watched?.substring(0, 10) || "", rating: movie.rating, rewatch: movie.rewatch, review: movie.review || "", tags: movie.reviewTags || movie.tags, lbDiaryLink: movie.lbDiaryLink, location: movie.watchedLocation, diaryEntries: movie.diaryEntries, previousView: movie.previousView});
                       setDiaryExpanded(false);
                     }}>{
                       movie.watched && movie.watched.split("-").length > 3?
@@ -400,7 +400,7 @@ export const Catalog = () => {
                 </div>
                 <div className="reviewModalWatchedRow">
                   <span className="reviewModalWatched">
-                    {openReview.rewatch ? "Rewatched" : "Watched"} {openReview.lbDiaryLink ? <a href={openReview.lbDiaryLink}>{openReview.date}</a> : openReview.date}
+                    {(openReview.previousView || (openReview.diaryEntries && openReview.diaryEntries[0]?.date.substring(0, 10) !== openReview.date)) ? "Rewatched" : "Watched"} {openReview.lbDiaryLink ? <a href={openReview.lbDiaryLink}>{openReview.date}</a> : openReview.date}
                   </span>
                   {openReview.rating && <span className="reviewModalRating">{openReview.rating}</span>}
                 </div>

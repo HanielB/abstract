@@ -393,17 +393,24 @@ export const Search = () => {
                   <label htmlFor="collection">Collection</label>
                 </div>
                 <div>
-                  <input type="checkbox" id="posteronly" checked={posterOnly} onChange={(e) => setPosterOnly(e.target.checked)} title="Show only posters, hiding the info panel"/>
+                  <input type="checkbox" id="posteronly" checked={posterOnly} onChange={(e) => {
+                    setPosterOnly(e.target.checked);
+                    if (!e.target.checked && cardsPerRow > 10) {
+                      setCardsPerRow(10);
+                      localStorage.setItem("cardsPerRow", "10");
+                    }
+                  }} title="Show only posters, hiding the info panel"/>
                   <label htmlFor="posteronly">No card</label>
                 </div>
               </div>
             </fieldset>
             <div className="card-size-slider">
-              <label>Cards per row</label>
+              <label>Row size</label>
               <input
+                key={posterOnly ? "poster" : "card"}
                 type="range"
                 min="1"
-                max="20"
+                max={posterOnly ? 20 : 10}
                 step="1"
                 title={`${cardsPerRow}`}
                 value={cardsPerRow}

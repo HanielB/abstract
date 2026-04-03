@@ -17,7 +17,8 @@ export const Catalog = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const [openDiaryPopup, setOpenDiaryPopup] = useState<number | null>(null);
-  const [openReview, setOpenReview] = useState<{title: string, year?: string, date: string, rating?: string, rewatch?: boolean, review: string, tags?: string[], lbDiaryLink?: string, location?: string} | null>(null);
+  const [openReview, setOpenReview] = useState<{title: string, year?: string, date: string, rating?: string, rewatch?: boolean, review: string, tags?: string[], lbDiaryLink?: string, location?: string, diaryEntries?: DiaryEntry[]} | null>(null);
+  const [diaryExpanded, setDiaryExpanded] = useState(false);
 
   const updateContainerWidth = useCallback(() => {
     if (containerRef.current) {
@@ -30,6 +31,14 @@ export const Catalog = () => {
     window.addEventListener("resize", updateContainerWidth);
     return () => window.removeEventListener("resize", updateContainerWidth);
   }, [updateContainerWidth]);
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenReview(null);
+    };
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, []);
 
   useEffect(() => {
     if (openDiaryPopup === null) return;
@@ -268,21 +277,15 @@ export const Catalog = () => {
             <div className="watchedRating">
               <div className="watchedDateLoc">
                 <span className="watched">
-                  {movie.review ? (
                     <a href="#" onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      setOpenReview({title: movie.title, year: movie.year, date: movie.watched?.substring(0, 10) || "", rating: movie.rating, rewatch: movie.rewatch, review: movie.review!, tags: movie.reviewTags || movie.tags, lbDiaryLink: movie.lbDiaryLink, location: movie.watchedLocation});
+                      setOpenReview({title: movie.title, year: movie.year, date: movie.watched?.substring(0, 10) || "", rating: movie.rating, rewatch: movie.rewatch, review: movie.review || "", tags: movie.reviewTags || movie.tags, lbDiaryLink: movie.lbDiaryLink, location: movie.watchedLocation, diaryEntries: movie.diaryEntries});
+                      setDiaryExpanded(false);
                     }}>{
                       movie.watched && movie.watched.split("-").length > 3?
                                                                          movie.watched.substring(0, 10) : movie.watched
                     }</a>
-                  ) : (
-                    <a href={movie.lbDiaryLink}>{
-                      movie.watched && movie.watched.split("-").length > 3?
-                                                                         movie.watched.substring(0, 10) : movie.watched
-                    }</a>
-                  )}
                 </span>
                 <span className="loc">
                   {movie.watchedLocation? movie.watchedLocation: ""}
@@ -355,15 +358,14 @@ export const Catalog = () => {
             <div className={`diaryPopup${openDiaryPopup === movie.id ? ' diaryPopupOpen' : ''}`}>
               {[...movie.diaryEntries].reverse().map((entry, idx) => (
                 <div className="diaryPopupEntry" key={idx}>
-                  <span className="diaryPopupDate">{entry.review ? (
+                  <span className="diaryPopupDate">
                     <a href="#" onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      setOpenReview({title: movie.title, year: movie.year, date: entry.date.substring(0, 10), rating: entry.rating, rewatch: entry.rewatch, review: entry.review!, tags: entry.tags, lbDiaryLink: entry.entryURL, location: entry.location});
+                      setOpenReview({title: movie.title, year: movie.year, date: entry.date.substring(0, 10), rating: entry.rating, rewatch: entry.rewatch, review: entry.review || "", tags: entry.tags, lbDiaryLink: entry.entryURL, location: entry.location, diaryEntries: movie.diaryEntries});
+                      setDiaryExpanded(false);
                     }}>{entry.date.split("-").length > 3 ? entry.date.substring(0, 10) : entry.date}</a>
-                  ) : (
-                    <a href={entry.entryURL}>{entry.date.split("-").length > 3 ? entry.date.substring(0, 10) : entry.date}</a>
-                  )}</span>
+                  </span>
                   <span className="diaryPopupRating">{entry.rating}</span>
                   <span className="diaryPopupLocation">{entry.location}</span>
                 </div>
@@ -413,7 +415,32 @@ export const Catalog = () => {
                 ))}
               </div>
             )}
-            <div className="reviewModalBody" dangerouslySetInnerHTML={{__html: openReview.review}} />
+            {openReview.diaryEntries && openReview.diaryEntries.filter(e => e.date.substring(0, 10) !== openReview.date).length > 0 && (
+              <div className="reviewModalDiary">
+                <div className="reviewModalDiaryToggle" onClick={() => setDiaryExpanded(!diaryExpanded)}>
+                  {diaryExpanded ? "▾" : "▸"} Other entries
+                </div>
+                {diaryExpanded && (
+                  <div className="reviewModalDiaryEntries">
+                    {[...openReview.diaryEntries].reverse().filter(e => e.date.substring(0, 10) !== openReview.date).map((entry, idx) => (
+                      <div className="diaryPopupEntry" key={idx}>
+                        <span className="diaryPopupPA">{entry.date.substring(0, 10) < openReview.date ? "[p]" : "[a]"}</span>
+                        <span className="diaryPopupDate">
+                          <a href="#" onClick={(e) => {
+                            e.preventDefault();
+                            setOpenReview({...openReview, date: entry.date.substring(0, 10), rating: entry.rating, rewatch: entry.rewatch, review: entry.review || "", tags: entry.tags, lbDiaryLink: entry.entryURL, location: entry.location});
+                            setDiaryExpanded(false);
+                          }}>{entry.date.split("-").length > 3 ? entry.date.substring(0, 10) : entry.date}</a>
+                        </span>
+                        <span className="diaryPopupRating">{entry.rating}</span>
+                        <span className="diaryPopupLocation">{entry.location}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+            <div className="reviewModalBody" dangerouslySetInnerHTML={openReview.review ? {__html: openReview.review} : undefined} />
           </div>
         </div>
       )}

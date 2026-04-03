@@ -480,6 +480,15 @@ Movie[] {
         rewatch : entry.rewatch,
         available : movie.available,
         review : entry.review || undefined,
+        diaryEntries : movie.diary.length > 1 ? movie.diary.map((e: any) => ({
+          date: e.date,
+          rating: e.rating.str,
+          location: e.location,
+          entryURL: e.entryURL,
+          review: e.review || undefined,
+          rewatch: e.rewatch || false,
+          tags: e.tags || undefined,
+        })) : undefined,
       })
     });
   }

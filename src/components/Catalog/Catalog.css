@@ -460,6 +460,11 @@ a:active {
     min-width: 60px;
 }
 
+.diaryPopupPA {
+    color: #666;
+    font-size: 0.7rem;
+}
+
 .diaryPopupLocation {
     color: #999;
 }
@@ -582,7 +587,27 @@ a:active {
     display: flex;
     flex-flow: row wrap;
     gap: .25rem;
+    padding: 0.4rem 1.2rem;
+}
+
+.reviewModalDiary {
     padding: 0.8rem 1.2rem 0;
+    border-top: 1px solid #333;
+}
+
+.reviewModalDiaryToggle {
+    font-size: 0.85rem;
+    color: #999;
+    cursor: pointer;
+    user-select: none;
+}
+
+.reviewModalDiaryToggle:hover {
+    color: #ccc;
+}
+
+.reviewModalDiaryEntries {
+    padding-top: 4px;
 }
 
 .reviewModalBody {

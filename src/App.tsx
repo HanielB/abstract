@@ -312,26 +312,39 @@ function App() {
             {
               listName === "" ? <Search></Search> :
               <div className="header-slider">
-                <label>Cards per row</label>
-                <input
-                  type="range"
-                  min="1"
-                  max="20"
-                  step="1"
-                  title={`${cardsPerRow}`}
-                  value={cardsPerRow}
-                  onChange={(e) => {
-                    const val = parseInt(e.target.value, 10);
-                    setCardsPerRow(val);
-                    localStorage.setItem("cardsPerRow", val.toString());
-                  }}
-                />
+                <div>
+                  <input type="checkbox" id="posteronly-list" checked={posterOnly} onChange={(e) => {
+                    setPosterOnly(e.target.checked);
+                    if (!e.target.checked && cardsPerRow > 10) {
+                      setCardsPerRow(10);
+                      localStorage.setItem("cardsPerRow", "10");
+                    }
+                  }} />
+                  <label htmlFor="posteronly-list">No card</label>
+                </div>
+                <div>
+                  <label>Row size</label>
+                  <input
+                    key={posterOnly ? "poster" : "card"}
+                    type="range"
+                    min="1"
+                    max={posterOnly ? 20 : 10}
+                    step="1"
+                    title={`${cardsPerRow}`}
+                    value={cardsPerRow}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value, 10);
+                      setCardsPerRow(val);
+                      localStorage.setItem("cardsPerRow", val.toString());
+                    }}
+                  />
+                </div>
               </div>
             }
           </div>
         </div>
         <Catalog></Catalog>
-        <ResultsChart />
+        {listName === "" && <ResultsChart />}
         {start?
          <div className="header">
            <h2 className="header__title">Year in review</h2>

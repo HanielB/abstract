@@ -12,10 +12,11 @@
 .header-slider {
   position: absolute;
   bottom: 0.5rem;
+  left: 1rem;
   right: 1rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between;
   font-size: 0.9rem;
 }
 

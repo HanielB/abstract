@@ -275,7 +275,7 @@ export const Catalog = () => {
               </span>
             </div>
             <div className="watchedRating">
-              <div className="watchedDateLoc">
+              <div className="watchedDateLoc" style={movie.views !== undefined ? {visibility: 'hidden'} : undefined}>
                 <span className="watched">
                     <a href="#" onClick={(e) => {
                       e.preventDefault();
@@ -344,7 +344,7 @@ export const Catalog = () => {
         {movie.runtime}min
       </span>
       {
-        (movie.views && (movie.views > 1 || movie.previousView))?
+        (movie.views !== undefined && (movie.views > 0 || movie.previousView))?
         <span className="views" onClick={(e) => {
           e.stopPropagation();
           setOpenDiaryPopup(openDiaryPopup === movie.id ? null : movie.id);
@@ -354,7 +354,7 @@ export const Catalog = () => {
           <span className="floatingNumber">
             {movie.views}{movie.previousView? "+" : ""}
           </span>
-          {movie.diaryEntries && movie.diaryEntries.length > 1 &&
+          {movie.diaryEntries && movie.diaryEntries.length > 0 &&
             <div className={`diaryPopup${openDiaryPopup === movie.id ? ' diaryPopupOpen' : ''}`}>
               {[...movie.diaryEntries].reverse().map((entry, idx) => (
                 <div className="diaryPopupEntry" key={idx}>

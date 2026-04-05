@@ -374,11 +374,15 @@ a:active {
 .rewatch {
     display: flex;
     flex: 2 1 0;
-    /* flex-flow: column nowrap; */
-    overflow: hidden;
-    /* overflow-y: hidden; */
     position: relative;
     justify-content: flex-end;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.rewatch img {
+    max-height: 22px;
+    max-width: 22px;
 }
 
 .views {
@@ -400,6 +404,12 @@ a:active {
 .watchedImg {
     height:30px;
     margin:-3px 0px 0px 0px;
+}
+
+.cardCinema {
+    height: 20px;
+    width: 20px;
+    opacity: 0.7;
 }
 
 .floatingNumber{
@@ -467,6 +477,13 @@ a:active {
 
 .diaryPopupLocation {
     color: #999;
+}
+
+.diaryPopupCinema {
+    width: 16px;
+    height: 12px;
+    opacity: 0.6;
+    filter: invert(1);
 }
 
 .diaryPopupOpen {

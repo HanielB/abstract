@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 36" fill="currentColor">
+  <!-- Light beam -->
+  <polygon points="26,17 42,8 42,30 26,23" opacity="0.25"/>
+  <!-- Large reel - outer ring -->
+  <circle cx="19" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+  <!-- Large reel - hub -->
+  <circle cx="19" cy="8" r="2.2"/>
+  <!-- Large reel - 8 wedge cutouts (oval holes between spokes) -->
+  <ellipse cx="19" cy="3.2" rx="1.2" ry="0.9"/>
+  <ellipse cx="22.4" cy="4.6" rx="0.9" ry="1.2" transform="rotate(45,22.4,4.6)"/>
+  <ellipse cx="23.8" cy="8" rx="0.9" ry="1.2"/>
+  <ellipse cx="22.4" cy="11.4" rx="0.9" ry="1.2" transform="rotate(-45,22.4,11.4)"/>
+  <ellipse cx="19" cy="12.8" rx="1.2" ry="0.9"/>
+  <ellipse cx="15.6" cy="11.4" rx="0.9" ry="1.2" transform="rotate(45,15.6,11.4)"/>
+  <ellipse cx="14.2" cy="8" rx="0.9" ry="1.2"/>
+  <ellipse cx="15.6" cy="4.6" rx="0.9" ry="1.2" transform="rotate(-45,15.6,4.6)"/>
+  <!-- Small reel - outer ring -->
+  <circle cx="10.5" cy="11.5" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <!-- Small reel - hub -->
+  <circle cx="10.5" cy="11.5" r="1.5"/>
+  <!-- Small reel - 6 holes -->
+  <circle cx="10.5" cy="8.5" r="0.7"/>
+  <circle cx="13.1" cy="10" r="0.7"/>
+  <circle cx="13.1" cy="13" r="0.7"/>
+  <circle cx="10.5" cy="14.5" r="0.7"/>
+  <circle cx="7.9" cy="13" r="0.7"/>
+  <circle cx="7.9" cy="10" r="0.7"/>
+  <!-- Projector body -->
+  <rect x="7" y="16" width="17" height="9" rx="1.5"/>
+  <!-- Lens cone -->
+  <polygon points="24,17.5 29,15 29,25 24,24"/>
+  <!-- Lens ring -->
+  <ellipse cx="29" cy="20" rx="1.2" ry="5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+  <!-- Tripod - short neck from body to joint -->
+  <line x1="15.5" y1="25" x2="15.5" y2="28" stroke="currentColor" stroke-width="2"/>
+  <!-- Tripod joint -->
+  <circle cx="15.5" cy="28" r="1.2"/>
+  <!-- Tripod legs from joint -->
+  <line x1="15.5" y1="28" x2="4" y2="36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <line x1="15.5" y1="28" x2="15.5" y2="36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <line x1="15.5" y1="28" x2="27" y2="36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg>

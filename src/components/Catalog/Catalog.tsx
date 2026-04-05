@@ -5,6 +5,7 @@ import viewsImg from "./watched.png";
 import rewatchImg from "./two-circular-arrows.png";
 import watchlistImg from "./not-watched.png";
 import downloadImg from "./download.png";
+import cinemaImg from "./cinema.svg";
 import { MoviesContext } from "../../services/context";
 import { Movie, DiaryEntry, getMovies } from "../../services/movies.service";
 
@@ -307,7 +308,7 @@ export const Catalog = () => {
           {movie.collectionName}
         </span>
         : (movie.tags)?
-        movie.tags.map((tag) => (
+        movie.tags.filter((tag) => tag !== "cinema").map((tag) => (
           <span className="tag"
                 onClick={(e) => getTag(tag)}>
             {tag}
@@ -343,8 +344,7 @@ export const Catalog = () => {
       <span className="runtime">
         {movie.runtime}min
       </span>
-      {
-        (movie.views !== undefined && (movie.views > 0 || movie.previousView))?
+      {movie.views !== undefined && (movie.views > 0 || movie.previousView) &&
         <span className="views" onClick={(e) => {
           e.stopPropagation();
           setOpenDiaryPopup(openDiaryPopup === movie.id ? null : movie.id);
@@ -368,22 +368,23 @@ export const Catalog = () => {
                   </span>
                   <span className="diaryPopupRating">{entry.rating}</span>
                   <span className="diaryPopupLocation">{entry.location}</span>
+                  {entry.tags && entry.tags.includes("cinema") && <img src={cinemaImg} className="diaryPopupCinema" alt="cinema" />}
                 </div>
               ))}
             </div>
           }
         </span>
-        : (movie.rewatch)?
+      }
+      {movie.watchlist && movie.views === undefined &&
         <span className="rewatch">
-          <img src={rewatchImg}
-          />
+          <img src={watchlistImg} />
         </span>
-        : (movie.watchlist)?
+      }
+      {(movie.rewatch || (movie.tags && movie.tags.includes("cinema"))) && movie.views === undefined &&
         <span className="rewatch">
-          <img src={watchlistImg}
-          />
+          {movie.rewatch && <img src={rewatchImg} />}
+          {movie.tags && movie.tags.includes("cinema") && <img src={cinemaImg} className="cardCinema" alt="cinema" />}
         </span>
-        : <span></span>
       }
     </div>
     </div>}
@@ -434,6 +435,7 @@ export const Catalog = () => {
                         </span>
                         <span className="diaryPopupRating">{entry.rating}</span>
                         <span className="diaryPopupLocation">{entry.location}</span>
+                        {entry.tags && entry.tags.includes("cinema") && <img src={cinemaImg} className="diaryPopupCinema" alt="cinema" />}
                       </div>
                     ))}
                   </div>

@@ -131,6 +131,8 @@ function App() {
   const [searchRewatch, setSearchRewatch] = useState("");
   const [searchAvailable, setSearchAvailable] = useState("");
   const [showLists, setShowLists] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [listMaster, setListMaster] = useState<any>(null);
 
   const setMovies = (movies) => {
     _setMovies([]);
@@ -270,6 +272,7 @@ function App() {
               setListName(resList.title);
               console.log("Loading list ", resList.title, ": ids ", resList.movies);
               let idsSet = new Set<Number>(resList.movies.map((id) => Number(id)));
+              setListMaster({movies: loadedSrc.movies.filter((m: any) => idsSet.has(m.tmdbId))});
               getMoviesFromIds(loadedSrc, idsSet)
                 .then((movies) => {setMovies(movies)})
             });
@@ -278,6 +281,7 @@ function App() {
         {
           let idsArray = ids.split(";");
           let idsSet = new Set(idsArray.map((id) => Number(id)));
+          setListMaster({movies: loadedSrc.movies.filter((m: any) => idsSet.has(m.tmdbId))});
 
           if (header)
           {
@@ -394,7 +398,7 @@ function App() {
   return (
     <MoviesContext.Provider value={
     {master, movies, selected, updateMovies: setMovies,
-     start, loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, posterOnly, setPosterOnly, cardsPerRow, setCardsPerRow, setStart: setStart, setLoading: setLoading, setSelected: setSelected, setListName: setListName, showLists, setShowLists }}>
+     start, loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, posterOnly, setPosterOnly, cardsPerRow, setCardsPerRow, setStart: setStart, setLoading: setLoading, setSelected: setSelected, setListName: setListName, showLists, setShowLists, listMaster }}>
       <div className="App">
         <div className="header">
           <h1 className="header__title">
@@ -403,6 +407,10 @@ function App() {
           <div className="header__search">
             {
               listName === "" ? <Search></Search> :
+              showSearch ? <>
+                <Search></Search>
+                <button className="listsButton" style={{marginTop: "0.5rem"}} onClick={() => setShowSearch(false)}>Hide search</button>
+              </> : <><button className="listsButton" style={{marginTop: "1rem"}} onClick={() => setShowSearch(true)}>Search</button>
               <div className="header-slider">
                 <div>
                   <input type="checkbox" id="posteronly-list" checked={posterOnly} onChange={(e) => {
@@ -431,7 +439,7 @@ function App() {
                     }}
                   />
                 </div>
-              </div>
+              </div></>
             }
           </div>
         </div>

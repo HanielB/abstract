@@ -21,7 +21,7 @@ export const Search = () => {
   const [rewatch, setRewatch] = useState("");
   const [available, setAvailable] = useState("");
 
-  const {master, movies, updateMovies, setStart, setLoading, setListName, posterOnly, setPosterOnly, cardsPerRow, setCardsPerRow, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setShowLists } = useContext(MoviesContext);
+  const {master, movies, updateMovies, setStart, setLoading, setListName, posterOnly, setPosterOnly, cardsPerRow, setCardsPerRow, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setShowLists, listName, listMaster } = useContext(MoviesContext);
 
 
   const synced = useRef(false);
@@ -188,7 +188,7 @@ export const Search = () => {
     setSearchSorting(sorting || "watched");
     setSearchRewatch(rewatch || "yes");
 
-    getMovies(master, title, year, date, rating, runtime, tags,
+    getMovies(listMaster || master, title, year, date, rating, runtime, tags,
               director, writer, actor, genre, country, studio,
               sorting ? sorting : "watched", onlywatched,
               watchlist, rewatch, available, providers)

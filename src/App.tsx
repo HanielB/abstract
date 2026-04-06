@@ -7,6 +7,97 @@ import HomeChart from "./components/HomeChart/HomeChart";
 import { Movie, convertMovie, getMovies, getMoviesFromIds } from "./services/movies.service";
 import { MoviesContext } from "./services/context";
 
+interface ListEntry { file: string; title: string; count: number; preview: number[]; }
+
+function categorizeList(entry: ListEntry): string {
+  const f = entry.file;
+  if (f.match(/^\d{4}best$/) ) return "Best of year";
+  if (f.includes("bestFirstWatch") || f.includes("bestNewFirstWatch") || f.includes("bestOldFirstWatch") || f.includes("bestNewFirstWatched") || f.includes("bestOldFirstWatched")) return "Best first watches";
+  if (f.includes("honorable")) return "Honorable mentions";
+  if (f.startsWith("directors-")) return "Directors";
+  if (f.startsWith("best")) return "Best of genre";
+  return "Other";
+}
+
+function ListsPopup({ master, onClose }: { master: any[]; onClose: () => void }) {
+  const [lists, setLists] = useState<ListEntry[]>([]);
+  useEffect(() => {
+    fetch("./lists/index.json")
+      .then(res => res.json())
+      .then((data: ListEntry[]) => setLists(data))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [onClose]);
+
+  // Build poster lookup from master
+  const posterMap = React.useMemo(() => {
+    const map = new Map<number, string>();
+    const movies = Array.isArray(master) ? master : (master as any).movies;
+    if (!movies) return map;
+    for (let i = 0; i < movies.length; i++) {
+      const m = movies[i] as any;
+      if (m.tmdbId && m.posterPath) map.set(Number(m.tmdbId), m.posterPath);
+    }
+    return map;
+  }, [master]);
+
+  const categories = ["Best of year", "Best first watches", "Honorable mentions", "Best of genre", "Directors", "Other"];
+  const [collapsedCats, setCollapsedCats] = useState<Set<string>>(new Set(["Best of year"]));
+  const grouped = new Map<string, ListEntry[]>();
+  for (const entry of lists) {
+    const cat = categorizeList(entry);
+    if (!grouped.has(cat)) grouped.set(cat, []);
+    grouped.get(cat)!.push(entry);
+  }
+  grouped.get("Best of year")?.sort((a, b) => b.file.localeCompare(a.file));
+  grouped.get("Best first watches")?.sort((a, b) => b.file.localeCompare(a.file));
+
+  return (
+    <div className="listsOverlay" onClick={onClose}>
+      <div className="listsModal" onClick={e => e.stopPropagation()}>
+        <div className="listsModalHeader">
+          <h2>Lists</h2>
+          <button className="listsModalClose" onClick={onClose}>&times;</button>
+        </div>
+        <div className="listsModalBody">
+          {categories.filter(cat => grouped.has(cat)).map(cat => (
+            <div key={cat} className="listsCategory">
+              <h3 className="listsCategoryTitle" onClick={() => setCollapsedCats(prev => {
+                const next = new Set(prev);
+                next.has(cat) ? next.delete(cat) : next.add(cat);
+                return next;
+              })}>{collapsedCats.has(cat) ? "\u25b6" : "\u25bc"} {cat}</h3>
+              {!collapsedCats.has(cat) && <div className="listsGrid">
+                {grouped.get(cat)!.map(entry => (
+                  <a key={entry.file} href={`?list=${entry.file}`} className="listCard">
+                    <div className="listCardPosters">
+                      {entry.preview.map((id, i) => {
+                        const poster = posterMap.get(id);
+                        return poster
+                          ? <img key={i} src={`https://image.tmdb.org/t/p/w92${poster}`} alt="" className="listCardPoster" />
+                          : <div key={i} className="listCardPosterPlaceholder" />;
+                      })}
+                    </div>
+                    <div className="listCardInfo">
+                      <span className="listCardTitle">{entry.title}</span>
+                      <span className="listCardCount">{entry.count} films</span>
+                    </div>
+                  </a>
+                ))}
+              </div>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
 
   const url = new URL(window.location.href);
@@ -39,6 +130,7 @@ function App() {
   const [searchSorting, setSearchSorting] = useState("");
   const [searchRewatch, setSearchRewatch] = useState("");
   const [searchAvailable, setSearchAvailable] = useState("");
+  const [showLists, setShowLists] = useState(false);
 
   const setMovies = (movies) => {
     _setMovies([]);
@@ -302,7 +394,7 @@ function App() {
   return (
     <MoviesContext.Provider value={
     {master, movies, selected, updateMovies: setMovies,
-     start, loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, posterOnly, setPosterOnly, cardsPerRow, setCardsPerRow, setStart: setStart, setLoading: setLoading, setSelected: setSelected, setListName: setListName }}>
+     start, loading, listName, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, posterOnly, setPosterOnly, cardsPerRow, setCardsPerRow, setStart: setStart, setLoading: setLoading, setSelected: setSelected, setListName: setListName, showLists, setShowLists }}>
       <div className="App">
         <div className="header">
           <h1 className="header__title">
@@ -371,6 +463,7 @@ function App() {
            <HomeChart />
            </div>
          :<div></div>}
+        {showLists && <ListsPopup master={master} onClose={() => setShowLists(false)} />}
       </div>
     </MoviesContext.Provider>
   );

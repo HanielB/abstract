@@ -21,7 +21,7 @@ export const Search = () => {
   const [rewatch, setRewatch] = useState("");
   const [available, setAvailable] = useState("");
 
-  const {master, movies, updateMovies, setStart, setLoading, setListName, posterOnly, setPosterOnly, cardsPerRow, setCardsPerRow, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch } = useContext(MoviesContext);
+  const {master, movies, updateMovies, setStart, setLoading, setListName, posterOnly, setPosterOnly, cardsPerRow, setCardsPerRow, setSearchWatched, setSearchRating, setSearchTags, setSearchTitle, setSearchYear, setSearchRuntime, setSearchDirector, setSearchWriter, setSearchActor, setSearchGenre, setSearchCountry, setSearchStudio, setSearchSingleton, setSearchWatchlist, setSearchAvailable, setSearchSorting, setSearchRewatch, searchTitle, searchYear, searchRuntime, searchWatched, searchRating, searchTags, searchDirector, searchGenre, searchCountry, searchWriter, searchActor, searchStudio, searchSingleton, searchWatchlist, searchAvailable, searchSorting, searchRewatch, setShowLists } = useContext(MoviesContext);
 
 
   const synced = useRef(false);
@@ -432,6 +432,7 @@ export const Search = () => {
         <div className="form_buttons_search">
           <button name="Button" className="search__button" type="submit">Search</button>
           <button name="Button" className="search__button" type="button" onClick={() => copyIdsUrl()}>Copy URL</button>
+          <button name="Button" className="search__button" type="button" onClick={() => setShowLists(true)}>Lists</button>
         </div>
       </form>
     </div>

@@ -51,6 +51,8 @@ export const MoviesContext = React.createContext<{
   setLoading : Function;
   setSelected : Function;
   setListName : Function;
+  showLists : boolean;
+  setShowLists : Function;
 }>({
   master: [],
   movies: [],
@@ -100,5 +102,7 @@ export const MoviesContext = React.createContext<{
   setStart : Function,
   setLoading : Function,
   setSelected : Function,
-  setListName : Function
+  setListName : Function,
+  showLists : false,
+  setShowLists : Function
 });

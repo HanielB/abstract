@@ -1,0 +1,386 @@
+[
+  {
+    "file": "2015best",
+    "title": "Best of 2015",
+    "count": 7,
+    "preview": [
+      76341,
+      354759,
+      258480,
+      273248,
+      354275
+    ]
+  },
+  {
+    "file": "2015bestFirstWatch",
+    "title": "Best first watched in 2015",
+    "count": 5,
+    "preview": [
+      77,
+      115,
+      679,
+      348,
+      1272
+    ]
+  },
+  {
+    "file": "2016best",
+    "title": "Best of 2016",
+    "count": 38,
+    "preview": [
+      334541,
+      376867,
+      290098,
+      372058,
+      293670
+    ]
+  },
+  {
+    "file": "2017best",
+    "title": "Best of 2017",
+    "count": 10,
+    "preview": [
+      400617,
+      434773,
+      398818,
+      399057,
+      434370
+    ]
+  },
+  {
+    "file": "2017bestFirstWatch",
+    "title": "Best first watched in 2017",
+    "count": 17,
+    "preview": [
+      2009,
+      1018,
+      25237,
+      43255,
+      198
+    ]
+  },
+  {
+    "file": "2018best",
+    "title": "Best of 2018",
+    "count": 10,
+    "preview": [
+      505192,
+      353081,
+      491584,
+      375262,
+      456086
+    ]
+  },
+  {
+    "file": "2018bestFirstWatch",
+    "title": "Best first watched in 2018",
+    "count": 10,
+    "preview": [
+      426,
+      14537,
+      797,
+      11075,
+      11645
+    ]
+  },
+  {
+    "file": "2019best",
+    "title": "Best of 2019",
+    "count": 10,
+    "preview": [
+      531428,
+      496243,
+      473019,
+      546554,
+      586940
+    ]
+  },
+  {
+    "file": "2019bestFirstWatch",
+    "title": "Best first watched in 2019",
+    "count": 15,
+    "preview": [
+      975,
+      11104,
+      60243,
+      44754,
+      1991
+    ]
+  },
+  {
+    "file": "2020best",
+    "title": "Best of 2020",
+    "count": 10,
+    "preview": [
+      581734,
+      600354,
+      -2,
+      500840,
+      580175
+    ]
+  },
+  {
+    "file": "2020bestFirstWatch",
+    "title": "Best old (until 2017) films first watched in 2020",
+    "count": 10,
+    "preview": [
+      43339,
+      14285,
+      38810,
+      103,
+      2757
+    ]
+  },
+  {
+    "file": "2021best",
+    "title": "Best of 2021",
+    "count": 10,
+    "preview": [
+      758866,
+      511819,
+      542178,
+      424277,
+      635731
+    ]
+  },
+  {
+    "file": "2021bestFirstWatch",
+    "title": "Best old (until 2018) films first watched in 2021",
+    "count": 10,
+    "preview": [
+      36095,
+      1429,
+      11644,
+      1883,
+      45935
+    ]
+  },
+  {
+    "file": "2022best",
+    "title": "Best of 2022",
+    "count": 10,
+    "preview": [
+      579974,
+      965150,
+      762504,
+      804095,
+      928001
+    ]
+  },
+  {
+    "file": "2022bestFirstWatch",
+    "title": "Best old (until 2019) films first watched in 2022",
+    "count": 10,
+    "preview": [
+      354759,
+      27324,
+      3085,
+      9426,
+      262
+    ]
+  },
+  {
+    "file": "2023best",
+    "title": "Best of 2023",
+    "count": 16,
+    "preview": [
+      466420,
+      872585,
+      912480,
+      1172675,
+      747188
+    ]
+  },
+  {
+    "file": "2023bestFirstWatch",
+    "title": "Best old (until 2020) films first watched in 2023",
+    "count": 12,
+    "preview": [
+      18148,
+      309,
+      25355,
+      37247,
+      592
+    ]
+  },
+  {
+    "file": "2024best",
+    "title": "Best of 2024",
+    "count": 10,
+    "preview": [
+      937287,
+      933260,
+      1064213,
+      1000837,
+      786892
+    ]
+  },
+  {
+    "file": "2024bestNewFirstWatch",
+    "title": "Best new (from 2022) films first watched in 2024",
+    "count": 15,
+    "preview": [
+      937287,
+      976893,
+      933260,
+      666277,
+      1000837
+    ]
+  },
+  {
+    "file": "2024bestOldFirstWatch",
+    "title": "Best old (until 2021) films first watched in 2024",
+    "count": 12,
+    "preview": [
+      24128,
+      11159,
+      851,
+      64,
+      8439
+    ]
+  },
+  {
+    "file": "2025best",
+    "title": "Best of 2025",
+    "count": 11,
+    "preview": [
+      1033148,
+      1317288,
+      1100988,
+      1220564,
+      1054867
+    ]
+  },
+  {
+    "file": "2025bestNewFirstWatched",
+    "title": "Best newer (from 2023) films first watched in 2025",
+    "count": 15,
+    "preview": [
+      912480,
+      1033148,
+      1064213,
+      1100988,
+      1077647
+    ]
+  },
+  {
+    "file": "2025bestOldFirstWatch",
+    "title": "Best older (until 2022) films first watched in 2025",
+    "count": 12,
+    "preview": [
+      99,
+      1391,
+      829,
+      105703,
+      7972
+    ]
+  },
+  {
+    "file": "2025honorable",
+    "title": "Honorable mentions among newer (from 2022) films first watched in 2025",
+    "count": 10,
+    "preview": [
+      812583,
+      1456349,
+      701387,
+      1244244,
+      1172265
+    ]
+  },
+  {
+    "file": "bestAnimations",
+    "title": "Best animations",
+    "count": 10,
+    "preview": [
+      12477,
+      863,
+      129,
+      862,
+      372058
+    ]
+  },
+  {
+    "file": "bestHorror",
+    "title": "Best horror",
+    "count": 11,
+    "preview": [
+      27324,
+      11075,
+      293670,
+      9426,
+      36095
+    ]
+  },
+  {
+    "file": "criterion-channels-selection-from-sight-and",
+    "title": "Criterion Channel's selection from Sight and Sound's list",
+    "count": 52,
+    "preview": [
+      44012,
+      18148,
+      14626,
+      776,
+      499
+    ]
+  },
+  {
+    "file": "directors-bong",
+    "title": "Bong Joon-ho, ranked",
+    "count": 7,
+    "preview": [
+      11423,
+      496243,
+      30018,
+      110415,
+      1255
+    ]
+  },
+  {
+    "file": "directors-mcqueen",
+    "title": "Steve McQueen, ranked",
+    "count": 9,
+    "preview": [
+      76025,
+      -1,
+      -1,
+      76203,
+      10360
+    ]
+  },
+  {
+    "file": "directors-rian-johnson",
+    "title": "Rian Johonson, ranked",
+    "count": 5,
+    "preview": [
+      546554,
+      59967,
+      661374,
+      9270,
+      181808
+    ]
+  },
+  {
+    "file": "directors-sciamma",
+    "title": "C\u00e9line Sciamma, ranked",
+    "count": 5,
+    "preview": [
+      531428,
+      266082,
+      65229,
+      10818,
+      749004
+    ]
+  },
+  {
+    "file": "directors-wachowskis",
+    "title": "The Wachowskis, ranked",
+    "count": 8,
+    "preview": [
+      603,
+      604,
+      7459,
+      605,
+      9303
+    ]
+  }
+]

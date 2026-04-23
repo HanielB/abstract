@@ -1,5 +1,41 @@
 [
   {
+    "file": "2000-2024-favorites",
+    "title": "2000-2024 favorites",
+    "count": 100,
+    "preview": [
+      843,
+      531428,
+      79,
+      670,
+      11423
+    ]
+  },
+  {
+    "file": "2000-2024-top-25",
+    "title": "2000-2024 top 25",
+    "count": 25,
+    "preview": [
+      843,
+      531428,
+      79,
+      670,
+      11423
+    ]
+  },
+  {
+    "file": "2015-2024",
+    "title": "Top 25 of films from 2015 to 2024",
+    "count": 25,
+    "preview": [
+      531428,
+      76341,
+      334541,
+      758866,
+      376867
+    ]
+  },
+  {
     "file": "2015best",
     "title": "Best of 2015",
     "count": 7,
@@ -288,6 +324,282 @@
     ]
   },
   {
+    "file": "a-day-in-the-life",
+    "title": "A day in the life",
+    "count": 6,
+    "preview": [
+      2009,
+      103328,
+      34653,
+      925,
+      334
+    ]
+  },
+  {
+    "file": "adaptations-and-beyond",
+    "title": "Adaptations and beyond",
+    "count": 14,
+    "preview": [
+      278,
+      353491,
+      694,
+      346364,
+      120
+    ]
+  },
+  {
+    "file": "best-endings",
+    "title": "Best endings",
+    "count": 9,
+    "preview": [
+      44214,
+      123678,
+      254578,
+      27205,
+      641
+    ]
+  },
+  {
+    "file": "best-first-watched-in-2015",
+    "title": "Best first watched in 2015",
+    "count": 5,
+    "preview": [
+      77,
+      115,
+      679,
+      348,
+      1272
+    ]
+  },
+  {
+    "file": "best-first-watched-in-2017",
+    "title": "Best first watched in 2017",
+    "count": 17,
+    "preview": [
+      2009,
+      1018,
+      25237,
+      43255,
+      198
+    ]
+  },
+  {
+    "file": "best-first-watched-in-2018",
+    "title": "Best first watched in 2018",
+    "count": 10,
+    "preview": [
+      426,
+      14537,
+      797,
+      11075,
+      11645
+    ]
+  },
+  {
+    "file": "best-first-watched-in-2019-1",
+    "title": "Best first watched in 2019",
+    "count": 15,
+    "preview": [
+      975,
+      11104,
+      60243,
+      44754,
+      1991
+    ]
+  },
+  {
+    "file": "best-first-watched-in-2019",
+    "title": "Best first watched in 2019",
+    "count": 7,
+    "preview": [
+      60243,
+      44754,
+      1991,
+      696,
+      3777
+    ]
+  },
+  {
+    "file": "best-long-films",
+    "title": "Best long films",
+    "count": 10,
+    "preview": [
+      466420,
+      346,
+      354759,
+      872585,
+      152584
+    ]
+  },
+  {
+    "file": "best-of-2014",
+    "title": "Best of 2014",
+    "count": 8,
+    "preview": [
+      265177,
+      265180,
+      85350,
+      250225,
+      266082
+    ]
+  },
+  {
+    "file": "best-of-2015",
+    "title": "Best of 2015",
+    "count": 6,
+    "preview": [
+      76341,
+      258480,
+      340275,
+      273248,
+      354275
+    ]
+  },
+  {
+    "file": "best-of-2016",
+    "title": "Best of 2016",
+    "count": 9,
+    "preview": [
+      334541,
+      376867,
+      290098,
+      372058,
+      293670
+    ]
+  },
+  {
+    "file": "best-of-2017",
+    "title": "Best of 2017",
+    "count": 10,
+    "preview": [
+      400617,
+      434773,
+      398818,
+      399057,
+      434370
+    ]
+  },
+  {
+    "file": "best-of-2018",
+    "title": "Best of 2018",
+    "count": 10,
+    "preview": [
+      505192,
+      491584,
+      375262,
+      353081,
+      456086
+    ]
+  },
+  {
+    "file": "best-of-2019",
+    "title": "Best of 2019",
+    "count": 10,
+    "preview": [
+      531428,
+      496243,
+      473019,
+      546554,
+      586940
+    ]
+  },
+  {
+    "file": "best-of-2020",
+    "title": "Best of 2020",
+    "count": 10,
+    "preview": [
+      581734,
+      600354,
+      -2,
+      500840,
+      580175
+    ]
+  },
+  {
+    "file": "best-of-2021",
+    "title": "Best of 2021",
+    "count": 10,
+    "preview": [
+      758866,
+      511819,
+      542178,
+      424277,
+      635731
+    ]
+  },
+  {
+    "file": "best-of-2022",
+    "title": "Best of 2022",
+    "count": 10,
+    "preview": [
+      579974,
+      965150,
+      762504,
+      804095,
+      928001
+    ]
+  },
+  {
+    "file": "best-of-2023",
+    "title": "Best of 2023",
+    "count": 16,
+    "preview": [
+      466420,
+      872585,
+      912480,
+      1172675,
+      747188
+    ]
+  },
+  {
+    "file": "best-of-2024",
+    "title": "Best of 2024",
+    "count": 10,
+    "preview": [
+      937287,
+      933260,
+      1064213,
+      1000837,
+      786892
+    ]
+  },
+  {
+    "file": "best-of-2025",
+    "title": "Best of 2025",
+    "count": 11,
+    "preview": [
+      1033148,
+      1317288,
+      1100988,
+      1220564,
+      1054867
+    ]
+  },
+  {
+    "file": "best-sequels",
+    "title": "Best sequels",
+    "count": 6,
+    "preview": [
+      155,
+      80,
+      10193,
+      346648,
+      679
+    ]
+  },
+  {
+    "file": "best-trilogies",
+    "title": "Best trilogies",
+    "count": 18,
+    "preview": [
+      862,
+      863,
+      10193,
+      76,
+      80
+    ]
+  },
+  {
     "file": "bestAnimations",
     "title": "Best animations",
     "count": 10,
@@ -312,6 +624,113 @@
     ]
   },
   {
+    "file": "blessed",
+    "title": "#blessed",
+    "count": 30,
+    "preview": [
+      1900,
+      776,
+      17962,
+      14807,
+      913823
+    ]
+  },
+  {
+    "file": "bong-joon-ho-ranked",
+    "title": "Bong Joon-ho, ranked",
+    "count": 7,
+    "preview": [
+      11423,
+      496243,
+      30018,
+      110415,
+      1255
+    ]
+  },
+  {
+    "file": "br",
+    "title": "BR",
+    "count": 28,
+    "preview": [
+      172270,
+      213223,
+      256959,
+      42167,
+      872989
+    ]
+  },
+  {
+    "file": "brodys-top-20-noirs",
+    "title": "Brody's top 20 noirs",
+    "count": 20,
+    "preview": [
+      37992,
+      129169,
+      910,
+      1938,
+      18030
+    ]
+  },
+  {
+    "file": "cannes-2017-competition",
+    "title": "Cannes 2017: Competition",
+    "count": 19,
+    "preview": [
+      451945,
+      451955,
+      399019,
+      451957,
+      442947
+    ]
+  },
+  {
+    "file": "celine-sciamma-ranked",
+    "title": "C\u00e9line Sciamma, ranked",
+    "count": 4,
+    "preview": [
+      531428,
+      266082,
+      65229,
+      10818
+    ]
+  },
+  {
+    "file": "christopher-nolan-ranked",
+    "title": "Christopher Nolan, ranked",
+    "count": 10,
+    "preview": [
+      155,
+      27205,
+      77,
+      1124,
+      374720
+    ]
+  },
+  {
+    "file": "coming-of-age",
+    "title": "Coming of Age",
+    "count": 5,
+    "preview": [
+      18491,
+      376867,
+      25237,
+      152584,
+      85350
+    ]
+  },
+  {
+    "file": "courtroom-drama",
+    "title": "Courtroom drama",
+    "count": 5,
+    "preview": [
+      389,
+      595,
+      548,
+      462,
+      12102
+    ]
+  },
+  {
     "file": "criterion-channels-selection-from-sight-and",
     "title": "Criterion Channel's selection from Sight and Sound's list",
     "count": 52,
@@ -321,6 +740,42 @@
       14626,
       776,
       499
+    ]
+  },
+  {
+    "file": "criterion-films-i-want",
+    "title": "Criterion films I want",
+    "count": 46,
+    "preview": [
+      14626,
+      11524,
+      25237,
+      10360,
+      994108
+    ]
+  },
+  {
+    "file": "darren-aronofsky-ranked",
+    "title": " Darren Aronofsky, ranked ",
+    "count": 6,
+    "preview": [
+      44214,
+      12163,
+      641,
+      381283,
+      1381
+    ]
+  },
+  {
+    "file": "david-fincher-ranked",
+    "title": "David Fincher, ranked",
+    "count": 11,
+    "preview": [
+      807,
+      1949,
+      37799,
+      4547,
+      210577
     ]
   },
   {
@@ -381,6 +836,471 @@
       7459,
       605,
       9303
+    ]
+  },
+  {
+    "file": "droids",
+    "title": "Droids!",
+    "count": 5,
+    "preview": [
+      18491,
+      62,
+      152601,
+      280,
+      679
+    ]
+  },
+  {
+    "file": "electric-dreams",
+    "title": "Electric Dreams",
+    "count": 4,
+    "preview": [
+      62,
+      603,
+      152601,
+      280
+    ]
+  },
+  {
+    "file": "fantastical-creatures",
+    "title": "Fantastical creatures",
+    "count": 5,
+    "preview": [
+      18491,
+      129,
+      346648,
+      679,
+      10331
+    ]
+  },
+  {
+    "file": "fantasy-is-escapist-and-that-is-its-glory",
+    "title": "Fantasy is escapist, and that is its glory",
+    "count": 8,
+    "preview": [
+      863,
+      129,
+      120,
+      149871,
+      381283
+    ]
+  },
+  {
+    "file": "feel-good-movies",
+    "title": "Feel good movies",
+    "count": 14,
+    "preview": [
+      501907,
+      393559,
+      1541,
+      546554,
+      412209
+    ]
+  },
+  {
+    "file": "films-i-have-in-physical-media",
+    "title": "Films I have in physical media",
+    "count": 77,
+    "preview": [
+      20530,
+      398978,
+      823219,
+      59,
+      3175
+    ]
+  },
+  {
+    "file": "films-one-would-like-to-watch-at-netflix",
+    "title": "Films one would like to watch at Netflix BR",
+    "count": 34,
+    "preview": [
+      505192,
+      290098,
+      481432,
+      1245,
+      121986
+    ]
+  },
+  {
+    "file": "for-war-is-a-drug",
+    "title": "For war is a drug",
+    "count": 5,
+    "preview": [
+      12477,
+      935,
+      25237,
+      198,
+      857
+    ]
+  },
+  {
+    "file": "gotta-rewatch",
+    "title": "Gotta rewatch",
+    "count": 53,
+    "preview": [
+      12924,
+      548,
+      264660,
+      68722,
+      44214
+    ]
+  },
+  {
+    "file": "great-openings",
+    "title": "Great openings",
+    "count": 10,
+    "preview": [
+      62,
+      339403,
+      340275,
+      925,
+      340666
+    ]
+  },
+  {
+    "file": "hayao-miyazaki-ranked",
+    "title": "Hayao Miyazaki, ranked",
+    "count": 9,
+    "preview": [
+      129,
+      8392,
+      11621,
+      128,
+      10515
+    ]
+  },
+  {
+    "file": "in-a-cinema",
+    "title": "In a cinema",
+    "count": 171,
+    "preview": [
+      624860,
+      820702,
+      746131,
+      542178,
+      644495
+    ]
+  },
+  {
+    "file": "indiewires-the-100-best-movies-of-the-80s",
+    "title": "IndieWire's The 100 Best Movies of the \u201980s",
+    "count": 100,
+    "preview": [
+      925,
+      27064,
+      1091,
+      655,
+      42044
+    ]
+  },
+  {
+    "file": "japanuary-challenge-2022",
+    "title": "Japanuary Challenge 2022 \ud83c\uddef\ud83c\uddf5",
+    "count": 300,
+    "preview": [
+      346,
+      548,
+      11878,
+      3782,
+      12493
+    ]
+  },
+  {
+    "file": "martin-scorsese-ranked",
+    "title": "Martin Scorsese, ranked ",
+    "count": 11,
+    "preview": [
+      1578,
+      103,
+      398978,
+      106646,
+      16153
+    ]
+  },
+  {
+    "file": "nice-and-short",
+    "title": "Nice and short",
+    "count": 50,
+    "preview": [
+      703,
+      426238,
+      80,
+      188166,
+      62177
+    ]
+  },
+  {
+    "file": "one-film-for-every-year-i-am-alive",
+    "title": "One film for every year I am alive",
+    "count": 29,
+    "preview": [
+      12477,
+      32761,
+      162,
+      280,
+      772
+    ]
+  },
+  {
+    "file": "palme-dor-winners-1975-present",
+    "title": "Palme d'Or Winners (1975-present)",
+    "count": 50,
+    "preview": [
+      496243,
+      505192,
+      401246,
+      374473,
+      314402
+    ]
+  },
+  {
+    "file": "paris-je-taime",
+    "title": "Paris, Je T'aime",
+    "count": 5,
+    "preview": [
+      80,
+      86837,
+      103328,
+      5511,
+      2062
+    ]
+  },
+  {
+    "file": "pascal-on-lubitsch",
+    "title": "Pascal on Lubitsch",
+    "count": 7,
+    "preview": [
+      198,
+      195,
+      77210,
+      43799,
+      18727
+    ]
+  },
+  {
+    "file": "pixar-ranked",
+    "title": "Pixar, ranked",
+    "count": 20,
+    "preview": [
+      863,
+      862,
+      585,
+      10681,
+      14160
+    ]
+  },
+  {
+    "file": "pra-ver-com-o-amor",
+    "title": "Pra ver com o amor",
+    "count": 12,
+    "preview": [
+      376534,
+      31225,
+      86324,
+      20770,
+      43255
+    ]
+  },
+  {
+    "file": "quentin-tarantino-ranked",
+    "title": "Quentin Tarantino, ranked",
+    "count": 10,
+    "preview": [
+      1991,
+      680,
+      500,
+      273248,
+      184
+    ]
+  },
+  {
+    "file": "ranking-a24-releases",
+    "title": "Ranking A24 releases",
+    "count": 20,
+    "preview": [
+      376867,
+      399057,
+      241239,
+      97370,
+      391713
+    ]
+  },
+  {
+    "file": "ranking-pixar-feature-films",
+    "title": "Ranking Pixar feature films",
+    "count": 17,
+    "preview": [
+      2062,
+      14160,
+      9806,
+      150540,
+      9487
+    ]
+  },
+  {
+    "file": "rian-johnson-ranked",
+    "title": "Rian Johnson, ranked",
+    "count": 4,
+    "preview": [
+      546554,
+      59967,
+      9270,
+      181808
+    ]
+  },
+  {
+    "file": "richard-brodys-ten-greatest-films-of-all",
+    "title": "Richard Brody\u2019s Ten Greatest Films of All Time",
+    "count": 10,
+    "preview": [
+      50012,
+      914,
+      5991,
+      506,
+      42044
+    ]
+  },
+  {
+    "file": "richard-brodys-the-best-biopics-ever-made",
+    "title": "Richard Brody's \"The Best Biopics Ever Made\"",
+    "count": 33,
+    "preview": [
+      780,
+      43522,
+      36497,
+      9797,
+      118534
+    ]
+  },
+  {
+    "file": "robbed-oscar-best-picture-nominees",
+    "title": "Robbed Oscar Best Picture Nominees",
+    "count": 4,
+    "preview": [
+      400617,
+      76341,
+      86837,
+      44214
+    ]
+  },
+  {
+    "file": "silly-premises",
+    "title": "Silly premises",
+    "count": 7,
+    "preview": [
+      2062,
+      116149,
+      347031,
+      754,
+      122081
+    ]
+  },
+  {
+    "file": "some-undespairing-and-uncrazy-films",
+    "title": "Some undespairing and uncrazy films",
+    "count": 27,
+    "preview": [
+      241239,
+      265195,
+      264660,
+      122906,
+      115
+    ]
+  },
+  {
+    "file": "space",
+    "title": "SPACE!",
+    "count": 5,
+    "preview": [
+      62,
+      679,
+      348,
+      1272,
+      16320
+    ]
+  },
+  {
+    "file": "steve-mcqueen-ranked",
+    "title": "Steve McQueen, ranked",
+    "count": 9,
+    "preview": [
+      76025,
+      -2,
+      76203,
+      -3,
+      10360
+    ]
+  },
+  {
+    "file": "teamwork",
+    "title": "Teamwork",
+    "count": 6,
+    "preview": [
+      346,
+      198,
+      120,
+      24428,
+      862
+    ]
+  },
+  {
+    "file": "the-mercurial-push-and-pull-of-love-and-relationships",
+    "title": "The mercurial push-and-pull of love and relationships",
+    "count": 7,
+    "preview": [
+      400617,
+      223,
+      51618,
+      29592,
+      851
+    ]
+  },
+  {
+    "file": "the-wachowskis-ranked",
+    "title": "The Wachowskis, ranked",
+    "count": 8,
+    "preview": [
+      603,
+      7459,
+      604,
+      9303,
+      83542
+    ]
+  },
+  {
+    "file": "top-100-of-the-last-25-years-2000-2024",
+    "title": "Top 100 of the last 25 years (2000-2024)",
+    "count": 100,
+    "preview": [
+      843,
+      531428,
+      79,
+      670,
+      11423
+    ]
+  },
+  {
+    "file": "vulnerability",
+    "title": "Vulnerability",
+    "count": 7,
+    "preview": [
+      843,
+      398818,
+      1077647,
+      1274746,
+      1059128
+    ]
+  },
+  {
+    "file": "wanna-rewatch-from-nyt-21st-century-list",
+    "title": "Wanna rewatch from NYT 21st Century list",
+    "count": 33,
+    "preview": [
+      62215,
+      123678,
+      8967,
+      86837,
+      394117
     ]
   }
 ]

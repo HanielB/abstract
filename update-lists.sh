@@ -6,6 +6,7 @@
 set -e
 cd "$(dirname "$0")"
 
+PROCESS="/home/hbarbosa/letterboxd/process.py"
 LISTS_DIR="/home/hbarbosa/letterboxd/data/lists"
 OUT_DIR="public/lists"
 mkdir -p "$OUT_DIR"
@@ -17,10 +18,13 @@ else
 fi
 
 cd ..
+
 for csv in $FILES; do
   echo "Converting $csv ..."
-  source pyenv/bin/activate
-  python3 process.py --list-to-json "$csv"
+  name=$(basename "$csv" .csv)
+  # Drop any stale destination so a skipped list doesn't leave a broken JSON behind.
+  rm -f "abstract/$OUT_DIR/$name.json"
+  python3 $PROCESS --list-to-json "$csv"
 done
 cd abstract
 

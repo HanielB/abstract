@@ -11,16 +11,17 @@ interface ListEntry { file: string; title: string; count: number; preview: numbe
 
 function categorizeList(entry: ListEntry): string {
   const f = entry.file;
-  if (f.match(/^\d{4}best$/) ) return "Best of year";
-  if (f.includes("bestFirstWatch") || f.includes("bestNewFirstWatch") || f.includes("bestOldFirstWatch") || f.includes("bestNewFirstWatched") || f.includes("bestOldFirstWatched")) return "Best first watches";
+  if (f.match(/^\d{4}best$/) || f.match(/^best-of-\d{4}$/)) return "Best of year";
+  if (f.includes("bestFirstWatch") || f.includes("bestNewFirstWatch") || f.includes("bestOldFirstWatch") || f.includes("bestNewFirstWatched") || f.includes("bestOldFirstWatched") || f.startsWith("best-first-watched")) return "Best first watches";
   if (f.includes("honorable")) return "Honorable mentions";
-  if (f.startsWith("directors-")) return "Directors";
+  if (f.startsWith("directors-") || f.endsWith("-ranked")) return "Directors";
   if (f.startsWith("best")) return "Best of genre";
   return "Other";
 }
 
 function ListsPopup({ master, onClose }: { master: any[]; onClose: () => void }) {
   const [lists, setLists] = useState<ListEntry[]>([]);
+  const [titleFilter, setTitleFilter] = useState("");
   useEffect(() => {
     fetch("./lists/index.json")
       .then(res => res.json())
@@ -48,8 +49,28 @@ function ListsPopup({ master, onClose }: { master: any[]; onClose: () => void })
 
   const categories = ["Best of year", "Best first watches", "Honorable mentions", "Best of genre", "Directors", "Other"];
   const [collapsedCats, setCollapsedCats] = useState<Set<string>>(new Set(["Best of year"]));
+
+  // Dedupe by normalized title so the same list under two filenames (e.g. "2015best"
+  // and "best-of-2015") only appears once. Prefer kebab-case files (newer pipeline).
+  const seenTitles = new Set<string>();
+  const deduped: ListEntry[] = [];
+  const sortedForDedup = [...lists].sort((a, b) => {
+    const ak = a.file.includes("-") ? 0 : 1;
+    const bk = b.file.includes("-") ? 0 : 1;
+    return ak - bk;
+  });
+  for (const entry of sortedForDedup) {
+    const key = entry.title.trim().toLowerCase();
+    if (seenTitles.has(key)) continue;
+    seenTitles.add(key);
+    deduped.push(entry);
+  }
+
+  const needle = titleFilter.trim().toLowerCase();
+  const filtered = needle ? deduped.filter(e => e.title.toLowerCase().includes(needle)) : deduped;
+
   const grouped = new Map<string, ListEntry[]>();
-  for (const entry of lists) {
+  for (const entry of filtered) {
     const cat = categorizeList(entry);
     if (!grouped.has(cat)) grouped.set(cat, []);
     grouped.get(cat)!.push(entry);
@@ -63,6 +84,16 @@ function ListsPopup({ master, onClose }: { master: any[]; onClose: () => void })
         <div className="listsModalHeader">
           <h2>Lists</h2>
           <button className="listsModalClose" onClick={onClose}>&times;</button>
+        </div>
+        <div className="listsModalSearch">
+          <input
+            type="text"
+            className="listsModalSearchInput"
+            placeholder="Search lists by title..."
+            value={titleFilter}
+            onChange={e => setTitleFilter(e.target.value)}
+            autoFocus
+          />
         </div>
         <div className="listsModalBody">
           {categories.filter(cat => grouped.has(cat)).map(cat => (

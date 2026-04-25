@@ -9,12 +9,17 @@ cd "$(dirname "$0")"
 PROCESS="/home/hbarbosa/letterboxd/process.py"
 LISTS_DIR="/home/hbarbosa/letterboxd/data/lists"
 OUT_DIR="public/lists"
+# Manifest of JSONs this script owns (one name per line, no extension). Anything
+# in $OUT_DIR not listed here is treated as a manual addition and never purged.
+MANAGED_FILE=".managed-lists"
 mkdir -p "$OUT_DIR"
 
 if [ $# -gt 0 ]; then
   FILES="$@"
+  FULL_RUN=0
 else
   FILES="$LISTS_DIR"/*.csv
+  FULL_RUN=1
 fi
 
 cd ..
@@ -27,6 +32,26 @@ for csv in $FILES; do
   python3 $PROCESS --list-to-json "$csv"
 done
 cd abstract
+
+# On a full run, purge JSONs whose source CSV was deleted. Only names we've
+# previously managed (recorded in $MANAGED_FILE) are eligible — manual lists
+# are never in that list, so they're left alone.
+if [ "$FULL_RUN" = "1" ]; then
+  current=$(ls "$LISTS_DIR"/*.csv 2>/dev/null | xargs -n1 basename | sed 's/\.csv$//' | sort -u)
+  if [ -f "$MANAGED_FILE" ]; then
+    # Names previously managed but no longer present as a CSV.
+    while IFS= read -r name; do
+      [ -z "$name" ] && continue
+      if ! grep -qxF "$name" <<< "$current"; then
+        if [ -f "$OUT_DIR/$name.json" ]; then
+          rm -f "$OUT_DIR/$name.json"
+          echo "  ✗ purged $OUT_DIR/$name.json (source CSV removed)"
+        fi
+      fi
+    done < "$MANAGED_FILE"
+  fi
+  printf "%s\n" "$current" > "$MANAGED_FILE"
+fi
 
 # Move generated JSONs to public/lists/
 for json in ../*.json; do

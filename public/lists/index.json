@@ -1,29 +1,5 @@
 [
   {
-    "file": "2000-2024-favorites",
-    "title": "2000-2024 favorites",
-    "count": 100,
-    "preview": [
-      843,
-      531428,
-      79,
-      670,
-      11423
-    ]
-  },
-  {
-    "file": "2000-2024-top-25",
-    "title": "2000-2024 top 25",
-    "count": 25,
-    "preview": [
-      843,
-      531428,
-      79,
-      670,
-      11423
-    ]
-  },
-  {
     "file": "2015-2024",
     "title": "Top 25 of films from 2015 to 2024",
     "count": 25,
@@ -396,7 +372,7 @@
     ]
   },
   {
-    "file": "best-first-watched-in-2019-1",
+    "file": "best-first-watched-in-2019",
     "title": "Best first watched in 2019",
     "count": 15,
     "preview": [
@@ -405,30 +381,6 @@
       60243,
       44754,
       1991
-    ]
-  },
-  {
-    "file": "best-first-watched-in-2019",
-    "title": "Best first watched in 2019",
-    "count": 7,
-    "preview": [
-      60243,
-      44754,
-      1991,
-      696,
-      3777
-    ]
-  },
-  {
-    "file": "best-long-films",
-    "title": "Best long films",
-    "count": 10,
-    "preview": [
-      466420,
-      346,
-      354759,
-      872585,
-      152584
     ]
   },
   {
@@ -672,18 +624,6 @@
     ]
   },
   {
-    "file": "cannes-2017-competition",
-    "title": "Cannes 2017: Competition",
-    "count": 19,
-    "preview": [
-      451945,
-      451955,
-      399019,
-      451957,
-      442947
-    ]
-  },
-  {
     "file": "celine-sciamma-ranked",
     "title": "C\u00e9line Sciamma, ranked",
     "count": 4,
@@ -704,42 +644,6 @@
       77,
       1124,
       374720
-    ]
-  },
-  {
-    "file": "coming-of-age",
-    "title": "Coming of Age",
-    "count": 5,
-    "preview": [
-      18491,
-      376867,
-      25237,
-      152584,
-      85350
-    ]
-  },
-  {
-    "file": "courtroom-drama",
-    "title": "Courtroom drama",
-    "count": 5,
-    "preview": [
-      389,
-      595,
-      548,
-      462,
-      12102
-    ]
-  },
-  {
-    "file": "criterion-channels-selection-from-sight-and",
-    "title": "Criterion Channel's selection from Sight and Sound's list",
-    "count": 52,
-    "preview": [
-      44012,
-      18148,
-      14626,
-      776,
-      499
     ]
   },
   {
@@ -839,18 +743,6 @@
     ]
   },
   {
-    "file": "droids",
-    "title": "Droids!",
-    "count": 5,
-    "preview": [
-      18491,
-      62,
-      152601,
-      280,
-      679
-    ]
-  },
-  {
     "file": "electric-dreams",
     "title": "Electric Dreams",
     "count": 4,
@@ -900,61 +792,13 @@
   {
     "file": "films-i-have-in-physical-media",
     "title": "Films I have in physical media",
-    "count": 77,
-    "preview": [
-      20530,
-      398978,
-      823219,
-      59,
-      3175
-    ]
-  },
-  {
-    "file": "films-one-would-like-to-watch-at-netflix",
-    "title": "Films one would like to watch at Netflix BR",
-    "count": 34,
-    "preview": [
-      505192,
-      290098,
-      481432,
-      1245,
-      121986
-    ]
-  },
-  {
-    "file": "for-war-is-a-drug",
-    "title": "For war is a drug",
-    "count": 5,
+    "count": 79,
     "preview": [
       12477,
-      935,
-      25237,
-      198,
-      857
-    ]
-  },
-  {
-    "file": "gotta-rewatch",
-    "title": "Gotta rewatch",
-    "count": 53,
-    "preview": [
-      12924,
-      548,
-      264660,
-      68722,
-      44214
-    ]
-  },
-  {
-    "file": "great-openings",
-    "title": "Great openings",
-    "count": 10,
-    "preview": [
-      62,
-      339403,
-      340275,
-      925,
-      340666
+      16859,
+      20530,
+      398978,
+      823219
     ]
   },
   {
@@ -970,18 +814,6 @@
     ]
   },
   {
-    "file": "in-a-cinema",
-    "title": "In a cinema",
-    "count": 171,
-    "preview": [
-      624860,
-      820702,
-      746131,
-      542178,
-      644495
-    ]
-  },
-  {
     "file": "indiewires-the-100-best-movies-of-the-80s",
     "title": "IndieWire's The 100 Best Movies of the \u201980s",
     "count": 100,
@@ -994,18 +826,6 @@
     ]
   },
   {
-    "file": "japanuary-challenge-2022",
-    "title": "Japanuary Challenge 2022 \ud83c\uddef\ud83c\uddf5",
-    "count": 300,
-    "preview": [
-      346,
-      548,
-      11878,
-      3782,
-      12493
-    ]
-  },
-  {
     "file": "martin-scorsese-ranked",
     "title": "Martin Scorsese, ranked ",
     "count": 11,
@@ -1015,18 +835,6 @@
       398978,
       106646,
       16153
-    ]
-  },
-  {
-    "file": "nice-and-short",
-    "title": "Nice and short",
-    "count": 50,
-    "preview": [
-      703,
-      426238,
-      80,
-      188166,
-      62177
     ]
   },
   {
@@ -1044,13 +852,13 @@
   {
     "file": "palme-dor-winners-1975-present",
     "title": "Palme d'Or Winners (1975-present)",
-    "count": 50,
+    "count": 55,
     "preview": [
-      496243,
-      505192,
-      401246,
-      374473,
-      314402
+      1456349,
+      1064213,
+      915935,
+      497828,
+      630240
     ]
   },
   {
@@ -1090,18 +898,6 @@
     ]
   },
   {
-    "file": "pra-ver-com-o-amor",
-    "title": "Pra ver com o amor",
-    "count": 12,
-    "preview": [
-      376534,
-      31225,
-      86324,
-      20770,
-      43255
-    ]
-  },
-  {
     "file": "quentin-tarantino-ranked",
     "title": "Quentin Tarantino, ranked",
     "count": 10,
@@ -1114,30 +910,6 @@
     ]
   },
   {
-    "file": "ranking-a24-releases",
-    "title": "Ranking A24 releases",
-    "count": 20,
-    "preview": [
-      376867,
-      399057,
-      241239,
-      97370,
-      391713
-    ]
-  },
-  {
-    "file": "ranking-pixar-feature-films",
-    "title": "Ranking Pixar feature films",
-    "count": 17,
-    "preview": [
-      2062,
-      14160,
-      9806,
-      150540,
-      9487
-    ]
-  },
-  {
     "file": "rian-johnson-ranked",
     "title": "Rian Johnson, ranked",
     "count": 4,
@@ -1146,6 +918,30 @@
       59967,
       9270,
       181808
+    ]
+  },
+  {
+    "file": "richard-brodys-a-film-per-year-list",
+    "title": "Richard Brody's A Film Per Year List",
+    "count": 59,
+    "preview": [
+      76754,
+      34148,
+      269,
+      28333,
+      11697
+    ]
+  },
+  {
+    "file": "richard-brodys-ten-greatest-films-from-directors",
+    "title": "Richard Brody\u2019s Ten Greatest Films From Directors Born Since The 1940s ",
+    "count": 9,
+    "preview": [
+      30017,
+      44012,
+      41292,
+      9428,
+      1578
     ]
   },
   {
@@ -1173,14 +969,27 @@
     ]
   },
   {
-    "file": "robbed-oscar-best-picture-nominees",
-    "title": "Robbed Oscar Best Picture Nominees",
-    "count": 4,
+    "file": "roger-eberts-great-movies",
+    "title": "Roger Ebert's \"Great Movies\"",
+    "count": 377,
     "preview": [
-      400617,
-      76341,
-      86837,
-      44214
+      389,
+      62,
+      1429,
+      41662,
+      422
+    ]
+  },
+  {
+    "file": "sight-and-sounds-greatest-films-of-all-time",
+    "title": "Sight and Sound's Greatest Films of All Time 2022",
+    "count": 262,
+    "preview": [
+      44012,
+      426,
+      15,
+      18148,
+      843
     ]
   },
   {
@@ -1193,18 +1002,6 @@
       347031,
       754,
       122081
-    ]
-  },
-  {
-    "file": "some-undespairing-and-uncrazy-films",
-    "title": "Some undespairing and uncrazy films",
-    "count": 27,
-    "preview": [
-      241239,
-      265195,
-      264660,
-      122906,
-      115
     ]
   },
   {
@@ -1241,18 +1038,6 @@
       120,
       24428,
       862
-    ]
-  },
-  {
-    "file": "the-mercurial-push-and-pull-of-love-and-relationships",
-    "title": "The mercurial push-and-pull of love and relationships",
-    "count": 7,
-    "preview": [
-      400617,
-      223,
-      51618,
-      29592,
-      851
     ]
   },
   {

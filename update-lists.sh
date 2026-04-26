@@ -24,6 +24,11 @@ fi
 
 cd ..
 
+# Activate the parent project's venv so process.py finds tmdbsimple/texttable.
+if [ -f "pyenv/bin/activate" ]; then
+  source pyenv/bin/activate
+fi
+
 for csv in $FILES; do
   echo "Converting $csv ..."
   name=$(basename "$csv" .csv)
@@ -78,7 +83,8 @@ for f in sorted(glob.glob('$OUT_DIR/*.json')):
     movies = data.get('movies', [])
     count = len(movies)
     preview = [m['tmdbId'] if isinstance(m, dict) else m for m in movies[:5]]
-    lists.append({'file': name, 'title': title, 'count': count, 'preview': preview})
+    tags = data.get('tags', []) if isinstance(data, dict) else []
+    lists.append({'file': name, 'title': title, 'count': count, 'preview': preview, 'tags': tags})
 
 with open('$OUT_DIR/index.json', 'w') as out:
     json.dump(lists, out, indent=2)

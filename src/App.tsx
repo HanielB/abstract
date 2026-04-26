@@ -7,16 +7,45 @@ import HomeChart from "./components/HomeChart/HomeChart";
 import { Movie, convertMovie, getMovies, getMoviesFromIds } from "./services/movies.service";
 import { MoviesContext } from "./services/context";
 
-interface ListEntry { file: string; title: string; count: number; preview: number[]; }
+interface ListEntry { file: string; title: string; count: number; preview: number[]; tags?: string[]; }
+
+const CAT_BEST_OF       = "Best of";
+const CAT_TOPNEW        = "Best first watched (newer)";
+const CAT_HONORABLE     = "Honorable mentions";
+const CAT_TOPOLD        = "Best first watched (older)";
+const CAT_MISC          = "Misc rankings";
+const CAT_PROJECTS      = "Projects";
+const CAT_PHYSICAL      = "Physical media";
+const CAT_DIRECTORS     = "Directors, ranked";
+const CAT_OTHER         = "Other";
+const CAT_SHOWDOWN      = "LB Showdown";
+
+const TOP_LEVEL_CATEGORIES = [
+  CAT_BEST_OF,
+  CAT_TOPNEW,
+  CAT_TOPOLD,
+  CAT_MISC,
+  CAT_PROJECTS,
+  CAT_PHYSICAL,
+  CAT_DIRECTORS,
+  CAT_OTHER,
+  CAT_SHOWDOWN,
+];
+const NESTED_OF: Record<string, string[]> = { [CAT_TOPNEW]: [CAT_HONORABLE] };
+const COLLAPSED_BY_DEFAULT = new Set([CAT_BEST_OF, CAT_HONORABLE]);
 
 function categorizeList(entry: ListEntry): string {
-  const f = entry.file;
-  if (f.match(/^\d{4}best$/) || f.match(/^best-of-\d{4}$/)) return "Best of year";
-  if (f.includes("bestFirstWatch") || f.includes("bestNewFirstWatch") || f.includes("bestOldFirstWatch") || f.includes("bestNewFirstWatched") || f.includes("bestOldFirstWatched") || f.startsWith("best-first-watched")) return "Best first watches";
-  if (f.includes("honorable")) return "Honorable mentions";
-  if (f.startsWith("directors-") || f.endsWith("-ranked")) return "Directors";
-  if (f.startsWith("best")) return "Best of genre";
-  return "Other";
+  const tags = entry.tags || [];
+  if (tags.includes("honorablementions")) return CAT_HONORABLE;
+  if (tags.includes("topnew"))            return CAT_TOPNEW;
+  if (tags.includes("topold"))            return CAT_TOPOLD;
+  if (tags.includes("topyear"))           return CAT_BEST_OF;
+  if (tags.includes("topother"))          return CAT_MISC;
+  if (tags.includes("projects"))          return CAT_PROJECTS;
+  if (tags.includes("physicalmedia"))     return CAT_PHYSICAL;
+  if (tags.includes("directors"))         return CAT_DIRECTORS;
+  if (tags.some(t => t.startsWith("showdown:"))) return CAT_SHOWDOWN;
+  return CAT_OTHER;
 }
 
 function ListsPopup({ master, onClose }: { master: any[]; onClose: () => void }) {
@@ -47,27 +76,10 @@ function ListsPopup({ master, onClose }: { master: any[]; onClose: () => void })
     return map;
   }, [master]);
 
-  const categories = ["Best of year", "Best first watches", "Honorable mentions", "Best of genre", "Directors", "Other"];
-  const [collapsedCats, setCollapsedCats] = useState<Set<string>>(new Set(["Best of year"]));
-
-  // Dedupe by normalized title so the same list under two filenames (e.g. "2015best"
-  // and "best-of-2015") only appears once. Prefer kebab-case files (newer pipeline).
-  const seenTitles = new Set<string>();
-  const deduped: ListEntry[] = [];
-  const sortedForDedup = [...lists].sort((a, b) => {
-    const ak = a.file.includes("-") ? 0 : 1;
-    const bk = b.file.includes("-") ? 0 : 1;
-    return ak - bk;
-  });
-  for (const entry of sortedForDedup) {
-    const key = entry.title.trim().toLowerCase();
-    if (seenTitles.has(key)) continue;
-    seenTitles.add(key);
-    deduped.push(entry);
-  }
+  const [collapsedCats, setCollapsedCats] = useState<Set<string>>(new Set(COLLAPSED_BY_DEFAULT));
 
   const needle = titleFilter.trim().toLowerCase();
-  const filtered = needle ? deduped.filter(e => e.title.toLowerCase().includes(needle)) : deduped;
+  const filtered = needle ? lists.filter(e => e.title.toLowerCase().includes(needle)) : lists;
 
   const grouped = new Map<string, ListEntry[]>();
   for (const entry of filtered) {
@@ -75,8 +87,65 @@ function ListsPopup({ master, onClose }: { master: any[]; onClose: () => void })
     if (!grouped.has(cat)) grouped.set(cat, []);
     grouped.get(cat)!.push(entry);
   }
-  grouped.get("Best of year")?.sort((a, b) => b.file.localeCompare(a.file));
-  grouped.get("Best first watches")?.sort((a, b) => b.file.localeCompare(a.file));
+  // Reverse-chronological order for year-keyed buckets.
+  grouped.get(CAT_BEST_OF)?.sort((a, b) => b.file.localeCompare(a.file));
+  grouped.get(CAT_TOPNEW)?.sort((a, b) => b.file.localeCompare(a.file));
+  grouped.get(CAT_TOPOLD)?.sort((a, b) => b.file.localeCompare(a.file));
+
+  // A category is shown collapsed unless: (a) the user has manually expanded it,
+  // or (b) a search is active and it has matches under the current filter.
+  const hasContent = (cat: string): boolean => {
+    if ((grouped.get(cat) || []).length > 0) return true;
+    return (NESTED_OF[cat] || []).some(hasContent);
+  };
+  const isCollapsed = (cat: string): boolean => {
+    if (!collapsedCats.has(cat)) return false;
+    if (needle && hasContent(cat)) return false;
+    return true;
+  };
+  const toggle = (cat: string) => setCollapsedCats(prev => {
+    const next = new Set(prev);
+    next.has(cat) ? next.delete(cat) : next.add(cat);
+    return next;
+  });
+
+  const renderListCard = (entry: ListEntry) => (
+    <a key={entry.file} href={`?list=${entry.file}`} className="listCard">
+      <div className="listCardPosters">
+        {entry.preview.map((id, i) => {
+          const poster = posterMap.get(id);
+          return poster
+            ? <img key={i} src={`https://image.tmdb.org/t/p/w92${poster}`} alt="" className="listCardPoster" />
+            : <div key={i} className="listCardPosterPlaceholder" />;
+        })}
+      </div>
+      <div className="listCardInfo">
+        <span className="listCardTitle">{entry.title}</span>
+        <span className="listCardCount">{entry.count} films</span>
+      </div>
+    </a>
+  );
+
+  const renderCategory = (cat: string, depth: number = 0): React.ReactNode => {
+    if (!hasContent(cat)) return null;
+    const items = grouped.get(cat) || [];
+    const collapsed = isCollapsed(cat);
+    const wrapperClass = depth === 0 ? "listsCategory" : "listsCategoryNested";
+    const titleClass   = depth === 0 ? "listsCategoryTitle" : "listsCategoryTitleNested";
+    return (
+      <div key={cat} className={wrapperClass}>
+        <h3 className={titleClass} onClick={() => toggle(cat)}>
+          {collapsed ? "\u25b6" : "\u25bc"} {cat}
+        </h3>
+        {!collapsed && (
+          <>
+            {items.length > 0 && <div className="listsGrid">{items.map(renderListCard)}</div>}
+            {(NESTED_OF[cat] || []).map(sub => renderCategory(sub, depth + 1))}
+          </>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="listsOverlay" onClick={onClose}>
@@ -96,33 +165,7 @@ function ListsPopup({ master, onClose }: { master: any[]; onClose: () => void })
           />
         </div>
         <div className="listsModalBody">
-          {categories.filter(cat => grouped.has(cat)).map(cat => (
-            <div key={cat} className="listsCategory">
-              <h3 className="listsCategoryTitle" onClick={() => setCollapsedCats(prev => {
-                const next = new Set(prev);
-                next.has(cat) ? next.delete(cat) : next.add(cat);
-                return next;
-              })}>{collapsedCats.has(cat) ? "\u25b6" : "\u25bc"} {cat}</h3>
-              {!collapsedCats.has(cat) && <div className="listsGrid">
-                {grouped.get(cat)!.map(entry => (
-                  <a key={entry.file} href={`?list=${entry.file}`} className="listCard">
-                    <div className="listCardPosters">
-                      {entry.preview.map((id, i) => {
-                        const poster = posterMap.get(id);
-                        return poster
-                          ? <img key={i} src={`https://image.tmdb.org/t/p/w92${poster}`} alt="" className="listCardPoster" />
-                          : <div key={i} className="listCardPosterPlaceholder" />;
-                      })}
-                    </div>
-                    <div className="listCardInfo">
-                      <span className="listCardTitle">{entry.title}</span>
-                      <span className="listCardCount">{entry.count} films</span>
-                    </div>
-                  </a>
-                ))}
-              </div>}
-            </div>
-          ))}
+          {TOP_LEVEL_CATEGORIES.map(cat => renderCategory(cat))}
         </div>
       </div>
     </div>

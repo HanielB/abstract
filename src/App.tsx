@@ -486,17 +486,17 @@ function App() {
            </div>
            <h2 className="header__title">Best of</h2>
            <div className="box-link">
-             <a href="https://hanielbarbosa.com/filminhos/?list=2025best">2025</a>
-             <a href="https://hanielbarbosa.com/filminhos/?list=2024best">2024</a>
-             <a href="https://hanielbarbosa.com/filminhos/?list=2023best">2023</a>
-             <a href="https://hanielbarbosa.com/filminhos/?list=2022best">2022</a>
-             <a href="https://hanielbarbosa.com/filminhos/?list=2021best">2021</a>
-             <a href="https://hanielbarbosa.com/filminhos/?list=2020best">2020</a>
-             <a href="https://hanielbarbosa.com/filminhos/?list=2019best">2019</a>
-             <a href="https://hanielbarbosa.com/filminhos/?list=2018best">2018</a>
-             <a href="https://hanielbarbosa.com/filminhos/?list=2017best">2017</a>
-             <a href="https://hanielbarbosa.com/filminhos/?list=2016best">2016</a>
-             <a href="https://hanielbarbosa.com/filminhos/?list=2015best">2015</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=best-of-2025">2025</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=best-of-2024">2024</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=best-of-2023">2023</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=best-of-2022">2022</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=best-of-2021">2021</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=best-of-2020">2020</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=best-of-2019">2019</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=best-of-2018">2018</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=best-of-2017">2017</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=best-of-2016">2016</a>
+             <a href="https://hanielbarbosa.com/filminhos/?list=best-of-2015">2015</a>
            </div>
            <h2 className="header__title">Films per year</h2>
            <HomeChart />

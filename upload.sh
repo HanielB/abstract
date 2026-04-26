@@ -18,8 +18,8 @@ cd public
 unzip -o master.zip &> /dev/null
 cd - &> /dev/null
 echo "Uploading lists..."
-./index.py lists/
-rsync --exclude='.git/' --exclude='node-modules' --delete --recursive --times --compress --progress lists hostinger:~/public_html/filminhos/ &> /dev/null
+./index.py public/lists/
+rsync --exclude='.git/' --exclude='node-modules' --delete --recursive --times --compress --progress public/lists/ hostinger:~/public_html/filminhos/lists/ &> /dev/null
 echo "Uploading directors..."
 python3 directors.py
 rsync --exclude='.git/' --exclude='node-modules' --recursive --times --compress --progress directors hostinger:~/public_html/filminhos/ &> /dev/null

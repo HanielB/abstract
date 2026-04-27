@@ -76,7 +76,9 @@ export const Search = () => {
     const watchlistCheck =
           document.getElementById("watchlist") as HTMLInputElement
     var onlywatched = onlywatchedCheck? onlywatchedCheck.checked : false;
-    const watchlist = watchlistCheck? watchlistCheck.checked : false;
+    // When searching within a list, always include unwatched films — the list
+    // is the universe and excluding by watch status would surprise the user.
+    const watchlist = listMaster ? true : (watchlistCheck? watchlistCheck.checked : false);
 
     if (title.includes(";"))
     {
@@ -382,10 +384,10 @@ export const Search = () => {
                   <input type="checkbox" id="onlywatched" name="display" value="onlywatched" title="Show one entry per film, using the latest diary entry"/>
                   <label htmlFor="onlywatched">Singleton</label>
                 </div>
-                <div>
+                {!listMaster && <div>
                   <input type="checkbox" id="watchlist" name="display" value="watchlist" title="Include films from watchlist (not yet watched)"/>
                   <label htmlFor="watchlist">Watchlist</label>
-                </div>
+                </div>}
               </div>
               <div className="form_radio">
                 <div>

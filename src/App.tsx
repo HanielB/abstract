@@ -48,6 +48,30 @@ function categorizeList(entry: ListEntry): string {
   return CAT_OTHER;
 }
 
+function WatchedProgress({ listMaster }: { listMaster: any }) {
+  const movies = listMaster?.movies;
+  if (!Array.isArray(movies) || movies.length === 0) return null;
+  const total = movies.length;
+  const watched = movies.filter((m: any) => m.status && m.status !== 0).length;
+  const pct = Math.round((watched / total) * 100);
+  return (
+    <div className="watchedProgress">
+      <div className="watchedProgressRow">
+        <div className="watchedProgressLabel">
+          <div>You&rsquo;ve watched</div>
+          <div className="watchedProgressFraction">{watched} of {total}</div>
+        </div>
+        <div className="watchedProgressPercent">
+          {pct}<span className="watchedProgressPercentSign">%</span>
+        </div>
+      </div>
+      <div className="watchedProgressBar">
+        <div className="watchedProgressBarFill" style={{ width: `${pct}%` }} />
+      </div>
+    </div>
+  );
+}
+
 function ListsPopup({ master, onClose }: { master: any[]; onClose: () => void }) {
   const [lists, setLists] = useState<ListEntry[]>([]);
   const [titleFilter, setTitleFilter] = useState("");
@@ -484,7 +508,11 @@ function App() {
               showSearch ? <>
                 <Search></Search>
                 <button className="listsButton" style={{marginTop: "0.5rem"}} onClick={() => setShowSearch(false)}>Hide search</button>
-              </> : <><button className="listsButton" style={{marginTop: "1rem"}} onClick={() => setShowSearch(true)}>Search</button>
+              </> : <>
+              <div className="header__searchRow">
+                <button className="listsButton" onClick={() => setShowSearch(true)}>Search</button>
+                <WatchedProgress listMaster={listMaster} />
+              </div>
               <div className="header-slider">
                 <div>
                   <input type="checkbox" id="posteronly-list" checked={posterOnly} onChange={(e) => {

@@ -379,6 +379,7 @@ function populateMovie(movie : any, date: Date[], loc: RegExp, rating: number[],
     reviewTags : (entries.length > 0) ? entries[entries.length - 1].tags : undefined,
     views : views,
     previousView : previousView,
+    watchlist : movie.status === 0,
     diaryEntries : (views > 0 && entries) ? entries.map((e: any) => ({
       date: e.date,
       rating: e.rating.str,

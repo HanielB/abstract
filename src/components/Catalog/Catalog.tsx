@@ -211,7 +211,11 @@ export const Catalog = () => {
   return (
     <div className="catalogContainer" id="catalog" ref={containerRef} style={{ "--card-width": `${cardWidthPercent}%`, "--card-scale": cardWidth / 460 } as React.CSSProperties}>
       {movies.map((movie) => (
-        <div className={"catalog__item" + (selected.includes(movie.id) ? "__selected" : "")}
+        <div className={
+               "catalog__item" + (selected.includes(movie.id) ? "__selected" : "")
+               + (posterOnly ? " catalog__item--posteronly" : "")
+               + (movie.watchlist ? " catalog__item--unwatched" : "")
+             }
              tabIndex={0}
              key={movie.id}
              onClick={(e) => {
@@ -375,7 +379,7 @@ export const Catalog = () => {
           }
         </span>
       }
-      {movie.watchlist && movie.views === undefined &&
+      {movie.watchlist &&
         <span className="rewatch">
           <img src={watchlistImg} />
         </span>

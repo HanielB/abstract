@@ -24,9 +24,25 @@
   width: 120px;
 }
 
+.header__searchRow {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .header__title {
   font-size: 2rem;
   font-weight: bold;
+}
+
+.header__search {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .box-link {
@@ -277,4 +293,69 @@
   .listCardPosters {
     height: 50px;
   }
+
+  /* On mobile, drop the absolute positioning so Search+WatchedProgress and
+     the No card / Row size row stack naturally without overlap. */
+  .header-slider {
+    position: static;
+    margin-top: 0.6rem;
+  }
+}
+
+/* Watched-progress card (shown above row size in list view). */
+.watchedProgress {
+  padding: 0.4rem 0.55rem;
+  background: #14181c;
+  color: #d4d8dc;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 230px;
+  box-sizing: border-box;
+  font-family: "letter-gothic-std", Monaco, "Lucida Console", monospace;
+}
+
+.watchedProgressRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.watchedProgressLabel {
+  line-height: 1.15;
+  font-size: 0.7rem;
+  color: #cfd5da;
+}
+
+.watchedProgressFraction {
+  color: #9aa3aa;
+  font-size: 0.65rem;
+}
+
+.watchedProgressPercent {
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: #cfd5da;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.watchedProgressPercentSign {
+  font-size: 0.7rem;
+  margin-left: 0.15rem;
+  color: #9aa3aa;
+}
+
+.watchedProgressBar {
+  margin-top: 0.3rem;
+  height: 4px;
+  background: #2a3138;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.watchedProgressBarFill {
+  height: 100%;
+  background: #40bcf4;
+  transition: width 0.3s ease;
 }

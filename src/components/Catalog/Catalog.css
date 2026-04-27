@@ -650,3 +650,9 @@ a:active {
 .reviewModalBody a:hover {
     text-decoration: underline;
 }
+
+/* Fade unwatched films in poster-only mode. */
+.catalog__item--posteronly.catalog__item--unwatched .catalog__item__img > img:first-child,
+.catalog__item__selected.catalog__item--posteronly.catalog__item--unwatched .catalog__item__img > img:first-child {
+    opacity: 0.3;
+}

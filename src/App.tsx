@@ -65,9 +65,11 @@ function WatchedProgress({ listMaster }: { listMaster: any }) {
           {pct}<span className="watchedProgressPercentSign">%</span>
         </div>
       </div>
-      <div className="watchedProgressBar">
-        <div className="watchedProgressBarFill" style={{ width: `${pct}%` }} />
-      </div>
+      {pct < 100 && (
+        <div className="watchedProgressBar">
+          <div className="watchedProgressBarFill" style={{ width: `${pct}%` }} />
+        </div>
+      )}
     </div>
   );
 }

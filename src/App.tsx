@@ -53,6 +53,7 @@ function WatchedProgress({ listMaster }: { listMaster: any }) {
   if (!Array.isArray(movies) || movies.length === 0) return null;
   const total = movies.length;
   const watched = movies.filter((m: any) => m.status && m.status !== 0).length;
+  if (watched >= total) return null;
   const pct = Math.round((watched / total) * 100);
   return (
     <div className="watchedProgress">
@@ -65,11 +66,9 @@ function WatchedProgress({ listMaster }: { listMaster: any }) {
           {pct}<span className="watchedProgressPercentSign">%</span>
         </div>
       </div>
-      {pct < 100 && (
-        <div className="watchedProgressBar">
-          <div className="watchedProgressBarFill" style={{ width: `${pct}%` }} />
-        </div>
-      )}
+      <div className="watchedProgressBar">
+        <div className="watchedProgressBarFill" style={{ width: `${pct}%` }} />
+      </div>
     </div>
   );
 }

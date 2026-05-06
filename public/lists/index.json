@@ -525,13 +525,13 @@
   {
     "file": "criterion-films-i-want",
     "title": "Criterion films I want",
-    "count": 46,
+    "count": 45,
     "preview": [
       14626,
       11524,
-      25237,
       10360,
-      994108
+      994108,
+      38985
     ],
     "tags": [
       "physicalmedia"
@@ -863,9 +863,9 @@
     ]
   },
   {
-    "file": "sight-and-sounds-greatest-films-of-all-time",
+    "file": "sight-and-sounds-greatest-films-of-all-time-1",
     "title": "Sight and Sound's Greatest Films of All Time 2022",
-    "count": 262,
+    "count": 99,
     "preview": [
       44012,
       426,

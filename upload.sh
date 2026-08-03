@@ -12,7 +12,7 @@ else
 fi
 cd build
 echo "Uploading..."
-rsync --exclude='.git/' --exclude='node-modules' --exclude='directors/' --exclude='year-review/' --delete --recursive --times --compress --progress . hostinger:~/public_html/filminhos/ &> /dev/null
+rsync --exclude='.git/' --exclude='node-modules' --exclude='directors/' --exclude='year-review/' --exclude='clube/' --delete --recursive --times --compress --progress . hostinger:~/public_html/filminhos/ &> /dev/null
 cd - &> /dev/null
 cd public
 unzip -o master.zip &> /dev/null
@@ -23,6 +23,9 @@ rsync --exclude='.git/' --exclude='node-modules' --delete --recursive --times --
 echo "Uploading directors..."
 python3 directors.py
 rsync --exclude='.git/' --exclude='node-modules' --recursive --times --compress --progress directors hostinger:~/public_html/filminhos/ &> /dev/null
+echo "Uploading clube..."
+python3 clube.py
+rsync --exclude='.git/' --exclude='node-modules' --recursive --times --compress --progress clube hostinger:~/public_html/filminhos/ &> /dev/null
 echo "Uploading yearly review..."
 rsync --exclude='.git/' --recursive --times --compress --progress year-review hostinger:~/public_html/filminhos/ &> /dev/null
 rm public/master.json

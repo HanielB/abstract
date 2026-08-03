@@ -19,6 +19,7 @@ npm run build          # Production build → /build/
 # Generate static pages (called by upload.sh, but can run standalone)
 ./index.py lists/      # Generate lists/index.html directory listing
 python3 directors.py   # Generate directors/index.html from public/master.json
+python3 clube.py       # Generate clube/index.html from clube.md (film club)
 ```
 
 ## Architecture
@@ -46,6 +47,7 @@ URL parameters drive initial state: `?title=`, `?director=`, `?list=listname`, `
 
 - `index.py` — Generates `lists/index.html` with clickable directory listings linking back to the app via `?list=` params.
 - `directors.py` — Reads `public/master.json`, groups films by director, generates `directors/index.html` with alphabetical director index.
+- `clube.py` — Reads `clube.md` (markdown: one `## <date>` section per film club meeting, `<title> (<year>)` lines for the suggestions, `*` marking the pick, free markdown after) and generates `clube/index.html`. Posters and directors come from TMDB, film links from Letterboxd; both cached in `clube.cache.json`.
 
 **Data format (`master.json`):** Array of movie objects with fields: `id`, `tmdbId`, `title`, `year`, `rating`, `runtime`, `directors[]`, `writers[]`, `actors[]`, `genres[]`, `countries`, `studios[]`, `tags[]`, `watched` (date), `picture` (TMDB poster URL), `collection`, `views`, `available` (streaming providers).
 

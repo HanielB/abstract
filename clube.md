@@ -32,6 +32,6 @@ A Taxing Woman (1987)
 ## 2026-09-13
 Cléo from 5 to 7 (1962)
 My Way Home (1978) #110090
-Nostalghia (1983)
+*Nostalghia (1983)
 Il Postino (1994)
 The Silence (1998) #43974

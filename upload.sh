@@ -4,7 +4,25 @@
 # - install via apt npm
 # - npm install
 
-if [ "$1" != "--no-build" ]; then
+BUILD=1
+LISTS=1
+for arg in "$@"; do
+    case "$arg" in
+        --no-build) BUILD=0 ;;
+        --no-lists) LISTS=0 ;;
+        *) echo "Unknown option: $arg" >&2; exit 1 ;;
+    esac
+done
+
+# Refresh public/lists/ from the Letterboxd CSVs before building, so the build
+# picks them up. Cheap: one process.py run, and unchanged JSONs keep their mtime,
+# which keeps the rsync below from re-uploading lists that didn't change.
+if [ "$LISTS" = "1" ]; then
+    echo "Updating lists..."
+    ./update-lists.sh
+fi
+
+if [ "$BUILD" = "1" ]; then
     echo "Building..."
     npm run build &> /dev/null
 else

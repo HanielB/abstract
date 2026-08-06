@@ -12,9 +12,14 @@ A React/TypeScript web app for querying and visualizing personal Letterboxd film
 npm start              # Dev server on port 3000
 npm run build          # Production build → /build/
 
-# Deploy (builds, uploads to Hostinger, generates indexes)
-./upload.sh            # Full build + deploy
+# Deploy (refreshes lists, builds, uploads to Hostinger, generates indexes)
+./upload.sh            # Full: update lists + build + deploy
 ./upload.sh --no-build # Deploy without rebuilding
+./upload.sh --no-lists # Deploy without refreshing public/lists/
+
+# Regenerate public/lists/*.json from the Letterboxd list CSVs (run by upload.sh)
+./update-lists.sh                    # all lists in ../data/lists/
+./update-lists.sh ../data/lists/x.csv # just one
 
 # Generate static pages (called by upload.sh, but can run standalone)
 ./index.py lists/      # Generate lists/index.html directory listing
@@ -52,6 +57,8 @@ URL parameters drive initial state: `?title=`, `?director=`, `?list=listname`, `
 **Data format (`master.json`):** Array of movie objects with fields: `id`, `tmdbId`, `title`, `year`, `rating`, `runtime`, `directors[]`, `writers[]`, `actors[]`, `genres[]`, `countries`, `studios[]`, `tags[]`, `watched` (date), `picture` (TMDB poster URL), `collection`, `views`, `available` (streaming providers).
 
 **Lists (`lists/*.json`):** JSON arrays of movie IDs. Loaded via `?list=filename` URL param. Used for curated best-of-year lists, director filmographies, etc.
+
+`update-lists.sh` converts every CSV in `../data/lists/` through a *single* `process.py --lists-to-json ... --out-dir public/lists` call — the interpreter start-up and the master.csv parse are the whole cost, so they happen once per run instead of once per list (~0.5s for 68 lists, versus ~90s with the old per-list invocation). `process.py` writes a list's JSON only when its content differs from what's on disk, so unchanged lists keep their mtime and `upload.sh`'s rsync skips them. `.managed-lists` records the names this script owns so JSONs whose source CSV disappeared get purged while manually-added lists are left alone.
 
 **Year reviews (`year-review/`):** Static HTML pages (`2023.html`, `2024.html`, `2025.html`) with annual watching summaries, styled by `review.css`.
 

@@ -765,12 +765,18 @@ a:active {
     column-gap: .35em;
     row-gap: 0;
     min-width: 0;
+    overflow: hidden;
+}
+
+.catalog__item__info--vertical .metaRow .right {
+    min-width: 0;
 }
 
 .catalog__item__info--vertical .director {
     font-weight: 700;
     font-size: .96em;
     line-height: 1.15;
+    overflow-wrap: anywhere;
 }
 
 .catalog__item__info--vertical .ratingPill {

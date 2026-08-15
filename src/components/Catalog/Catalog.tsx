@@ -10,16 +10,20 @@ import { MoviesContext } from "../../services/context";
 import { Movie, DiaryEntry, getMovies } from "../../services/movies.service";
 
 
-// vertical (singleton) cards: font size when the title fits on one line, and
-// the floor the auto-shrink is allowed to reach
-const BASE_FS = 13;
-const MIN_FS = 8;
+// vertical (singleton) cards: the card width a 13px info block is tuned for,
+// and how far below the base font a card is allowed to shrink
+const REF_CARD_WIDTH = 29 * 13;
+const MIN_FS_RATIO = 0.6;
 
 export const Catalog = () => {
   const { master, movies, start, loading, selected, posterOnly, cardsPerRow,
-          searchSingleton, setLoading, updateMovies, setSelected, setListName } =
+          setLoading, updateMovies, setSelected, setListName } =
         useContext(MoviesContext);
-  const vertical = searchSingleton === "1" && !posterOnly;
+  // singleton results carry a view count instead of a watch date; those are
+  // the ones shown as vertical cards, whether they come from the singleton
+  // search, a list, an id set or the start page. Watchlist films never have a
+  // view count, so it takes one card with one to call the whole grid singleton.
+  const vertical = !posterOnly && movies.some((movie) => movie.views !== undefined);
   const infoRefs = useRef<HTMLDivElement[]>([]);
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -40,20 +44,26 @@ export const Catalog = () => {
     return () => window.removeEventListener("resize", updateContainerWidth);
   }, [updateContainerWidth]);
 
+  const cardWidthPercent = 100 / cardsPerRow;
+  const cardWidth = containerWidth > 0 ? Math.floor(containerWidth / cardsPerRow) : 460;
+  // like the row cards' zoom, the vertical cards' type follows the card width
+  const baseFs = 13 * cardWidth / REF_CARD_WIDTH;
+
   // Lay one vertical card out with the year beside the title (or on the meta
   // row) and step its font down until the info block fits "height". The first
   // guess is linear in the overflow, so a card usually settles in a step or two.
   const fitInfo = (info: HTMLDivElement, height: number, inline: boolean) => {
+    const minFs = baseFs * MIN_FS_RATIO;
     info.classList.toggle("inlineYear", inline);
     info.style.height = "auto";
-    info.style.setProperty("--fs", BASE_FS + "px");
+    info.style.setProperty("--fs", baseFs + "px");
     if (info.offsetHeight <= height)
-      return BASE_FS;
-    let fs = Math.max(MIN_FS, BASE_FS * height / info.offsetHeight);
+      return baseFs;
+    let fs = Math.max(minFs, baseFs * height / info.offsetHeight);
     info.style.setProperty("--fs", fs + "px");
-    for (let i = 0; i < 24 && info.offsetHeight > height && fs > MIN_FS; i++)
+    for (let i = 0; i < 24 && info.offsetHeight > height && fs > minFs; i++)
     {
-      fs = Math.max(MIN_FS, fs - 0.25);
+      fs = Math.max(minFs, fs - baseFs / 52);
       info.style.setProperty("--fs", fs + "px");
     }
     return fs;
@@ -70,7 +80,7 @@ export const Catalog = () => {
     const probe = document.createElement("div");
     probe.className = "catalog__item__info catalog__item__info--vertical inlineYear";
     probe.style.cssText = "position:absolute;left:0;right:0;visibility:hidden;";
-    probe.style.setProperty("--fs", BASE_FS + "px");
+    probe.style.setProperty("--fs", baseFs + "px");
     probe.innerHTML =
       `<div class="titleRow"><span class="title">M</span>` +
       `<span class="year yearInline">(2000, US)</span></div>` +
@@ -85,11 +95,11 @@ export const Catalog = () => {
     infos.forEach((info) => {
       // prefer the year next to the title, but only if it costs no font size
       const inlineFs = fitInfo(info, height, true);
-      if (inlineFs < BASE_FS && fitInfo(info, height, false) <= inlineFs)
+      if (inlineFs < baseFs && fitInfo(info, height, false) <= inlineFs)
         fitInfo(info, height, true);
       info.style.height = height + "px";
     });
-  }, []);
+  }, [baseFs]);
 
   useLayoutEffect(() => {
     infoRefs.current = infoRefs.current.filter((i) => i && i.isConnected);
@@ -118,9 +128,6 @@ export const Catalog = () => {
     document.addEventListener("click", handleClick);
     return () => document.removeEventListener("click", handleClick);
   }, [openDiaryPopup]);
-
-  const cardWidthPercent = 100 / cardsPerRow;
-  const cardWidth = containerWidth > 0 ? Math.floor(containerWidth / cardsPerRow) : 460;
 
   // remove all selected cards
   const handleRemoval = () => {

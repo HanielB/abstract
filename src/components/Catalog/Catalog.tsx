@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useState, useRef, useEffect, useCallback } from "react";
+import React, { useContext, useReducer, useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
 import "./Catalog.css";
 import imgPlaceholder from "./movie_placeholder.png";
 import viewsImg from "./watched.png";
@@ -10,10 +10,17 @@ import { MoviesContext } from "../../services/context";
 import { Movie, DiaryEntry, getMovies } from "../../services/movies.service";
 
 
+// vertical (singleton) cards: font size when the title fits on one line, and
+// the floor the auto-shrink is allowed to reach
+const BASE_FS = 13;
+const MIN_FS = 8;
+
 export const Catalog = () => {
   const { master, movies, start, loading, selected, posterOnly, cardsPerRow,
-          setLoading, updateMovies, setSelected, setListName } =
+          searchSingleton, setLoading, updateMovies, setSelected, setListName } =
         useContext(MoviesContext);
+  const vertical = searchSingleton === "1" && !posterOnly;
+  const infoRefs = useRef<HTMLDivElement[]>([]);
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -32,6 +39,66 @@ export const Catalog = () => {
     window.addEventListener("resize", updateContainerWidth);
     return () => window.removeEventListener("resize", updateContainerWidth);
   }, [updateContainerWidth]);
+
+  // Lay one vertical card out with the year beside the title (or on the meta
+  // row) and step its font down until the info block fits "height". The first
+  // guess is linear in the overflow, so a card usually settles in a step or two.
+  const fitInfo = (info: HTMLDivElement, height: number, inline: boolean) => {
+    info.classList.toggle("inlineYear", inline);
+    info.style.height = "auto";
+    info.style.setProperty("--fs", BASE_FS + "px");
+    if (info.offsetHeight <= height)
+      return BASE_FS;
+    let fs = Math.max(MIN_FS, BASE_FS * height / info.offsetHeight);
+    info.style.setProperty("--fs", fs + "px");
+    for (let i = 0; i < 24 && info.offsetHeight > height && fs > MIN_FS; i++)
+    {
+      fs = Math.max(MIN_FS, fs - 0.25);
+      info.style.setProperty("--fs", fs + "px");
+    }
+    return fs;
+  }
+
+  // Every vertical card gets the height of a one-line-title card; the ones that
+  // don't fit lose the inline year and, failing that, shrink their whole block.
+  const fitCards = useCallback(() => {
+    const infos = infoRefs.current.filter((i) => i && i.isConnected);
+    if (infos.length === 0 || !infos[0].parentElement)
+      return;
+    // the height to hit: a throwaway card whose title, director and year all
+    // sit on one line, so it doesn't depend on which films are on screen
+    const probe = document.createElement("div");
+    probe.className = "catalog__item__info catalog__item__info--vertical inlineYear";
+    probe.style.cssText = "position:absolute;left:0;right:0;visibility:hidden;";
+    probe.style.setProperty("--fs", BASE_FS + "px");
+    probe.innerHTML =
+      `<div class="titleRow"><span class="title">M</span>` +
+      `<span class="year yearInline">(2000, US)</span></div>` +
+      `<div class="metaRow"><span class="right"><span class="runtime">100min</span>` +
+      `<span class="views"><img class="watchedImg" src="${viewsImg}" alt="" />` +
+      `<span class="floatingNumber">1</span></span></span></div>` +
+      `<div class="statRow"><span class="directors"><span class="director">M</span></span>` +
+      `<span class="ratingPill">8</span></div>`;
+    infos[0].parentElement.appendChild(probe);
+    const height = probe.offsetHeight;
+    probe.remove();
+    infos.forEach((info) => {
+      // prefer the year next to the title, but only if it costs no font size
+      const inlineFs = fitInfo(info, height, true);
+      if (inlineFs < BASE_FS && fitInfo(info, height, false) <= inlineFs)
+        fitInfo(info, height, true);
+      info.style.height = height + "px";
+    });
+  }, []);
+
+  useLayoutEffect(() => {
+    infoRefs.current = infoRefs.current.filter((i) => i && i.isConnected);
+    if (!vertical)
+      return;
+    fitCards();
+    if (document.fonts)
+      document.fonts.ready.then(fitCards);
+  }, [vertical, movies, cardsPerRow, containerWidth, loading, fitCards]);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -210,10 +277,11 @@ export const Catalog = () => {
 
   return (
     <div className="catalogContainer" id="catalog" ref={containerRef} style={{ "--card-width": `${cardWidthPercent}%`, "--card-scale": cardWidth / 460 } as React.CSSProperties}>
-      {movies.map((movie) => (
+      {movies.map((movie, idx) => (
         <div className={
                "catalog__item" + (selected.includes(movie.id) ? "__selected" : "")
                + (posterOnly ? " catalog__item--posteronly" : "")
+               + (vertical ? " catalog__item--vertical" : "")
                + (movie.watchlist ? " catalog__item--unwatched" : "")
              }
              tabIndex={0}
@@ -252,8 +320,102 @@ export const Catalog = () => {
             <img src={movie.picture || imgPlaceholder} alt={movie.title}
               title={posterOnly ? `${movie.title} (${movie.year || "?"})${movie.watched ? "\n" + movie.watched.substring(0, 10) : ""}${movie.rating ? " — " + movie.rating : ""}` : undefined}
             />
+            {vertical && movie.available && movie.available.length > 0 &&
+              <div className="available">
+                {movie.available.map((prov) => (
+                  <span>
+                    <img className="provider" src={getIcon(prov)} />
+                  </span>
+                ))}
+              </div>
+            }
           </div>
-          {!posterOnly && <div className="catalog__item__info">
+          {vertical && <div className="catalog__item__info catalog__item__info--vertical inlineYear"
+                            ref={(el) => { if (el) infoRefs.current[idx] = el; }}>
+            <div className="titleRow">
+              <span className="title">
+                <a href={movie.lbFilmLink}>
+                  {movie.title}
+                </a>
+                {movie.tmdbId && (
+                  <span className="tmdb-id-tooltip">
+                    ID: {movie.tmdbId}
+                    <button
+                      className="copy-id-btn"
+                      title="Copy TMDB ID"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigator.clipboard.writeText(movie.tmdbId!.toString());
+                      }}
+                    >
+                      📋
+                    </button>
+                  </span>
+                )}
+              </span>
+              <span className="year yearInline">
+                ({movie.year}{movie.country? ", " + movie.country.toUpperCase() : ""})
+              </span>
+            </div>
+            <div className="metaRow">
+              <span className="year yearStacked">
+                ({movie.year}{movie.country? ", " + movie.country.toUpperCase() : ""})
+              </span>
+              <span className="right">
+                {movie.watchlist &&
+                  <img className="watchlistImg" src={watchlistImg} />
+                }
+                <span className="runtime">
+                  {movie.runtime}min
+                </span>
+                {movie.views !== undefined && (movie.views > 0 || movie.previousView) &&
+                  <span className="views" onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenDiaryPopup(openDiaryPopup === movie.id ? null : movie.id);
+                  }}>
+                    <img src={viewsImg} className="watchedImg" />
+                    <span className="floatingNumber">
+                      {movie.views}{movie.previousView? "+" : ""}
+                    </span>
+                    {movie.diaryEntries && movie.diaryEntries.length > 0 &&
+                      <div className={`diaryPopup${openDiaryPopup === movie.id ? ' diaryPopupOpen' : ''}`}>
+                        {[...movie.diaryEntries].reverse().map((entry, i) => (
+                          <div className="diaryPopupEntry" key={i}>
+                            <span className="diaryPopupDate">
+                              <a href="#" onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setOpenReview({title: movie.title, year: movie.year, date: entry.date.substring(0, 10), rating: entry.rating, rewatch: entry.rewatch, review: entry.review || "", tags: entry.tags, lbDiaryLink: entry.entryURL, location: entry.location, diaryEntries: movie.diaryEntries});
+                                setDiaryExpanded(false);
+                              }}>{entry.date.split("-").length > 3 ? entry.date.substring(0, 10) : entry.date}</a>
+                            </span>
+                            <span className="diaryPopupRating">{entry.rating}</span>
+                            <span className="diaryPopupLocation">{entry.location}</span>
+                            {entry.tags && entry.tags.includes("cinema") && <img src={cinemaImg} className="diaryPopupCinema" alt="cinema" />}
+                          </div>
+                        ))}
+                      </div>
+                    }
+                  </span>
+                }
+              </span>
+            </div>
+            <div className="statRow">
+              <span className="directors">
+                {(movie.directors)?
+                 movie.directors.map((director) => (
+                   <span className="director"
+                         onClick={(e) => getDirected(director)}>
+                     {director}
+                   </span>
+                 )) : <span></span>}
+              </span>
+              <span className={movie.rating? "ratingPill" : "ratingPill ratingPill--empty"}>
+                {movie.rating || "0"}
+              </span>
+            </div>
+          </div>}
+          {!posterOnly && !vertical && <div className="catalog__item__info">
             <div className="titleYear">
               <span className="title">
                 <a href={movie.lbFilmLink}>

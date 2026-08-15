@@ -651,6 +651,172 @@ a:active {
     text-decoration: underline;
 }
 
+/* ---------- singleton cards: poster on top, info stacked below ----------
+   Everything inside the info block is sized in em, so --fs (set by Catalog's
+   fit pass) scales the whole block at once. Cards whose title wraps get a
+   smaller --fs so every card keeps the height of a one-line-title card. */
+
+.catalog__item--vertical,
+.catalog__item__selected.catalog__item--vertical {
+    flex-flow: column nowrap;
+    /* don't let a taller card in the row stretch this one: the info block
+       would grow with it and the fit pass would measure the wrong height */
+    align-self: flex-start;
+}
+
+.catalog__item--vertical .catalog__item__img {
+    flex: 0 0 auto;
+}
+
+.catalog__item--vertical .catalog__item__img > img {
+    width: 100%;
+    display: block;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+}
+
+/* streaming providers sit on the poster instead of taking a row of their own */
+.catalog__item--vertical .available {
+    position: absolute;
+    left: .3rem;
+    bottom: .3rem;
+    column-gap: .3rem;
+}
+
+.catalog__item--vertical .provider {
+    width: 22px;
+    height: 22px;
+}
+
+.catalog__item__info--vertical {
+    font-size: var(--fs, 13px);
+    box-sizing: border-box;
+    zoom: 1;
+    flex: 0 0 auto;
+    justify-content: flex-start;
+    gap: .25em;
+    padding: .45em .6em .5em;
+}
+
+.catalog__item__info--vertical .titleRow {
+    display: flex;
+    align-items: baseline;
+    gap: .35em;
+    line-height: 1.15;
+    align-self: stretch;
+}
+
+.catalog__item__info--vertical .title {
+    font-weight: 700;
+    font-size: 1.05em;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+/* the year rides along with the title when it fits there for free, otherwise
+   it drops to the meta row; one of the two copies is always hidden */
+.catalog__item__info--vertical .yearInline {
+    margin-left: auto;
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.catalog__item__info--vertical:not(.inlineYear) .yearInline {
+    display: none;
+}
+
+.catalog__item__info--vertical.inlineYear .yearStacked {
+    display: none;
+}
+
+.catalog__item__info--vertical .year {
+    font-size: .86em;
+}
+
+.catalog__item__info--vertical .metaRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .4em;
+    align-self: stretch;
+}
+
+.catalog__item__info--vertical.inlineYear .metaRow {
+    justify-content: flex-end;
+}
+
+.catalog__item__info--vertical .metaRow .right {
+    display: flex;
+    align-items: center;
+    gap: .35em;
+}
+
+.catalog__item__info--vertical .statRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .4em;
+    align-self: stretch;
+    margin-top: auto;
+}
+
+.catalog__item__info--vertical .directors {
+    flex-flow: row wrap;
+    column-gap: .35em;
+    row-gap: 0;
+    min-width: 0;
+}
+
+.catalog__item__info--vertical .director {
+    font-weight: 700;
+    font-size: .96em;
+    line-height: 1.15;
+}
+
+.catalog__item__info--vertical .ratingPill {
+    flex: 0 0 auto;
+    font-weight: bold;
+    font-size: .92em;
+    line-height: 1.2;
+    padding: .08em .55em;
+    background-color: #343533;
+    color: #f5cc5b;
+    border-radius: .8em;
+}
+
+.catalog__item__info--vertical .ratingPill--empty {
+    visibility: hidden;
+}
+
+.catalog__item__info--vertical .runtime {
+    font-size: .72em;
+    padding: .08em .5em;
+    border-radius: .8em;
+}
+
+/* keep .views positioned (the diary popup anchors to it) but drop the
+   left offset the row layout needs */
+.catalog__item__info--vertical .views {
+    left: auto;
+    column-gap: .25em;
+    align-items: center;
+}
+
+.catalog__item__info--vertical .watchedImg {
+    height: 1.19em;
+    margin: 0;
+}
+
+.catalog__item__info--vertical .watchlistImg {
+    height: 1.19em;
+}
+
+.catalog__item__info--vertical .floatingNumber {
+    font-size: .72em;
+    padding: .08em .4em;
+    border-radius: .8em;
+}
+
 /* Fade unwatched films in poster-only mode. */
 .catalog__item--posteronly.catalog__item--unwatched .catalog__item__img > img:first-child,
 .catalog__item__selected.catalog__item--posteronly.catalog__item--unwatched .catalog__item__img > img:first-child {

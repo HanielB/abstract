@@ -539,8 +539,16 @@ export default function ResultsChart() {
             return `${context.parsed.y} films`;
           },
           title(items: any[]) {
-            // Show full week label (YYYY-WW) in tooltip for weeks view
-            if (unit === "weeks") return labels[items[0].dataIndex];
+            // Show full week label (YYYY-WW) plus its date range for weeks view
+            if (unit === "weeks") {
+              const label = labels[items[0].dataIndex];
+              const [wy, ww] = label.split("-").map(Number);
+              const monday = isoWeekToDate(wy, ww);
+              const sunday = new Date(monday);
+              sunday.setDate(monday.getDate() + 6);
+              const mmdd = (d: Date) => toLocalDateStr(d).slice(5);
+              return `${label} (${mmdd(monday)} to ${mmdd(sunday)})`;
+            }
             return items[0].label;
           },
         },

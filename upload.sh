@@ -4,6 +4,10 @@
 # - install via apt npm
 # - npm install
 
+# directors.py needs unidecode, which only lives in the local venv.
+PY=python3
+[ -x pyenv/bin/python ] && PY=pyenv/bin/python
+
 BUILD=1
 LISTS=1
 for arg in "$@"; do
@@ -39,10 +43,10 @@ echo "Uploading lists..."
 ./index.py public/lists/
 rsync --exclude='.git/' --exclude='node-modules' --delete --recursive --times --compress --progress public/lists/ hostinger:~/public_html/filminhos/lists/ &> /dev/null
 echo "Uploading directors..."
-python3 directors.py
+"$PY" directors.py
 rsync --exclude='.git/' --exclude='node-modules' --recursive --times --compress --progress directors hostinger:~/public_html/filminhos/ &> /dev/null
 echo "Uploading clube..."
-python3 clube.py
+"$PY" clube.py
 rsync --exclude='.git/' --exclude='node-modules' --recursive --times --compress --progress clube hostinger:~/public_html/filminhos/ &> /dev/null
 echo "Uploading yearly review..."
 rsync --exclude='.git/' --recursive --times --compress --progress year-review hostinger:~/public_html/filminhos/ &> /dev/null

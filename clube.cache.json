@@ -13,6 +13,13 @@
   "title": "The Silence",
   "tmdbId": 43974
  },
+ "651170": {
+  "director": "Rodrigo Sepúlveda",
+  "lbURL": "https://letterboxd.com/film/my-tender-matador/",
+  "posterPath": "/7mM9PVIqMJh37pocDuuJH5Q56mt.jpg",
+  "title": "My Tender Matador",
+  "tmdbId": 651170
+ },
  "A Page of Madness (1926)": {
   "director": "Teinosuke Kinugasa",
   "lbURL": "https://letterboxd.com/film/a-page-of-madness/",
@@ -41,6 +48,13 @@
   "title": "Black Orpheus",
   "tmdbId": 40423
  },
+ "Blue Velvet (1986)": {
+  "director": "David Lynch",
+  "lbURL": "https://letterboxd.com/film/blue-velvet/",
+  "posterPath": "/6v1zYh2FKOYVddY5pCQhd4PO9uX.jpg",
+  "title": "Blue Velvet",
+  "tmdbId": 793
+ },
  "Cléo from 5 to 7 (1962)": {
   "director": "Agnès Varda",
   "lbURL": "https://letterboxd.com/film/cleo-from-5-to-7/",
@@ -54,6 +68,13 @@
   "posterPath": "/eseIExk6NMLs3IRE86JZNayRKsS.jpg",
   "title": "Fanon",
   "tmdbId": 1000432
+ },
+ "Fitzcarraldo (1982)": {
+  "director": "Werner Herzog",
+  "lbURL": "https://letterboxd.com/film/fitzcarraldo/",
+  "posterPath": "/oBCnYEKcg1rMhr5JjDnrRpilvDd.jpg",
+  "title": "Fitzcarraldo",
+  "tmdbId": 9343
  },
  "Ghost Dog: The Way of the Samurai (1999)": {
   "director": "Jim Jarmusch",
@@ -89,5 +110,19 @@
   "posterPath": "/fCYSidPXp3LpDa9wlLNv0gZvjyF.jpg",
   "title": "Nostalgia",
   "tmdbId": 1394
+ },
+ "O Céu de Suely (2006)": {
+  "director": "Karim Aïnouz",
+  "lbURL": "https://letterboxd.com/film/love-for-sale-2006/",
+  "posterPath": "/6FOBw7lqYBwQiXWV9QtwzFXhNpW.jpg",
+  "title": "Love for Sale",
+  "tmdbId": 95342
+ },
+ "Pixote, a lei do mais fraco (1980)": {
+  "director": "Héctor Babenco",
+  "lbURL": "https://letterboxd.com/film/pixote/",
+  "posterPath": "/zaBtclnYKv2JkgRDQ7OiFtWHm4e.jpg",
+  "title": "Pixote",
+  "tmdbId": 42148
  }
 }

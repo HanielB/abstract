@@ -35,3 +35,17 @@ My Way Home (1978) #110090
 *Nostalghia (1983)
 Il Postino (1994)
 The Silence (1998) #43974
+
+### Recomendações durante o encontro:
+- Filme: [Andrei Rublev (1966)](https://boxd.it/29lg)
+- Filme: [Nosso Segredo (2026)](https://boxd.it/RPcC)
+- Livro: [The Rise and Fall of the Dinosaurs](https://www.goodreads.com/book/show/35820369-the-rise-and-fall-of-the-dinosaurs)
+- Série: [Seus Amigos e Vizinhos](https://tv.apple.com/show/umc.cmc.74o37kzay0yuuub8iumddjsg)
+- Série: [Planeta Pré-Histórico](https://tv.apple.com/show/umc.cmc.4lh4bmztauvkooqz400akxav)
+
+## 2026-10-11
+Fitzcarraldo (1982)
+O Céu de Suely (2006)
+Tengo miedo torero (2020) #651170
+Pixote, a lei do mais fraco (1980)
+Blue Velvet (1986)

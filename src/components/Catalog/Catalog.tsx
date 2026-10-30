@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
+import React, { useContext, useReducer, useState, useRef, useEffect, useCallback } from "react";
 import "./Catalog.css";
 import imgPlaceholder from "./movie_placeholder.png";
 import viewsImg from "./watched.png";
@@ -10,10 +10,14 @@ import { MoviesContext } from "../../services/context";
 import { Movie, DiaryEntry, getMovies } from "../../services/movies.service";
 
 
-// vertical (singleton) cards: the card width a 13px info block is tuned for,
-// and how far below the base font a card is allowed to shrink
+// vertical (singleton) cards: the card width a 13px info block is tuned for
 const REF_CARD_WIDTH = 29 * 13;
-const MIN_FS_RATIO = 0.6;
+// the type never gets smaller than it is at this many cards per row (one on a
+// phone, three elsewhere; the breakpoint is Catalog.css's): narrower cards keep
+// that size and wrap instead, so a dense grid stays as readable as a sparse one
+const MOBILE_MAX_WIDTH = 540;
+const REF_CARDS_MOBILE = 1;
+const REF_CARDS_DESKTOP = 3;
 
 export const Catalog = () => {
   const { master, movies, start, loading, selected, posterOnly, cardsPerRow,
@@ -24,7 +28,6 @@ export const Catalog = () => {
   // search, a list, an id set or the start page. Watchlist films never have a
   // view count, so it takes one card with one to call the whole grid singleton.
   const vertical = !posterOnly && movies.some((movie) => movie.views !== undefined);
-  const infoRefs = useRef<HTMLDivElement[]>([]);
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -46,69 +49,14 @@ export const Catalog = () => {
 
   const cardWidthPercent = 100 / cardsPerRow;
   const cardWidth = containerWidth > 0 ? Math.floor(containerWidth / cardsPerRow) : 460;
-  // like the row cards' zoom, the vertical cards' type follows the card width
-  const baseFs = 13 * cardWidth / REF_CARD_WIDTH;
-
-  // Lay one vertical card out with the year beside the title (or on the meta
-  // row) and step its font down until the info block fits "height". The first
-  // guess is linear in the overflow, so a card usually settles in a step or two.
-  const fitInfo = (info: HTMLDivElement, height: number, inline: boolean) => {
-    const minFs = baseFs * MIN_FS_RATIO;
-    info.classList.toggle("inlineYear", inline);
-    info.style.height = "auto";
-    info.style.setProperty("--fs", baseFs + "px");
-    if (info.offsetHeight <= height)
-      return baseFs;
-    let fs = Math.max(minFs, baseFs * height / info.offsetHeight);
-    info.style.setProperty("--fs", fs + "px");
-    for (let i = 0; i < 24 && info.offsetHeight > height && fs > minFs; i++)
-    {
-      fs = Math.max(minFs, fs - baseFs / 52);
-      info.style.setProperty("--fs", fs + "px");
-    }
-    return fs;
-  }
-
-  // Every vertical card gets the height of a one-line-title card; the ones that
-  // don't fit lose the inline year and, failing that, shrink their whole block.
-  const fitCards = useCallback(() => {
-    const infos = infoRefs.current.filter((i) => i && i.isConnected);
-    if (infos.length === 0 || !infos[0].parentElement)
-      return;
-    // the height to hit: a throwaway card whose title, director and year all
-    // sit on one line, so it doesn't depend on which films are on screen
-    const probe = document.createElement("div");
-    probe.className = "catalog__item__info catalog__item__info--vertical inlineYear";
-    probe.style.cssText = "position:absolute;left:0;right:0;visibility:hidden;";
-    probe.style.setProperty("--fs", baseFs + "px");
-    probe.innerHTML =
-      `<div class="titleRow"><span class="title">M</span>` +
-      `<span class="year yearInline">(2000, US)</span></div>` +
-      `<div class="metaRow"><span class="right"><span class="runtime">100min</span>` +
-      `<span class="views"><img class="watchedImg" src="${viewsImg}" alt="" />` +
-      `<span class="floatingNumber">1</span></span></span></div>` +
-      `<div class="statRow"><span class="directors"><span class="director">M</span></span>` +
-      `<span class="ratingPill">8</span></div>`;
-    infos[0].parentElement.appendChild(probe);
-    const height = probe.offsetHeight;
-    probe.remove();
-    infos.forEach((info) => {
-      // prefer the year next to the title, but only if it costs no font size
-      const inlineFs = fitInfo(info, height, true);
-      if (inlineFs < baseFs && fitInfo(info, height, false) <= inlineFs)
-        fitInfo(info, height, true);
-      info.style.height = height + "px";
-    });
-  }, [baseFs]);
-
-  useLayoutEffect(() => {
-    infoRefs.current = infoRefs.current.filter((i) => i && i.isConnected);
-    if (!vertical)
-      return;
-    fitCards();
-    if (document.fonts)
-      document.fonts.ready.then(fitCards);
-  }, [vertical, movies, cardsPerRow, containerWidth, loading, fitCards]);
+  // like the row cards' zoom, the vertical cards' type follows the card width,
+  // but only down to the width of a reference card: past that the cards get
+  // narrower and the type stays put
+  const refCards = window.matchMedia(`(max-width: ${MOBILE_MAX_WIDTH}px)`).matches
+                 ? REF_CARDS_MOBILE : REF_CARDS_DESKTOP;
+  const refCardWidth = containerWidth > 0
+                     ? Math.floor(containerWidth / Math.min(cardsPerRow, refCards)) : 460;
+  const baseFs = 13 * refCardWidth / REF_CARD_WIDTH;
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -283,7 +231,7 @@ export const Catalog = () => {
   const collection = collectionCheck? collectionCheck.checked : false;
 
   return (
-    <div className="catalogContainer" id="catalog" ref={containerRef} style={{ "--card-width": `${cardWidthPercent}%`, "--card-scale": cardWidth / 460 } as React.CSSProperties}>
+    <div className="catalogContainer" id="catalog" ref={containerRef} style={{ "--card-width": `${cardWidthPercent}%`, "--card-scale": cardWidth / 460, "--fs": `${baseFs}px` } as React.CSSProperties}>
       {movies.map((movie, idx) => (
         <div className={
                "catalog__item" + (selected.includes(movie.id) ? "__selected" : "")
@@ -337,9 +285,8 @@ export const Catalog = () => {
               </div>
             }
           </div>
-          {vertical && <div className="catalog__item__info catalog__item__info--vertical inlineYear"
-                            ref={(el) => { if (el) infoRefs.current[idx] = el; }}>
-            <div className="titleRow">
+          {vertical && <div className="catalog__item__info catalog__item__info--vertical">
+            <div className="head">
               <span className="title">
                 <a href={movie.lbFilmLink}>
                   {movie.title}
@@ -360,63 +307,57 @@ export const Catalog = () => {
                   </span>
                 )}
               </span>
-              <span className="year yearInline">
+              {" "}
+              <span className="year">
                 ({movie.year}{movie.country? ", " + movie.country.toUpperCase() : ""})
               </span>
             </div>
-            <div className="metaRow">
-              <span className="year yearStacked">
-                ({movie.year}{movie.country? ", " + movie.country.toUpperCase() : ""})
+            <div className="directors">
+              {(movie.directors)?
+               movie.directors.map((director) => (
+                 <span className="director"
+                       onClick={(e) => getDirected(director)}>
+                   {director}
+                 </span>
+               )) : <span></span>}
+            </div>
+            <div className="foot">
+              {movie.watchlist &&
+                <img className="watchlistImg" src={watchlistImg} />
+              }
+              <span className="runtime">
+                {movie.runtime}min
               </span>
-              <span className="right">
-                {movie.watchlist &&
-                  <img className="watchlistImg" src={watchlistImg} />
-                }
-                <span className="runtime">
-                  {movie.runtime}min
-                </span>
-                {movie.views !== undefined && (movie.views > 0 || movie.previousView) &&
-                  <span className="views" onClick={(e) => {
-                    e.stopPropagation();
-                    setOpenDiaryPopup(openDiaryPopup === movie.id ? null : movie.id);
-                  }}>
-                    <img src={viewsImg} className="watchedImg" />
-                    <span className="floatingNumber">
-                      {movie.views}{movie.previousView? "+" : ""}
-                    </span>
-                    {movie.diaryEntries && movie.diaryEntries.length > 0 &&
-                      <div className={`diaryPopup${openDiaryPopup === movie.id ? ' diaryPopupOpen' : ''}`}>
-                        {[...movie.diaryEntries].reverse().map((entry, i) => (
-                          <div className="diaryPopupEntry" key={i}>
-                            <span className="diaryPopupDate">
-                              <a href="#" onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                setOpenReview({title: movie.title, year: movie.year, date: entry.date.substring(0, 10), rating: entry.rating, rewatch: entry.rewatch, review: entry.review || "", tags: entry.tags, lbDiaryLink: entry.entryURL, location: entry.location, diaryEntries: movie.diaryEntries});
-                                setDiaryExpanded(false);
-                              }}>{entry.date.split("-").length > 3 ? entry.date.substring(0, 10) : entry.date}</a>
-                            </span>
-                            <span className="diaryPopupRating">{entry.rating}</span>
-                            <span className="diaryPopupLocation">{entry.location}</span>
-                            {entry.tags && entry.tags.includes("cinema") && <img src={cinemaImg} className="diaryPopupCinema" alt="cinema" />}
-                          </div>
-                        ))}
-                      </div>
-                    }
+              {movie.views !== undefined && (movie.views > 0 || movie.previousView) &&
+                <span className="views" onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenDiaryPopup(openDiaryPopup === movie.id ? null : movie.id);
+                }}>
+                  <img src={viewsImg} className="watchedImg" />
+                  <span className="floatingNumber">
+                    {movie.views}{movie.previousView? "+" : ""}
                   </span>
-                }
-              </span>
-            </div>
-            <div className="statRow">
-              <span className="directors">
-                {(movie.directors)?
-                 movie.directors.map((director) => (
-                   <span className="director"
-                         onClick={(e) => getDirected(director)}>
-                     {director}
-                   </span>
-                 )) : <span></span>}
-              </span>
+                  {movie.diaryEntries && movie.diaryEntries.length > 0 &&
+                    <div className={`diaryPopup${openDiaryPopup === movie.id ? ' diaryPopupOpen' : ''}`}>
+                      {[...movie.diaryEntries].reverse().map((entry, i) => (
+                        <div className="diaryPopupEntry" key={i}>
+                          <span className="diaryPopupDate">
+                            <a href="#" onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setOpenReview({title: movie.title, year: movie.year, date: entry.date.substring(0, 10), rating: entry.rating, rewatch: entry.rewatch, review: entry.review || "", tags: entry.tags, lbDiaryLink: entry.entryURL, location: entry.location, diaryEntries: movie.diaryEntries});
+                              setDiaryExpanded(false);
+                            }}>{entry.date.split("-").length > 3 ? entry.date.substring(0, 10) : entry.date}</a>
+                          </span>
+                          <span className="diaryPopupRating">{entry.rating}</span>
+                          <span className="diaryPopupLocation">{entry.location}</span>
+                          {entry.tags && entry.tags.includes("cinema") && <img src={cinemaImg} className="diaryPopupCinema" alt="cinema" />}
+                        </div>
+                      ))}
+                    </div>
+                  }
+                </span>
+              }
               <span className={movie.rating? "ratingPill" : "ratingPill ratingPill--empty"}>
                 {movie.rating || "0"}
               </span>

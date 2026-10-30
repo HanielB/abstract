@@ -652,16 +652,15 @@ a:active {
 }
 
 /* ---------- singleton cards: poster on top, info stacked below ----------
-   Everything inside the info block is sized in em, so --fs (set by Catalog's
-   fit pass) scales the whole block at once. Cards whose title wraps get a
-   smaller --fs so every card keeps the height of a one-line-title card. */
+   Everything inside the info block is sized in em, so --fs (set by Catalog
+   from the card width) scales the whole block at once. The block takes the
+   height its text needs; cards on the same row stretch to the tallest one,
+   with the slack sitting between the director and the bottom row so the
+   runtime, views and rating line up across the row. */
 
 .catalog__item--vertical,
 .catalog__item__selected.catalog__item--vertical {
     flex-flow: column nowrap;
-    /* don't let a taller card in the row stretch this one: the info block
-       would grow with it and the fit pass would measure the wrong height */
-    align-self: flex-start;
 }
 
 .catalog__item--vertical .catalog__item__img {
@@ -692,72 +691,29 @@ a:active {
     font-size: var(--fs, 13px);
     box-sizing: border-box;
     zoom: 1;
-    flex: 0 0 auto;
+    flex: 1 1 auto;
+    min-width: 0;
     justify-content: flex-start;
-    gap: .25em;
-    padding: .45em .6em .5em;
+    align-items: stretch;
+    gap: .2em;
+    padding: .4em .5em .45em;
 }
 
-.catalog__item__info--vertical .titleRow {
-    display: flex;
-    align-items: baseline;
-    gap: .35em;
+/* title and year flow as one run of text: the year follows the title on the
+   same line when it fits and moves down whole when it doesn't */
+.catalog__item__info--vertical .head {
     line-height: 1.15;
-    align-self: stretch;
 }
 
 .catalog__item__info--vertical .title {
     font-weight: 700;
     font-size: 1.05em;
-    min-width: 0;
-    overflow-wrap: anywhere;
-}
-
-/* the year rides along with the title when it fits there for free, otherwise
-   it drops to the meta row; one of the two copies is always hidden */
-.catalog__item__info--vertical .yearInline {
-    margin-left: auto;
-    flex: 0 0 auto;
-    white-space: nowrap;
-}
-
-.catalog__item__info--vertical:not(.inlineYear) .yearInline {
-    display: none;
-}
-
-.catalog__item__info--vertical.inlineYear .yearStacked {
-    display: none;
+    overflow-wrap: break-word;
 }
 
 .catalog__item__info--vertical .year {
     font-size: .86em;
-}
-
-.catalog__item__info--vertical .metaRow {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: .4em;
-    align-self: stretch;
-}
-
-.catalog__item__info--vertical.inlineYear .metaRow {
-    justify-content: flex-end;
-}
-
-.catalog__item__info--vertical .metaRow .right {
-    display: flex;
-    align-items: center;
-    gap: .35em;
-}
-
-.catalog__item__info--vertical .statRow {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: .4em;
-    align-self: stretch;
-    margin-top: auto;
+    white-space: nowrap;
 }
 
 .catalog__item__info--vertical .directors {
@@ -765,26 +721,33 @@ a:active {
     column-gap: .35em;
     row-gap: 0;
     min-width: 0;
-    overflow: hidden;
-}
-
-.catalog__item__info--vertical .metaRow .right {
-    min-width: 0;
 }
 
 .catalog__item__info--vertical .director {
     font-weight: 700;
     font-size: .96em;
     line-height: 1.15;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+}
+
+/* runtime, views and rating share the last row; on a card too narrow for all
+   three the rating drops to a line of its own, still at the right */
+.catalog__item__info--vertical .foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .25em .3em;
+    margin-top: auto;
+    padding-top: .15em;
 }
 
 .catalog__item__info--vertical .ratingPill {
     flex: 0 0 auto;
+    margin-left: auto;
     font-weight: bold;
     font-size: .92em;
     line-height: 1.2;
-    padding: .08em .55em;
+    padding: .08em .45em;
     background-color: #343533;
     color: #f5cc5b;
     border-radius: .8em;
@@ -796,7 +759,7 @@ a:active {
 
 .catalog__item__info--vertical .runtime {
     font-size: .72em;
-    padding: .08em .5em;
+    padding: .08em .35em;
     border-radius: .8em;
 }
 
@@ -804,12 +767,12 @@ a:active {
    left offset the row layout needs */
 .catalog__item__info--vertical .views {
     left: auto;
-    column-gap: .25em;
+    column-gap: .15em;
     align-items: center;
 }
 
 .catalog__item__info--vertical .watchedImg {
-    height: 1.19em;
+    height: 1.05em;
     margin: 0;
 }
 

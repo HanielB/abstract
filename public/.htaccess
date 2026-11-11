@@ -1,0 +1,9 @@
+# Without a Cache-Control header, browsers and Hostinger's CDN cache these
+# heuristically, so a fresh upload can take hours to show up. "no-cache" means
+# "revalidate every time": unchanged files still cost only a 304 via the ETag.
+# Applies to subdirectories too (lists/, directors/, clube/, year-review/).
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|json|zip)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>

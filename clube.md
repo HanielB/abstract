@@ -72,7 +72,7 @@ La niña santa (2004)
 - Artigo da New Yorker: [Computer Chips Are the Most Magnificent Things Humanity Has Ever Made](https://www.newyorker.com/magazine/2026/10/26/computer-chips-are-the-most-magnificent-things-weve-ever-made) (e [vídeo no YT sobre EUV lithography](https://youtu.be/MiUHjLxm3V0?si=7TO1eniAhr2J2d_z))
 - Livro: [Cisnes Selvagens](https://www.goodreads.com/book/show/11525540-cisnes-selvagens)
 - Série: [How to With John Wilson](https://www.hbomax.com/show/2a73975c-0315-4741-888f-d9779fb3adb5)
-- Arte: [Azuletos de Papel](https://brigidacampbell.art.br/Azulejos-de-papel-Paper-Tiles)
+- Arte: [Azulejos de Papel](https://brigidacampbell.art.br/Azulejos-de-papel-Paper-Tiles)
 
 ## 2026-12-29, 14h, Casa de Hális
 

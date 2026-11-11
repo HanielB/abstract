@@ -6,14 +6,14 @@ clube.md is all one has to edit; it is markdown, of the shape
     # Page title
     Page subtitle
 
-    ## 2026-09-13
+    ## 2026-09-13, 10h
     A Suggested Film (1987)
     * The Film That Was Picked (1963)
 
     Free text about the meeting: ### headings, - lists, [links](url),
     *italics* and **bold** all work.
 
-i.e. one "## <date>" section per meeting, one "<title> (<year>)" line per film,
+i.e. one "## <date>[, <time>]" section per meeting, one "<title> (<year>)" line per film,
 a "*" marking the pick, and everything after the film lines is the text. When a
 title is ambiguous, pin the film with its tmdb id: "The Silence (1998) #43974".
 
@@ -70,7 +70,9 @@ def parse(path):
     for i, line in enumerate(lines):
         stripped = line.strip()
         if stripped.startswith("## "):
-            meeting = {"date": stripped[3:].strip(), "films": [], "text": ""}
+            day, _, time = stripped[3:].partition(",")
+            meeting = {"date": day.strip(), "time": time.strip(),
+                       "films": [], "text": ""}
             data["meetings"].append(meeting)
             text = []
             continue
@@ -215,9 +217,10 @@ def resolve(master, cache, film):
     film.update({k: v for k, v in entry.items() if k != "title"})
 
 
-def prettyDate(iso):
+def prettyDate(iso, time=""):
     d = date.fromisoformat(iso)
-    return "%d de %s de %d" % (d.day, MONTHS[d.month], d.year)
+    pretty = "%d de %s de %d" % (d.day, MONTHS[d.month], d.year)
+    return "%s, %s" % (pretty, time) if time else pretty
 
 
 def monthLabel(iso):
@@ -259,7 +262,7 @@ def meetingSection(meeting):
         </div>
 %s
       </section>
-""" % (monthLabel(meeting["date"]), prettyDate(meeting["date"]), status,
+""" % (monthLabel(meeting["date"]), prettyDate(meeting["date"], meeting["time"]), status,
        "\n".join("          " + card(f) for f in meeting["films"]),
        meeting.get("text", ""))
 

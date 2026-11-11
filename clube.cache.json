@@ -6,6 +6,20 @@
   "title": "My Way Home",
   "tmdbId": 110090
  },
+ "1228682": {
+  "director": "Dag Johan Haugerud",
+  "lbURL": "https://letterboxd.com/film/dreams-2024-5/",
+  "posterPath": "/ctBhKsd2AGlubApDf7VogbFKRlG.jpg",
+  "title": "Dreams",
+  "tmdbId": 1228682
+ },
+ "253380": {
+  "director": "Leon Hirszman",
+  "lbURL": "https://letterboxd.com/film/saint-bernard-1972/",
+  "posterPath": "/cowUXiTYIg3IkyAuKNlDGdwFDUR.jpg",
+  "title": "Saint Bernard",
+  "tmdbId": 253380
+ },
  "43974": {
   "director": "Mohsen Makhmalbaf",
   "lbURL": "https://letterboxd.com/film/the-silence-1998/",
@@ -19,6 +33,13 @@
   "posterPath": "/7mM9PVIqMJh37pocDuuJH5Q56mt.jpg",
   "title": "My Tender Matador",
   "tmdbId": 651170
+ },
+ "A Confucian Confusion (1994)": {
+  "director": "Edward Yang",
+  "lbURL": "https://letterboxd.com/film/a-confucian-confusion/",
+  "posterPath": "/sDEPrUoBf52AISJd5liP47ofKzp.jpg",
+  "title": "A Confucian Confusion",
+  "tmdbId": 54233
  },
  "A Page of Madness (1926)": {
   "director": "Teinosuke Kinugasa",
@@ -90,12 +111,26 @@
   "title": "Humanity and Paper Balloons",
   "tmdbId": 84237
  },
+ "I Hired a Contract Killer (1990)": {
+  "director": "Aki Kaurismäki",
+  "lbURL": "https://letterboxd.com/film/i-hired-a-contract-killer/",
+  "posterPath": "/p343X7QppeByj9Sz6i003jNkens.jpg",
+  "title": "I Hired a Contract Killer",
+  "tmdbId": 7975
+ },
  "Il Postino (1994)": {
   "director": "Michael Radford",
   "lbURL": "https://letterboxd.com/film/the-postman-1994/",
   "posterPath": "/cUaCpjVDefYShKyLmkcDsiPaBHn.jpg",
   "title": "The Postman",
   "tmdbId": 11010
+ },
+ "La niña santa (2004)": {
+  "director": "Lucrecia Martel",
+  "lbURL": "https://letterboxd.com/film/the-holy-girl/",
+  "posterPath": "/srA4HPJe0YpDTZ4L4Nj5psD7v48.jpg",
+  "title": "The Holy Girl",
+  "tmdbId": 44413
  },
  "Memories (1995)": {
   "director": "Katsuhiro Otomo, Koji Morimoto, Tensai Okamura",
@@ -124,5 +159,19 @@
   "posterPath": "/zaBtclnYKv2JkgRDQ7OiFtWHm4e.jpg",
   "title": "Pixote",
   "tmdbId": 42148
+ },
+ "Resurrection (2025)": {
+  "director": "Bi Gan",
+  "lbURL": "https://letterboxd.com/film/resurrection-2025/",
+  "posterPath": "/4asJAxshXzQriox6tnIoEnWN1nu.jpg",
+  "title": "Resurrection",
+  "tmdbId": 878608
+ },
+ "S. Bernardo (1972)": {
+  "director": "Leon Hirszman",
+  "lbURL": "https://letterboxd.com/film/saint-bernard-1972/",
+  "posterPath": "/cowUXiTYIg3IkyAuKNlDGdwFDUR.jpg",
+  "title": "Saint Bernard",
+  "tmdbId": 253380
  }
 }
